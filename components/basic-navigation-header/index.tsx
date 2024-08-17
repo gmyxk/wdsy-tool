@@ -9,26 +9,52 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
-  Link,
   Button,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Avatar,
-  Badge,
 } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 
-import { AcmeIcon } from "./social";
-
-import NotificationsCard from "./notifications-card";
+import { WdIcon } from "./social";
 import GlobalConfigCard from "./global-config-card";
+import { useTheme } from "next-themes";
+import { message } from "antd";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+
+const navList = [
+  {
+    href: "/",
+    label: "用户管理",
+  },
+  {
+    href: "/mail",
+    label: "邮件发送",
+  },
+  {
+    href: "/customized",
+    label: "物品定制",
+  },
+  {
+    href: "/db-tool",
+    label: "小工具",
+  },
+  {
+    href: "/about",
+    label: "关于",
+  },
+];
 
 export default function Component() {
+  const { theme, setTheme } = useTheme();
+
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const [globalConfigOpen, setGlobalConfigOpen] = React.useState(false);
+
+  const pathname = usePathname();
+
   return (
     <Navbar
       classNames={{
@@ -37,46 +63,55 @@ export default function Component() {
         wrapper: "px-4 sm:px-6",
       }}
       height="60px"
+      data-tauri-drag-region
     >
-      <NavbarBrand>
+      <NavbarBrand data-tauri-drag-region>
         <NavbarMenuToggle className="mr-2 h-6 sm:hidden" />
-        <AcmeIcon />
-        <p className="font-bold text-inherit">万古管理工具</p>
+        {/* <AcmeIcon /> */}
+        <WdIcon />
+        <p className="font-bold text-inherit">WDB管理工具</p>
       </NavbarBrand>
       <NavbarContent
         className="ml-4 hidden h-12 w-full max-w-fit gap-4 rounded-full bg-content2 px-4 dark:bg-content1 sm:flex"
         justify="start"
       >
-        <NavbarItem>
-          <Link className="flex gap-2 text-inherit" href="/">
-            用户管理
-          </Link>
-        </NavbarItem>
+        {navList.map(({ href, label }) => {
+          return (
+            <NavbarItem key={href} isActive={pathname === href}>
+              <Link className="flex gap-2 text-inherit" href={href}>
+                {label}
+              </Link>
+            </NavbarItem>
+          );
+        })}
       </NavbarContent>
       <NavbarContent
         className="ml-auto flex h-12 max-w-fit items-center gap-0 rounded-full p-0 lg:bg-content2 lg:px-1 lg:dark:bg-content1"
         justify="end"
       >
-        {/* <NavbarItem className="hidden sm:flex">
-          <Button isIconOnly radius="full" variant="light">
-            <Icon
-              className="text-default-500"
-              icon="solar:magnifer-linear"
-              width={22}
-            />
-          </Button>
-        </NavbarItem> */}
         <NavbarItem className="hidden sm:flex">
-          <Button isIconOnly radius="full" variant="light">
+          <Button
+            isIconOnly
+            radius="full"
+            variant="light"
+            onClick={() => {
+              setTheme(theme === "light" ? "dark" : "light");
+            }}
+          >
             <Icon
               className="text-default-500"
-              icon="solar:sun-linear"
+              icon={theme === "dark" ? "solar:sun-linear" : "solar:moon-linear"}
               width={24}
             />
           </Button>
         </NavbarItem>
         <NavbarItem className="flex">
-          <Popover offset={12} placement="bottom-end">
+          <Popover
+            offset={12}
+            placement="bottom-end"
+            isOpen={globalConfigOpen}
+            onOpenChange={(o) => setGlobalConfigOpen(o)}
+          >
             <PopoverTrigger>
               <Button isIconOnly radius="full" variant="light">
                 <Icon
@@ -87,105 +122,38 @@ export default function Component() {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="max-w-[90vw] p-0 sm:max-w-[380px]">
-              <GlobalConfigCard className="w-full shadow-none" />
+              <GlobalConfigCard
+                className="w-full shadow-none"
+                onSaved={() => {
+                  messageApi.success("保存成功");
+                  setGlobalConfigOpen(false);
+                }}
+              />
             </PopoverContent>
           </Popover>
         </NavbarItem>
-        {/* <NavbarItem className="flex">
-          <Popover offset={12} placement="bottom-end">
-            <PopoverTrigger>
-              <Button
-                disableRipple
-                isIconOnly
-                className="overflow-visible"
-                radius="full"
-                variant="light"
-              >
-                <Badge color="danger" content="5" showOutline={false} size="md">
-                  <Icon
-                    className="text-default-500"
-                    icon="solar:bell-linear"
-                    width={22}
-                  />
-                </Badge>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="max-w-[90vw] p-0 sm:max-w-[380px]">
-              <NotificationsCard className="w-full shadow-none" />
-            </PopoverContent>
-          </Popover>
-        </NavbarItem> */}
-        {/* <NavbarItem className="px-2">
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <button
-                title="_"
-                className="mt-1 h-8 w-8 outline-none transition-transform"
-              >
-                <Badge
-                  className="border-transparent"
-                  color="success"
-                  content=""
-                  placement="bottom-right"
-                  shape="circle"
-                  size="sm"
-                >
-                  <Avatar
-                    size="sm"
-                    src="https://i.pravatar.cc/150?u=a04258114e29526708c"
-                  />
-                </Badge>
-              </button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">johndoe@example.com</p>
-              </DropdownItem>
-              <DropdownItem key="settings">My Settings</DropdownItem>
-              <DropdownItem key="team_settings">Team Settings</DropdownItem>
-              <DropdownItem key="analytics">Analytics</DropdownItem>
-              <DropdownItem key="system">System</DropdownItem>
-              <DropdownItem key="configurations">Configurations</DropdownItem>
-              <DropdownItem key="help_and_feedback">
-                Help & Feedback
-              </DropdownItem>
-              <DropdownItem key="logout" color="danger">
-                Log Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </NavbarItem> */}
       </NavbarContent>
 
       {/* Mobile Menu */}
       <NavbarMenu>
-        <NavbarMenuItem>
-          <Link className="w-full" color="foreground" href="#">
-            Dashboard
-          </Link>
-        </NavbarMenuItem>
-        <NavbarMenuItem isActive>
-          <Link aria-current="page" className="w-full" color="primary" href="#">
-            Deployments
-          </Link>
-        </NavbarMenuItem>
-        <NavbarMenuItem>
-          <Link className="w-full" color="foreground" href="#">
-            Analytics
-          </Link>
-        </NavbarMenuItem>
-        <NavbarMenuItem>
-          <Link className="w-full" color="foreground" href="#">
-            Team
-          </Link>
-        </NavbarMenuItem>
-        <NavbarMenuItem>
-          <Link className="w-full" color="foreground" href="#">
-            Settings
-          </Link>
-        </NavbarMenuItem>
+        {navList.map(({ href, label }) => {
+          const isActive = pathname === href;
+
+          return (
+            <NavbarMenuItem key={href} isActive={isActive}>
+              <Link
+                className="w-full"
+                aria-current={isActive ? "page" : undefined}
+                color={isActive ? "primary" : "foreground"}
+                href={href}
+              >
+                {label}
+              </Link>
+            </NavbarMenuItem>
+          );
+        })}
       </NavbarMenu>
+      {contextHolder}
     </Navbar>
   );
 }

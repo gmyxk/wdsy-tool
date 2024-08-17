@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Providers } from "./providers";
-import "./globals.css";
+import { AntdProvider, Providers } from "./providers";
+import dayjs from "dayjs";
 import { BasicNavigationHeader } from "@/components";
+import isLeapYear from "dayjs/plugin/isLeapYear";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "./globals.css";
+import "dayjs/locale/zh-cn";
+
+dayjs.extend(isLeapYear);
+dayjs.extend(relativeTime);
+dayjs.locale("zh-cn");
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +28,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <BasicNavigationHeader />
-          {children}
+          <AntdProvider>
+            <BasicNavigationHeader />
+            {children}
+          </AntdProvider>
         </Providers>
       </body>
     </html>

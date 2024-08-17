@@ -1,13 +1,8 @@
-import type { IconSvgProps } from "./types";
+import type {IconSvgProps} from "./types";
 
 import React from "react";
 
-const OpenCollectiveIcon: React.FC<IconSvgProps> = ({
-  size = 24,
-  width,
-  height,
-  ...props
-}) => {
+const OpenCollectiveIcon: React.FC<IconSvgProps> = ({size = 24, width, height, ...props}) => {
   return (
     <svg
       fill="none"
@@ -17,12 +12,7 @@ const OpenCollectiveIcon: React.FC<IconSvgProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g
-        clipPath="url(#a)"
-        clipRule="evenodd"
-        fill="currentColor"
-        fillRule="evenodd"
-      >
+      <g clipPath="url(#a)" clipRule="evenodd" fill="currentColor" fillRule="evenodd">
         <path d="M21.865 5.166A11.945 11.945 0 0 1 24 12.001c0 2.54-.789 4.895-2.135 6.834l-3.109-3.109A7.679 7.679 0 0 0 19.714 12a7.679 7.679 0 0 0-.958-3.725l3.109-3.109Z" />
         <path d="m18.834 2.135-3.108 3.109a7.714 7.714 0 1 0 0 13.513l3.108 3.108A11.946 11.946 0 0 1 12 24C5.373 24 0 18.627 0 12S5.373 0 12 0c2.54 0 4.895.789 6.834 2.135Z" />
       </g>
@@ -35,12 +25,7 @@ const OpenCollectiveIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const PatreonIcon: React.FC<IconSvgProps> = ({
-  size = 24,
-  width,
-  height,
-  ...props
-}) => {
+const PatreonIcon: React.FC<IconSvgProps> = ({size = 24, width, height, ...props}) => {
   return (
     <svg
       fill="none"
@@ -62,19 +47,9 @@ const PatreonIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const DiscordIcon: React.FC<IconSvgProps> = ({
-  size = 24,
-  width,
-  height,
-  ...props
-}) => {
+const DiscordIcon: React.FC<IconSvgProps> = ({size = 24, width, height, ...props}) => {
   return (
-    <svg
-      height={size || height}
-      viewBox="0 0 24 24"
-      width={size || width}
-      {...props}
-    >
+    <svg height={size || height} viewBox="0 0 24 24" width={size || width} {...props}>
       <path
         d="M14.82 4.26a10.14 10.14 0 0 0-.53 1.1 14.66 14.66 0 0 0-4.58 0 10.14 10.14 0 0 0-.53-1.1 16 16 0 0 0-4.13 1.3 17.33 17.33 0 0 0-3 11.59 16.6 16.6 0 0 0 5.07 2.59A12.89 12.89 0 0 0 8.23 18a9.65 9.65 0 0 1-1.71-.83 3.39 3.39 0 0 0 .42-.33 11.66 11.66 0 0 0 10.12 0q.21.18.42.33a10.84 10.84 0 0 1-1.71.84 12.41 12.41 0 0 0 1.08 1.78 16.44 16.44 0 0 0 5.06-2.59 17.22 17.22 0 0 0-3-11.59 16.09 16.09 0 0 0-4.09-1.35zM8.68 14.81a1.94 1.94 0 0 1-1.8-2 1.93 1.93 0 0 1 1.8-2 1.93 1.93 0 0 1 1.8 2 1.93 1.93 0 0 1-1.8 2zm6.64 0a1.94 1.94 0 0 1-1.8-2 1.93 1.93 0 0 1 1.8-2 1.92 1.92 0 0 1 1.8 2 1.92 1.92 0 0 1-1.8 2z"
         fill="currentColor"
@@ -83,19 +58,9 @@ const DiscordIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const TwitterIcon: React.FC<IconSvgProps> = ({
-  size = 24,
-  width,
-  height,
-  ...props
-}) => {
+const TwitterIcon: React.FC<IconSvgProps> = ({size = 24, width, height, ...props}) => {
   return (
-    <svg
-      height={size || height}
-      viewBox="0 0 24 24"
-      width={size || width}
-      {...props}
-    >
+    <svg height={size || height} viewBox="0 0 24 24" width={size || width} {...props}>
       <path
         d="M19.633 7.997c.013.175.013.349.013.523 0 5.325-4.053 11.461-11.46 11.461-2.282 0-4.402-.661-6.186-1.809.324.037.636.05.973.05a8.07 8.07 0 0 0 5.001-1.721 4.036 4.036 0 0 1-3.767-2.793c.249.037.499.062.761.062.361 0 .724-.05 1.061-.137a4.027 4.027 0 0 1-3.23-3.953v-.05c.537.299 1.16.486 1.82.511a4.022 4.022 0 0 1-1.796-3.354c0-.748.199-1.434.548-2.032a11.457 11.457 0 0 0 8.306 4.215c-.062-.3-.1-.611-.1-.923a4.026 4.026 0 0 1 4.028-4.028c1.16 0 2.207.486 2.943 1.272a7.957 7.957 0 0 0 2.556-.973 4.02 4.02 0 0 1-1.771 2.22 8.073 8.073 0 0 0 2.319-.624 8.645 8.645 0 0 1-2.019 2.083z"
         fill="currentColor"
@@ -104,19 +69,9 @@ const TwitterIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const GithubIcon: React.FC<IconSvgProps> = ({
-  size = 24,
-  width,
-  height,
-  ...props
-}) => {
+const GithubIcon: React.FC<IconSvgProps> = ({size = 24, width, height, ...props}) => {
   return (
-    <svg
-      height={size || height}
-      viewBox="0 0 24 24"
-      width={size || width}
-      {...props}
-    >
+    <svg height={size || height} viewBox="0 0 24 24" width={size || width} {...props}>
       <path
         clipRule="evenodd"
         d="M22.39 6.27a11.947 11.947 0 0 0-4.367-4.367C16.184.83 14.177.293 12 .293c-2.177 0-4.185.537-6.023 1.61A11.946 11.946 0 0 0 1.609 6.27C.536 8.11 0 10.116 0 12.293c0 2.615.763 4.966 2.289 7.055 1.526 2.088 3.497 3.533 5.914 4.335.281.053.49.016.625-.109a.611.611 0 0 0 .203-.468l-.008-.844c-.005-.464-.008-.927-.008-1.39l-.36.062a4.49 4.49 0 0 1-.866.054 6.607 6.607 0 0 1-1.086-.109 2.427 2.427 0 0 1-1.047-.468 1.982 1.982 0 0 1-.688-.961l-.156-.36a3.904 3.904 0 0 0-.492-.796c-.224-.292-.45-.49-.68-.594l-.109-.078a1.146 1.146 0 0 1-.203-.188.859.859 0 0 1-.14-.219c-.032-.073-.006-.133.077-.18.084-.047.235-.07.454-.07l.312.047c.208.042.466.166.773.375.308.208.56.479.758.812.24.427.529.753.867.977.339.224.68.336 1.024.336.343 0 .64-.026.89-.078.25-.052.485-.13.703-.235.094-.698.35-1.234.766-1.61a10.705 10.705 0 0 1-1.602-.28 6.377 6.377 0 0 1-1.468-.61 4.208 4.208 0 0 1-1.258-1.047c-.333-.416-.607-.964-.82-1.64-.214-.678-.32-1.459-.32-2.344 0-1.26.411-2.334 1.234-3.219-.386-.948-.35-2.01.11-3.187.301-.094.75-.024 1.343.21.594.235 1.028.436 1.305.602.276.167.497.308.664.422.969-.27 1.969-.406 3-.406 1.03 0 2.031.135 3 .406l.594-.375c.406-.25.885-.479 1.437-.687.552-.209.974-.266 1.266-.172.468 1.177.51 2.24.125 3.187.822.886 1.234 1.959 1.234 3.219 0 .885-.107 1.669-.32 2.351-.214.683-.49 1.23-.828 1.641-.339.412-.76.758-1.266 1.039a6.388 6.388 0 0 1-1.469.61c-.474.124-1.007.219-1.601.281.541.469.812 1.208.812 2.219v3.296c0 .187.065.344.196.469.13.124.335.161.617.109 2.417-.802 4.388-2.247 5.914-4.336C23.237 17.26 24 14.907 24 12.293c0-2.177-.538-4.184-1.61-6.023Z"
@@ -127,12 +82,7 @@ const GithubIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const NextJsIcon: React.FC<IconSvgProps> = ({
-  size = 24,
-  width,
-  height,
-  ...props
-}) => {
+const NextJsIcon: React.FC<IconSvgProps> = ({size = 24, width, height, ...props}) => {
   return (
     <svg
       aria-hidden="true"
@@ -148,11 +98,7 @@ const NextJsIcon: React.FC<IconSvgProps> = ({
     </svg>
   );
 };
-const VercelIcon: React.FC<IconSvgProps> = ({
-  width,
-  height = 44,
-  ...props
-}) => {
+const VercelIcon: React.FC<IconSvgProps> = ({width, height = 44, ...props}) => {
   return (
     <svg
       fill="none"
@@ -170,11 +116,7 @@ const VercelIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const NpmIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const NpmIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       aria-hidden="true"
@@ -193,11 +135,7 @@ const NpmIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const NpmSmallIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const NpmSmallIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       fill="currentColor"
@@ -215,11 +153,7 @@ const NpmSmallIcon: React.FC<IconSvgProps> = ({
 };
 
 // #E1251B
-export const AdobeIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+export const AdobeIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       aria-hidden="true"
@@ -238,11 +172,7 @@ export const AdobeIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const YarnIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const YarnIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       aria-hidden="true"
@@ -260,11 +190,7 @@ const YarnIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const PnpmIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const PnpmIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       aria-hidden="true"
@@ -284,20 +210,9 @@ const PnpmIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const AstroIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const AstroIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      height={height}
-      width={width}
-      {...props}
-    >
+    <svg aria-hidden="true" fill="none" focusable="false" height={height} width={width} {...props}>
       <path
         clipRule="evenodd"
         d="M16.986 23.22c-3.498 0-6.986 1.694-6.986 1.694s5.924-16.1 5.937-16.131c.181-.476.457-.783.844-.783h7.11c.386 0 .673.307.843.783l5.936 16.131s-2.843-1.695-6.985-1.695l-2.637-8.14c-.1-.395-.387-.662-.713-.662-.325 0-.614.268-.712.661l-2.637 8.141zm-.572 6.477h.001-.001zM15.3 24.378c-.532 1.751-.16 4.168 1.115 5.319l.017-.061a1.42 1.42 0 00.03-.116c.16-.73.762-1.195 1.524-1.173.741.021 1.135.392 1.25 1.22.042.307.046.62.05.933l.001.098c.01.707.195 1.361.585 1.952a3.4 3.4 0 001.515 1.279l-.018-.06a4.332 4.332 0 00-.03-.1c-.488-1.476-.137-2.49 1.16-3.356l.398-.261c.293-.19.585-.38.867-.586 1.022-.747 1.665-1.732 1.817-3.007a3.404 3.404 0 00-.162-1.547c-.076.045-.148.09-.218.134-.15.094-.29.182-.437.253-1.897.921-3.902 1.035-5.944.73-1.322-.197-2.599-.547-3.52-1.651z"
@@ -308,20 +223,9 @@ const AstroIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const NewNextJSIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const NewNextJSIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      height={height}
-      width={width}
-      {...props}
-    >
+    <svg aria-hidden="true" fill="none" focusable="false" height={height} width={width} {...props}>
       <mask
         height="26"
         id="nextjs-white_svg__a"
@@ -349,10 +253,7 @@ const NewNextJSIcon: React.FC<IconSvgProps> = ({
           d="M28.596 29.753L16.987 14.8H14.8v10.396h1.75v-8.174l10.672 13.789c.482-.322.94-.676 1.374-1.058z"
           fill="url(#nextjs-white_svg__b)"
         />
-        <path
-          d="M25.344 14.8h-1.733v10.4h1.733V14.8z"
-          fill="url(#nextjs-white_svg__c)"
-        />
+        <path d="M25.344 14.8h-1.733v10.4h1.733V14.8z" fill="url(#nextjs-white_svg__c)" />
       </g>
       <defs>
         <linearGradient
@@ -382,11 +283,7 @@ const NewNextJSIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const RemixIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const RemixIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       aria-hidden="true"
@@ -409,11 +306,7 @@ const RemixIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const ViteIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const ViteIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       aria-hidden="true"
@@ -461,11 +354,7 @@ const ViteIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const StorybookIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const StorybookIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       aria-hidden="true"
@@ -486,11 +375,7 @@ const StorybookIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const CodeSandboxIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const CodeSandboxIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       fill="none"
@@ -517,11 +402,7 @@ const CodeSandboxIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const JavascriptIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const JavascriptIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       fill="currentColor"
@@ -536,11 +417,7 @@ const JavascriptIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const TypescriptIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const TypescriptIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
     <svg
       fill="currentColor"
@@ -555,12 +432,7 @@ const TypescriptIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const GoogleIcon: React.FC<IconSvgProps> = ({
-  size = 24,
-  width,
-  height,
-  ...props
-}) => {
+const GoogleIcon: React.FC<IconSvgProps> = ({size = 24, width, height, ...props}) => {
   return (
     <svg
       focusable="false"
@@ -591,19 +463,9 @@ const GoogleIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const FacebookIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const FacebookIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
-    <svg
-      fill="currentColor"
-      height={height}
-      viewBox="0 0 24 24"
-      width={width}
-      {...props}
-    >
+    <svg fill="currentColor" height={height} viewBox="0 0 24 24" width={width} {...props}>
       <path d="M0 0h24v24H0z" fill="none" />
       <path
         d="M21 3H3C1.9 3 1 3.9 1 5v18c0 1.1.9 2 2 2h9v-9h-3v-3h3v-2c0-2.76 2.24-5 5-5h3v3h-3c-.55 0-1 .45-1 1v2h4l-1 3h-3v9h4c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
@@ -613,19 +475,9 @@ const FacebookIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const AppleIcon: React.FC<IconSvgProps> = ({
-  width = "1em",
-  height = "1em",
-  ...props
-}) => {
+const AppleIcon: React.FC<IconSvgProps> = ({width = "1em", height = "1em", ...props}) => {
   return (
-    <svg
-      fill="currentColor"
-      height={height}
-      viewBox="0 0 24 24"
-      width={width}
-      {...props}
-    >
+    <svg fill="currentColor" height={height} viewBox="0 0 24 24" width={width} {...props}>
       <path
         d="M20.5 12.9c-.1-3.9 3-5.9 3-5.9c-1.6-2.2-4-2.5-4.9-2.6c-2.1-.2-4.1 1.2-5.1 1.2c-1 0-2.6-1.2-4.3-1.1c-1.7.1-3.3 1.1-4.3 2.7c-1.9 2.8-1.6 7.1-.8 9.5c1 2.9 2.9 5.1 5.1 6.5c1.3.8 2.7 1.4 4.1 1.5c1.4.1 2.8-.4 4.1-1.1c1.3-.7 2.5-1.7 3.4-3c1.1-1.5 1.8-3.3 1.9-5.2c0-.4.1-1.5-.1-2.9c-.1-1.2-.4-2.3-.8-3.2z"
         fill="currentColor"
@@ -634,51 +486,14 @@ const AppleIcon: React.FC<IconSvgProps> = ({
   );
 };
 
-const AcmeIcon: React.FC<IconSvgProps> = ({
-  size = 32,
-  width,
-  height,
-  ...props
-}) => (
-  <svg
-    fill="none"
-    height={size || height}
-    viewBox="0 0 32 32"
-    width={size || width}
-    {...props}
-  >
+const AcmeIcon: React.FC<IconSvgProps> = ({size = 32, width, height, ...props}) => (
+  <svg fill="none" height={size || height} viewBox="0 0 32 32" width={size || width} {...props}>
     <path
       clipRule="evenodd"
       d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
       fill="currentColor"
       fillRule="evenodd"
     />
-  </svg>
-);
-
-export const WdIcon: React.FC<IconSvgProps> = ({
-  size = 32,
-  width,
-  height,
-  ...props
-}) => (
-  <svg
-    fill="none"
-    viewBox="0 0 1024 1024"
-    width={size || width}
-    height={size || height}
-    {...props}
-  >
-    <path
-      d="M604.202667 515.552m-20.032 0a1.878 1.878 0 1 0 40.064 0 1.878 1.878 0 1 0-40.064 0Z"
-      fill="currentColor"
-      p-id="2684"
-    ></path>
-    <path
-      d="M884.181333 672.064c5.909333-73.824-26.485333-170.890667-117.365333-252.789333 13.130667 16.256 27.925333 39.424 35.936 62.741333 8.533333 24.853333 13.909333 41.034667 15.946667 67.701333 3.328 43.701333-5.514667 101.162667-36.842667 153.205333l-4.192 6.954667c-19.157333 31.829333-49.546667 62.378667-73.216 77.034667-16.821333 10.421333-23.050667 15.541333-40.597333 23.914667-37.845333 18.08-92.874667 26.005333-133.802667 20.522667-144.352-19.413333-251.146667-133.194667-278.069333-274.72-1.301333-14.912-8.853333-71.84-5.717333-82.709333 1.749333 4.16 2.208 34.752 3.584 42.709333 2.474667 14.165333 3.392 28.832 6.88 42.613333 7.882667 31.296 13.717333 51.573333 27.904 81.728 21.536 45.674667 71.882667 107.669333 131.904 143.808 113.344 68.245333 273.472 47.093333 343.914667-69.888 47.690667-71.733333 62.410667-156.490667 22.016-244.096-66.229333-143.669333-270.325333-159.466667-346.282667-11.530667-20.864 34.634667-26.357333 97.408-20.778667 125.482667 10.218667 53.781333 34.272 90.965333 86.496 122.421333 79.530667 36.170667 158.016-7.808 185.482667-51.658667 13.685333-22.72 20.928-48.778667 21.173333-75.509333 0.256-28.266667-8.853333-48.053333-16.554667-60.394667 14.24 39.061333 16 71.338667-5.728 122.538667-21.728 36.074667-47.818667 54.645333-90.24 65.173333-27.68 6.88-65.162667 6.634667-99.541333-14.069333-48.778667-29.365333-78.368-95.957333-73.184-151.989333 2.432-0.181333 3.914667 11.285333 4.554667 13.877333 4.405333 17.749333 8.256 25.834667 15.744 42.645333 5.824 13.056 25.92 45.877333 42.56 55.904 32.885333 23.946667 73.002667 37.717333 110.602667-5.6 11.274667-18.72 24.810667-52.16-7.893333-75.594667l-29.013333-13.92-0.874667-0.522667c-54.101333-44.597333 12.693333-136.522667 88.832-88.544 35.146667 21.162667 77.269333 68.949333 79.52 112 0.554667-2.837333 0.885333-5.813333 0.64-9.269333-0.010667-1.525333-0.234667-7.989333-0.48-9.482667-0.992-6.314667-1.898667-12.202667-3.114667-18.442667-2.965333-15.018667-4.672-21.418667-10.410667-35.84-25.76-64.864-86.229333-103.008-164.768-82.08-24.896 6.165333-60.16 29.621333-78.794667 60.554667l-4.192 6.954667c-12.224 20.298667-16.693333 46.976-16.906667 64.778667-0.106667 8.885333 1.632 20.992 3.722667 29.344 1.205333 4.842667 10.186667 25.642667 9.514667 27.957333-22.528-37.408-28.618667-86.144 1.6-136.341333 21.930667-36.416 57.013333-58.890667 86.282667-66.112 27.573333-6.816 72.138667-7.765333 105.781333 12.512l4.352 2.613333c50.272 30.272 72.224 73.024 78.933333 114.112 16.917333 103.413333-46.410667 199.552-146.336 224.362667-41.930667 10.410667-101.728 0-138.464-22.133333l-17.376-10.453333c-49.909333-30.058667-79.008-85.706667-92.8-140.224-10.88-42.901333-1.994667-117.109333 30.346667-170.805333 38.752-64.352 85.056-102.016 159.221333-120.437333 140.672-27.861333 254.346667 50.442667 320.128 162.453333 21.088 35.914667 39.765333 100.170667 41.717333 140.341333l2.730667 53.248c-1.248-50.784-1.642667-77.109333-14.442667-128.64-4.874667-19.658667-18.837333-53.802667-30.218667-71.552C796.117333 346.752 669.930667 261.546667 532.32 293.152 455.392 311.84 403.061333 353.066667 362.848 419.84c-34.890667 57.941333-43.392 133.706667-31.776 180.042667 24.32 96.810667 76.384 130.101333 96.554667 148.725333-105.173333-56.64-160.650667-166.538667-166.069333-284.394667-2.549333-55.616 10.026667-124.778667 38.528-172.117333 45.109333-74.912 81.685333-108.554667 157.685333-156.373333 66.890667-42.090667 175.466667-69.781333 275.264-57.706667 63.616 10.794667 167.626667 34.101333 223.242667 65.92C902.773333 104.416 798.122667 54.826667 605.514667 40.426667c32.704-8.021333 79.968-8.149333 132.352-5.514667-19.008-6.154667-57.706667-12-77.557333-14.762667C277.344-19.530667 73.994667 303.178667 154.933333 623.925333c-28.128-62.037333-37.92-184.96-7.424-307.978667 26.304-84.288 66.997333-150.656 122.282667-217.258667 4.917333-5.930667 19.637333-21.034667 22.474667-25.536C261.568 83.104 167.52 195.797333 145.6 232.213333l-1.28-0.309333 12.128-45.237333-1.504-0.885333-18.186667 25.728c-56.597333 93.973333-98.997333 241.482667-76.405333 354.368 34.026667 163.050667 104.352 247.648 139.04 284.64C52.106667 739.328 29.6 446.432 27.008 444.874667c-7.370667 80.704 6.250667 193.077333 58.016 335.456l-32.917333-41.002667c19.882667 85.770667 126.442667 171.093333 169.994667 197.312C485.568 1091.936 831.562667 1013.013333 884.181333 672.064zM555.36 597.706667c5.056 3.04 8.202667 8.010667 9.248 13.408 0.032 0.181333 0.042667 0.352 0.085333 0.533333 0.138667 0.874667 0.266667 1.749333 0.309333 2.634667 0.192 3.893333-0.746667 7.712-2.677333 10.901333-1.205333 2.005333-2.762667 3.594667-4.426667 4.928-0.48 0.405333-0.917333 0.8-1.408 1.141333-0.128 0.085333-0.266667 0.16-0.394667 0.245333-6.250667 4.128-14.581333 4.661333-21.418667 0.544-9.450667-5.696-12.512-18.058667-6.816-27.52C533.546667 595.093333 545.909333 592.010667 555.36 597.706667z"
-      fill="currentColor"
-      p-id="2685"
-    ></path>
   </svg>
 );
 

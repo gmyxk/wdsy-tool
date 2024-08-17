@@ -23,10 +23,16 @@ enum NotificationTabs {
   Archive = "archive",
 }
 
-export default function Component(props: CardProps) {
+export default function Component(
+  props: CardProps & {
+    onSaved?: () => void;
+  }
+) {
   const [activeTab, setActiveTab] = React.useState<NotificationTabs>(
     NotificationTabs.All
   );
+
+  const { onSaved, ...propsRest } = props;
 
   const globlaConfig = useGloblaConfigStore((s) => s);
 
@@ -39,7 +45,7 @@ export default function Component(props: CardProps) {
   const { storgeConfig } = currentConfig;
 
   return (
-    <Card className="w-full max-w-[420px]" {...props}>
+    <Card className="w-full max-w-[420px]" {...propsRest}>
       <CardHeader className="flex flex-col px-0 pb-0">
         <div className="flex w-full items-center justify-between px-5 py-2">
           <div className="inline-flex items-center gap-1">
@@ -72,7 +78,6 @@ export default function Component(props: CardProps) {
           <div className="p-6 w-[350px] flex flex-col gap-4">
             <Input
               label="数据库连接地址"
-              className="m-x-8"
               value={storgeConfig.host}
               onChange={(evt) => {
                 setCurrentConfig(
@@ -84,12 +89,22 @@ export default function Component(props: CardProps) {
             />
             <Input
               label="端口号"
-              className="m-x-8"
               value={storgeConfig.port}
               onChange={(evt) => {
                 setCurrentConfig(
                   produce((draft) => {
                     draft.storgeConfig.port = evt.target.value;
+                  })
+                );
+              }}
+            />
+            <Input
+              label="用户名"
+              value={storgeConfig.user}
+              onChange={(evt) => {
+                setCurrentConfig(
+                  produce((draft) => {
+                    draft.storgeConfig.user = evt.target.value;
                   })
                 );
               }}
@@ -115,6 +130,7 @@ export default function Component(props: CardProps) {
           variant="flat"
           onClick={() => {
             globlaConfig.setGlobalConfig(currentConfig);
+            onSaved?.();
           }}
         >
           保存设置
