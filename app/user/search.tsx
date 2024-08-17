@@ -1,12 +1,16 @@
 import { Icon } from "@iconify/react";
-import { Button, Input, Select, SelectItem } from "@nextui-org/react";
+import {
+  Button,
+  Input,
+  // Select, SelectItem
+} from "@nextui-org/react";
 import React from "react";
 
-const statusOptions = [
-  { label: "全部", key: "all" },
-  { label: "在线", key: "online" },
-  { label: "离线", key: "offline" },
-];
+// const statusOptions = [
+//   { label: "全部", key: "all" },
+//   { label: "在线", key: "online" },
+//   { label: "离线", key: "offline" },
+// ];
 
 interface UserTableSearchFormProps {
   onFinih?: (values: API.UserListQueryParams) => void;
@@ -31,7 +35,7 @@ export const UserTableSearchForm = (props: UserTableSearchFormProps) => {
           setFormValue({ ...formValue, roleName });
         }}
       />
-      <Select
+      {/* <Select
         placeholder="全部状态"
         name="status"
         aria-label="status"
@@ -43,7 +47,7 @@ export const UserTableSearchForm = (props: UserTableSearchFormProps) => {
         {statusOptions.map(({ key, label }) => (
           <SelectItem key={key}>{label}</SelectItem>
         ))}
-      </Select>
+      </Select> */}
       <Button
         color="primary"
         onClick={() => {

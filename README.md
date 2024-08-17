@@ -4,12 +4,12 @@
 
 环境变量讲解
 
-- `USER_NAME`：数据库管理用户名
-- `PASSWORD`：数据库管理密码
+- `USER_NAME`：默认的用户名
+- `USER_PASS`：默认的用户密码
 - `DB_HOST`：数据库地址
 - `DB_PORT`：数据库端口
 - `DB_USER`：数据库用户名
-- `DB_PASSWORD`：数据库密码
+- `DB_PASS`：数据库密码
 
 `.env.local` 文件示例
 

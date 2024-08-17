@@ -36,4 +36,6 @@ declare namespace API {
     /** 注册时间 */
     createTime: string;
   }
+
+  type UserDataContent = any;
 }
