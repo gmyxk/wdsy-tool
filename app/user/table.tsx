@@ -16,6 +16,7 @@ import {
   Button,
   DropdownMenu,
   DropdownItem,
+  Link,
 } from "@nextui-org/react";
 import { UserTableSearchForm } from "./search";
 // import { useTableColums, useTableSearch } from "@/hooks";
@@ -38,6 +39,8 @@ export const RoleTable = () => {
       fetch("/api/roles").then<API.ResponsTpl<API.UserListItem[]>>((res) =>
         res.json()
       ),
+
+    staleTime: 5 * 60 * 1000,
   });
 
   const { columns, renderCell } = useTableColums<API.UserListItem>([
@@ -113,7 +116,9 @@ export const RoleTable = () => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>发送邮件</DropdownItem>
+                <DropdownItem>
+                  <Link href="/mail">发送邮件</Link>
+                </DropdownItem>
                 <DropdownItem>定制物品</DropdownItem>
                 <DropdownItem>查看数据</DropdownItem>
                 <DropdownItem>修改数据</DropdownItem>
@@ -161,13 +166,7 @@ export const RoleTable = () => {
         items={data?.data || []}
       >
         {(item) => (
-          <TableRow
-            key={item.gid}
-            onContextMenu={(evt) => {
-              evt.preventDefault();
-              console.log(evt);
-            }}
-          >
+          <TableRow key={item.gid}>
             {(columnKey) => (
               <TableCell>{renderCell(columnKey as string, item)}</TableCell>
             )}

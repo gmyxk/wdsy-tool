@@ -33,8 +33,8 @@ const navList = [
     label: "邮件发送",
   },
   {
-    href: "/customized",
-    label: "物品定制",
+    href: "/etc-editor",
+    label: "Etc 修改",
   },
   {
     href: "/db-tool",

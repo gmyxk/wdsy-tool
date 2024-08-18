@@ -3,7 +3,6 @@ import iconv from "iconv-lite";
 import { ContetFactory } from "@/lib/content";
 import db from "@/lib/db";
 import { RowDataPacket } from "mysql2";
-import logger from "@/lib/logger";
 
 interface LoginDataDto extends RowDataPacket {
   name: string;

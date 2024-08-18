@@ -7,13 +7,15 @@ import { NextUIProvider } from "@nextui-org/react";
 import zhCN from "antd/lib/locale/zh_CN";
 import { ConfigProvider, theme as themeAntd } from "antd";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
+  const router = useRouter();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <NextUIProvider>
+      <NextUIProvider navigate={router.push}>
         <NextThemesProvider attribute="class" defaultTheme="dark">
           {children}
         </NextThemesProvider>

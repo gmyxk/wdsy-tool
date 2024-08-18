@@ -1,9 +1,9 @@
 import { CenteredFooterWithSocialLinks } from "@/components";
 
-export const Component = () => {
+export default function About() {
   return (
     <div>
       <CenteredFooterWithSocialLinks />
     </div>
   );
-};
+}

@@ -17,12 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh">
       <body className={inter.className}>
         <Providers>
           <AntdProvider>
             <BasicNavigationHeader />
-            <div className="max-w-5xl mx-auto p-4">{children}</div>
+            <div className="max-w-7xl mx-auto p-4">{children}</div>
           </AntdProvider>
         </Providers>
       </body>

@@ -27,6 +27,7 @@ export const UserTableSearchForm = (props: UserTableSearchFormProps) => {
     <div className="flex gap-4">
       <Input
         isClearable
+        size="sm"
         aria-label="Username"
         placeholder="输入角色名称查询"
         startContent={<Icon icon="ion:search-outline" width={18} />}
@@ -49,6 +50,7 @@ export const UserTableSearchForm = (props: UserTableSearchFormProps) => {
         ))}
       </Select> */}
       <Button
+        size="sm"
         color="primary"
         onClick={() => {
           onFinih?.(formValue);

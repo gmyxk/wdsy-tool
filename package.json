@@ -43,6 +43,7 @@
     "@types/node": "22.4.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/wicg-file-system-access": "^2023.10.5",
     "@types/winston": "^2.4.4",
     "dotenv": "^16.4.5",
     "eslint": "8",

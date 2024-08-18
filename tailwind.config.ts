@@ -2,6 +2,7 @@ import type { Config } from "tailwindcss";
 import { nextui } from "@nextui-org/react";
 
 const config: Config = {
+  darkMode: 'selector',
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
