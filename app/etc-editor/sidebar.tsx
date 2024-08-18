@@ -18,6 +18,7 @@ import { Icon } from "@iconify/react";
 
 import { cn } from "@/utils";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export enum SidebarItemType {
   Nest = "nest",
@@ -42,7 +43,7 @@ export type SidebarProps = Omit<ListboxProps<SidebarItem>, "children"> & {
   iconClassName?: string;
   sectionClasses?: ListboxSectionProps["classNames"];
   classNames?: ListboxProps["classNames"];
-  defaultSelectedKey: string;
+  defaultSelectedKey?: string;
   onSelect?: (key: string) => void;
 };
 
@@ -213,13 +214,18 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
         return renderNestItem(item);
       }
 
+      const { href, title, ...rest } = item;
+
       return (
         <ListboxItem
-          {...item}
+          {...rest}
           key={item.key}
           endContent={
             isCompact || hideEndContent ? null : item.endContent ?? null
           }
+          // classNames={{
+          //   base: cn("p-0"),
+          // }}
           startContent={
             isCompact ? null : item.icon ? (
               <Icon
@@ -235,7 +241,13 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
             )
           }
           textValue={item.title}
-          title={isCompact ? null : item.title}
+          title={
+            isCompact ? null : (
+              <Link href={href || "#"} className="w-full block px-3 py-2">
+                {title}
+              </Link>
+            )
+          }
         >
           {isCompact ? (
             <Tooltip content={item.title} placement="right">

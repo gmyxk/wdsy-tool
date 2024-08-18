@@ -38,9 +38,15 @@ importers:
       framer-motion:
         specifier: ^11.3.19
         version: 11.3.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      highlight.js:
+        specifier: ^11.10.0
+        version: 11.10.0
       iconv-lite:
         specifier: ^0.6.3
         version: 0.6.3
+      idb-keyval:
+        specifier: ^6.2.1
+        version: 6.2.1
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -2367,9 +2373,16 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
+  highlight.js@11.10.0:
+    resolution: {integrity: sha512-SYVnVFswQER+zu1laSya563s+F8VDGt7o35d4utbamowvUNLLMovFqwCLSocpZTz3MgaSRA1IbqRWZv97dtErQ==}
+    engines: {node: '>=12.0.0'}
+
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
+
+  idb-keyval@6.2.1:
+    resolution: {integrity: sha512-8Sb3veuYCyrZL+VBt9LJfZjLUPWVvqn8tG28VqYNFCo43KHcKuq+b4EiXGeuaLAQWL2YmyDgMp2aSpH9JHsEQg==}
 
   ignore@5.3.1:
     resolution: {integrity: sha512-5Fytz/IraMjqpwfd34ke28PTVMjZjJG2MPn5t7OE4eUCUNf8BAa7b5WUS9/Qvr6mwOQS7Mk6vdsMno5he+T8Xw==}
@@ -7226,9 +7239,13 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
+  highlight.js@11.10.0: {}
+
   iconv-lite@0.6.3:
     dependencies:
       safer-buffer: 2.1.2
+
+  idb-keyval@6.2.1: {}
 
   ignore@5.3.1: {}
 

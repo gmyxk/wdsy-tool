@@ -17,7 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh">
+    // 不加 suppressHydrationWarning 时 NextThemesProvider 会导致警告
+    <html lang="zh" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
           <AntdProvider>

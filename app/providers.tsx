@@ -8,6 +8,7 @@ import zhCN from "antd/lib/locale/zh_CN";
 import { ConfigProvider, theme as themeAntd } from "antd";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
+import React from "react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
