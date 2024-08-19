@@ -184,18 +184,13 @@ export class FileSystemFactory {
     text: string,
     options?: {
       encoding?: Encoding;
-      isPush?: boolean;
     }
   ) {
-    const { encoding = "utf-8", isPush = false } = options || {};
+    const { encoding = "utf-8" } = options || {};
 
     const encodedContent = iconv.encode(text, encoding);
-    
-    const writableStream = await handle.createWritable();
 
-    if (isPush) {
-      await writableStream.seek((await handle.getFile()).size);
-    }
+    const writableStream = await handle.createWritable();
 
     await writableStream.write(encodedContent);
     await writableStream.close();
@@ -209,5 +204,37 @@ export class FileSystemFactory {
   public async readFileTxtByPath(path: string, encoding: Encoding = "utf-8") {
     const handle = await this.getFileHandle(path);
     return FileSystemFactory.readFilehandleText(handle, encoding);
+  }
+
+  /**
+   * 写入文件 - 带处理回调方法
+   * @param path 文件路径
+   * @param callFn 字符串处理回调
+   * @param options 配置项
+   */
+  public async writeFileTxtWithCallFn(options: {
+    path: string;
+    encoding?: Encoding;
+    callFn: (originText: string) => string | Promise<string>;
+  }) {
+    const { path, callFn, encoding } = options;
+    const handle = await this.getFileHandle(path);
+
+    const originalText = await FileSystemFactory.readFilehandleText(
+      handle,
+      encoding
+    );
+
+    let newText = originalText;
+
+    const textOrPromise = callFn(originalText);
+
+    if (textOrPromise instanceof Promise) {
+      newText = await textOrPromise;
+    } else {
+      newText = textOrPromise;
+    }
+
+    await FileSystemFactory.writeFilehandleText(handle, newText, options);
   }
 }

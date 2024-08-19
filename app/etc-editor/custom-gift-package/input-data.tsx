@@ -1,19 +1,14 @@
-import { FileSystemFactory } from "@/lib/file";
+import {
+  FileBasicFestivalGiftList,
+  FileFestivalGiftItemList,
+  FileItemInfoLuac,
+} from "@/etc";
 import { useEtcFileStore } from "@/store";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { uniqueId } from "lodash-es";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
-
-type Inputs = {
-  id: string;
-  name: string;
-  iconId: string;
-  desc: string;
-  content: string;
-  sellAmount: number;
-};
 
 const defaultData = {
   id: uniqueId(),
@@ -24,21 +19,6 @@ const defaultData = {
   sellAmount: 5000,
 };
 
-const writeBasicFestivalGift = async (fileSystemFactory: FileSystemFactory) => {
-  const handlen = await fileSystemFactory.getFileHandle(
-    "/etc.pak/basic_festival_gift.list"
-  );
-
-  await FileSystemFactory.writeFilehandleText(
-    handlen,
-    "\n 123123123123123123123",
-    {
-      encoding: "gb2312",
-      // isPush: true,
-    }
-  );
-};
-
 export const CustomGiftPackageForm = () => {
   const fileSystemFactory = useEtcFileStore((state) => state.fileSystemFactory);
   const {
@@ -46,15 +26,19 @@ export const CustomGiftPackageForm = () => {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<EtcFileEditor.CustomGiftPackageParam>({
     defaultValues: defaultData,
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<EtcFileEditor.CustomGiftPackageParam> = async (
+    data
+  ) => {
     if (!fileSystemFactory) {
       return;
     }
-    await writeBasicFestivalGift(fileSystemFactory);
+    await FileBasicFestivalGiftList.addItem(fileSystemFactory, data);
+    await FileFestivalGiftItemList.addItem(fileSystemFactory, data);
+    await FileItemInfoLuac.addItem(fileSystemFactory, data);
     toast.success("添加成功");
   };
 

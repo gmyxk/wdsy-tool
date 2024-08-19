@@ -12,7 +12,8 @@ import { toast } from "react-toastify";
 
 const NEED_EXIST_ITEM = [
   "etc.pak",
-  // "lib_gs32.pak", "res", "src"
+  "res",
+  // "lib_gs32.pak",  "src"
 ];
 
 export default function EtcToolLayout({
