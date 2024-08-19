@@ -1,7 +1,6 @@
 "use client";
 
 import { CodeBlock } from "@/components";
-import { FileSystemFactory } from "@/lib/file";
 import { useEtcFileStore } from "@/store";
 import { Tab, Tabs } from "@nextui-org/react";
 import React from "react";
@@ -10,31 +9,6 @@ type Handle = FileSystemFileHandle | FileSystemDirectoryHandleExt;
 
 type FileSystemDirectoryHandleExt = FileSystemDirectoryHandle & {
   children: Handle[];
-};
-
-/**
- * 所有的 IO 操作都是异步的， 因为用 async await 递归出所有的文件
- * @param handle
- * @returns
- */
-const processFileTree = async (
-  handle: FileSystemFileHandle | FileSystemDirectoryHandleExt
-) => {
-  // handle.kind -> directory: 文件夹; file: 文件
-  if (handle.kind === "file") {
-    return handle;
-  }
-
-  handle.children = [];
-
-  for await (const item of handle.entries()) {
-    const subItem = await processFileTree(
-      item[1] as FileSystemDirectoryHandleExt
-    );
-    handle.children.push(subItem);
-  }
-
-  return handle;
 };
 
 export default function CustomGiftPackage() {
@@ -82,7 +56,6 @@ export default function CustomGiftPackage() {
     };
 
     init();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

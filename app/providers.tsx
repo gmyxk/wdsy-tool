@@ -9,6 +9,9 @@ import { ConfigProvider, theme as themeAntd } from "antd";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/ReactToastify.min.css";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
@@ -40,6 +43,19 @@ export function AntdProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
+      <ToastContainer
+        theme={theme}
+        // position="top-right"
+        // autoClose={5000}
+        // hideProgressBar={false}
+        // newestOnTop={false}
+        // closeOnClick
+        // rtl={false}
+        // pauseOnFocusLoss
+        // draggable
+        // pauseOnHover
+        // transition: Bounce,
+      />
     </ConfigProvider>
   );
 }

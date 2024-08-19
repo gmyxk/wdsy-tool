@@ -4,11 +4,19 @@ type FileSystemTreeHandle = FileSystemDirectoryHandle & {
 
 type Encoding = "utf-8" | "gb2312";
 
+type VerifyFileTreeFn = (
+  fileTree: FileSystemTreeHandle
+) => Promise<Error | true>;
+
 /**
  * 文件读写工具类
  */
 export class FileSystemFactory {
-  constructor() {}
+  constructor(props?: { verifyFileTree?: VerifyFileTreeFn }) {
+    this.verifyFileTree = props?.verifyFileTree;
+  }
+
+  private verifyFileTree?: VerifyFileTreeFn;
 
   /**
    * 原始的文件夹句柄
@@ -82,7 +90,7 @@ export class FileSystemFactory {
 
   /** 根文件夹名称 */
   public get directoryName() {
-    return this.fileTree?.name;
+    return this.directoryHandle?.name;
   }
 
   /**
@@ -93,9 +101,18 @@ export class FileSystemFactory {
 
     await this.verifyPermission(directoryHandle, false);
 
-    this.directoryHandle = directoryHandle;
+    const fileTree = await this.processFileTree(directoryHandle);
 
-    this.fileTree = await this.processFileTree(this.directoryHandle);
+    if (this.verifyFileTree) {
+      const vs = await this.verifyFileTree(fileTree);
+
+      if (vs instanceof Error) {
+        throw vs;
+      }
+    }
+
+    this.directoryHandle = directoryHandle;
+    this.fileTree = fileTree;
   }
 
   /**

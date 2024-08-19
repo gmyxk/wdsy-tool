@@ -7,8 +7,13 @@ import { useEtcFileStore } from "@/store";
 import { cn } from "@/utils";
 import React from "react";
 import { Icon } from "@iconify/react";
-import { get, set } from "idb-keyval";
 import { FileSystemFactory } from "@/lib/file";
+import { toast } from "react-toastify";
+
+const NEED_EXIST_ITEM = [
+  "etc.pak",
+  // "lib_gs32.pak", "res", "src"
+];
 
 export default function EtcToolLayout({
   children,
@@ -17,37 +22,42 @@ export default function EtcToolLayout({
 }>) {
   const etcFileStore = useEtcFileStore((state) => state);
 
-  // useEffect(() => {
-  //   if (etcFileStore.fileSystemDirectoryHandle) {
-  //     return;
-  //   }
-  //   const getEtcFileHandle = async () => {
-  //     const res = await get("directory");
-
-  //     if (res) {
-  //       etcFileStore.setFileSystemDirectoryHandle(res);
-  //       return;
-  //     }
-  //   };
-  //   getEtcFileHandle();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   const openFolder = async () => {
     try {
-      const fileSystemFactory = new FileSystemFactory();
+      const fileSystemFactory = new FileSystemFactory({
+        verifyFileTree: async (fileTree) => {
+          if (!fileTree.children || fileTree.children.length < 1) {
+            return new Error("文件夹为空");
+          }
+
+          const dirNames = fileTree.children
+            .filter((i) => i.kind === "directory")
+            .map((i) => i.name);
+
+          const notExistDir = NEED_EXIST_ITEM.find(
+            (i) => !dirNames.includes(i)
+          );
+
+          if (notExistDir) {
+            return new Error(`缺少 ${notExistDir} 文件夹`);
+          }
+
+          return true;
+        },
+      });
 
       await fileSystemFactory.init();
 
       etcFileStore.setFileSystemFactory(fileSystemFactory);
     } catch (error) {
+      toast.error((error as Error).message);
       console.error(error);
     }
   };
 
   if (!etcFileStore.fileSystemFactory) {
     return (
-      <div className="min-h-[calc(100dvh-100px)] flex items-center justify-center">
+      <div className="min-h-[calc(100dvh-100px)] flex flex-col gap-4 items-center justify-center">
         <Button
           size="lg"
           color="primary"
@@ -58,6 +68,9 @@ export default function EtcToolLayout({
         >
           请先选择 Etc 文件夹
         </Button>
+        <p className="">
+          请确保您选择的文件夹中包含 {NEED_EXIST_ITEM.join("、")} 目录
+        </p>
       </div>
     );
   }
