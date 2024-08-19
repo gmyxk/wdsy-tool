@@ -1,19 +1,20 @@
+import { FileSystemFactory } from "@/lib/file";
 import { create } from "zustand";
 
 type EtcFileState = {
-  fileSystemDirectoryHandle: FileSystemDirectoryHandle | null;
+  fileSystemFactory: FileSystemFactory | null;
 };
 
 type EtcFileActions = {
-  setFileSystemDirectoryHandle: (payload: FileSystemDirectoryHandle) => void;
+  setFileSystemFactory: (payload: FileSystemFactory) => void;
 };
 
 export const useEtcFileStore = create<EtcFileState & EtcFileActions>((set) => {
   return {
-    fileSystemDirectoryHandle: null,
-    setFileSystemDirectoryHandle: (payload: FileSystemDirectoryHandle) => {
+    fileSystemFactory: null,
+    setFileSystemFactory: (payload) => {
       set({
-        fileSystemDirectoryHandle: payload,
+        fileSystemFactory: payload,
       });
     },
   };

@@ -38,10 +38,16 @@ export default function CodeBlock(props: CodeBlockProps) {
   const { language = "txt", code, className, classNames } = props;
   const preRef = React.useRef(null);
 
+  const loaded = React.useRef(false);
+
   React.useEffect(() => {
-    if (preRef.current) {
+    console.log("loaded.current = ", loaded.current);
+    if (preRef.current && !loaded.current) {
       hljs.highlightBlock(preRef.current);
+      loaded.current = true;
     }
+
+    // console.log("初始化 = preRef.current");
   }, []);
 
   return (

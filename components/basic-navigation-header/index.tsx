@@ -62,7 +62,7 @@ export default function Component() {
         item: "data-[active=true]:text-primary",
         wrapper: "px-4 sm:px-6",
       }}
-      height="60px"
+      height="56px"
       data-tauri-drag-region
     >
       <NavbarBrand data-tauri-drag-region>

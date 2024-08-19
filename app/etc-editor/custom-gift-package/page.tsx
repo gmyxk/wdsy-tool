@@ -1,10 +1,10 @@
 "use client";
 
 import { CodeBlock } from "@/components";
-import { FilesystemFactory } from "@/lib/file";
+import { FileSystemFactory } from "@/lib/file";
 import { useEtcFileStore } from "@/store";
 import { Tab, Tabs } from "@nextui-org/react";
-import React, { use } from "react";
+import React from "react";
 
 type Handle = FileSystemFileHandle | FileSystemDirectoryHandleExt;
 
@@ -37,26 +37,8 @@ const processFileTree = async (
   return handle;
 };
 
-/**
- * 获取文件内容
- * @param handle
- * @param path 文件路径 例如 /foo/bar/demo.txt
- * @returns string
- */
-const getFileContent = async (
-  handle: FileSystemDirectoryHandle,
-  path: string
-) => {
-  const fileHandle = await handle.getFileHandle(path, { create: false });
-  const file = await fileHandle.getFile();
-  const content = await file.text();
-  return content;
-};
-
 export default function CustomGiftPackage() {
-  const directoryHandle = useEtcFileStore(
-    (state) => state.fileSystemDirectoryHandle
-  );
+  const fileSystemFactory = useEtcFileStore((state) => state.fileSystemFactory);
 
   const [textObj, setTextObj] = React.useState({
     festival_gift_item: "",
@@ -65,30 +47,28 @@ export default function CustomGiftPackage() {
   });
 
   React.useEffect(() => {
-    if (!directoryHandle) {
+    if (!fileSystemFactory) {
       return;
     }
 
-    console.log("directoryHandle.name = ", directoryHandle.name);
+    console.log("fileSystemFactory = ", fileSystemFactory);
 
     const init = async () => {
-      if (!directoryHandle) {
+      if (!fileSystemFactory) {
         return;
       }
       try {
-        const ins = new FilesystemFactory(directoryHandle);
-
-        await ins.init();
-
-        const festival_gift_item = await ins.readFileTxt(
+        const festival_gift_item = await fileSystemFactory.readFileTxt(
           "/etc.pak/festival_gift_item.list",
           "gb2312"
         );
-        const basic_festival_gift = await ins.readFileTxt(
+        const basic_festival_gift = await fileSystemFactory.readFileTxt(
           "/etc.pak/basic_festival_gift.list",
           "gb2312"
         );
-        const itemInfo = await ins.readFileTxt("/res/cfg/ItemInfo.luac");
+        const itemInfo = await fileSystemFactory.readFileTxt(
+          "/res/cfg/ItemInfo.luac"
+        );
 
         setTextObj({
           festival_gift_item,
@@ -106,18 +86,25 @@ export default function CustomGiftPackage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const codeProps = {
+    size: "sm" as const,
+    classNames: {
+      pre: "max-h-[800px] overflow-y-auto",
+    },
+  };
+
   return (
     <div>
       <div className="mb-2">文件预览</div>
-      <Tabs>
+      <Tabs destroyInactiveTabPanel={false}>
         <Tab title="festival_gift_item.list" key="festival_gift_item.list">
-          <CodeBlock size="sm" code={textObj.festival_gift_item} />
+          <CodeBlock code={textObj.festival_gift_item} {...codeProps} />
         </Tab>
         <Tab title="basic_festival_gift.list" key="basic_festival_gift.list">
-          <CodeBlock size="sm" code={textObj.basic_festival_gift} />
+          <CodeBlock code={textObj.basic_festival_gift} {...codeProps} />
         </Tab>
         <Tab title="ItemInfo.luac" key="ItemInfo.luac">
-          <CodeBlock size="sm" code={textObj.itemInfo} />
+          <CodeBlock code={textObj.itemInfo} {...codeProps} />
         </Tab>
       </Tabs>
     </div>

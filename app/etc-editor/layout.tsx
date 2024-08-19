@@ -8,27 +8,7 @@ import { cn } from "@/utils";
 import React from "react";
 import { Icon } from "@iconify/react";
 import { get, set } from "idb-keyval";
-
-async function verifyPermission(
-  fileHandle: FileSystemDirectoryHandle,
-  readWrite = true
-) {
-  const options: FileSystemHandlePermissionDescriptor = {};
-
-  if (readWrite) {
-    options.mode = "readwrite";
-  }
-  // Check if permission was already granted. If so, return true.
-  if ((await fileHandle.queryPermission(options)) === "granted") {
-    return true;
-  }
-  // Request permission. If the user grants permission, return true.
-  if ((await fileHandle.requestPermission(options)) === "granted") {
-    return true;
-  }
-  // The user didn't grant permission, so return false.
-  return false;
-}
+import { FileSystemFactory } from "@/lib/file";
 
 export default function EtcToolLayout({
   children,
@@ -55,16 +35,17 @@ export default function EtcToolLayout({
 
   const openFolder = async () => {
     try {
-      const res = await window.showDirectoryPicker();
-      etcFileStore.setFileSystemDirectoryHandle(res);
-      await verifyPermission(res, false);
-      set("directory", res);
+      const fileSystemFactory = new FileSystemFactory();
+
+      await fileSystemFactory.init();
+
+      etcFileStore.setFileSystemFactory(fileSystemFactory);
     } catch (error) {
       console.error(error);
     }
   };
 
-  if (!etcFileStore.fileSystemDirectoryHandle) {
+  if (!etcFileStore.fileSystemFactory) {
     return (
       <div className="min-h-[calc(100dvh-100px)] flex items-center justify-center">
         <Button
@@ -85,16 +66,16 @@ export default function EtcToolLayout({
     <div className="flex">
       <div
         className={cn(
-          "w-72 h-[calc(100vh-100px)] border-r-small border-divider p-4"
+          "w-60 h-[calc(100vh-88px)] border-r-small border-divider p-4 sticky top-14"
         )}
       >
         <ScrollShadow className="h-full max-h-full">
           <Sidebar items={items} />
         </ScrollShadow>
       </div>
-      <div className="flex-grow p-4 max-w-full">
+      <div className="p-4 max-w-[calc(100%-240px)]">
         <h5 className="text-small font-medium text-default-500 mb-4">
-          当前正在操作的目录 /{etcFileStore.fileSystemDirectoryHandle.name}
+          当前正在操作的目录 /{etcFileStore.fileSystemFactory.directoryName}
         </h5>
         <div>{children}</div>
       </div>
