@@ -4,6 +4,7 @@ import { CodeBlock } from "@/components";
 import { useEtcFileStore } from "@/store";
 import { Tab, Tabs } from "@nextui-org/react";
 import React from "react";
+import { CustomGiftPackageForm } from "./input-data";
 
 type Handle = FileSystemFileHandle | FileSystemDirectoryHandleExt;
 
@@ -32,15 +33,15 @@ export default function CustomGiftPackage() {
         return;
       }
       try {
-        const festival_gift_item = await fileSystemFactory.readFileTxt(
+        const festival_gift_item = await fileSystemFactory.readFileTxtByPath(
           "/etc.pak/festival_gift_item.list",
           "gb2312"
         );
-        const basic_festival_gift = await fileSystemFactory.readFileTxt(
+        const basic_festival_gift = await fileSystemFactory.readFileTxtByPath(
           "/etc.pak/basic_festival_gift.list",
           "gb2312"
         );
-        const itemInfo = await fileSystemFactory.readFileTxt(
+        const itemInfo = await fileSystemFactory.readFileTxtByPath(
           "/res/cfg/ItemInfo.luac"
         );
 
@@ -68,7 +69,8 @@ export default function CustomGiftPackage() {
 
   return (
     <div>
-      <div className="mb-2">文件预览</div>
+      <CustomGiftPackageForm />
+      <div className="my-2">文件预览</div>
       <Tabs destroyInactiveTabPanel={false}>
         <Tab title="festival_gift_item.list" key="festival_gift_item.list">
           <CodeBlock code={textObj.festival_gift_item} {...codeProps} />

@@ -1,3 +1,5 @@
+import iconv from "iconv-lite";
+
 type FileSystemTreeHandle = FileSystemDirectoryHandle & {
   children: Array<FileSystemTreeHandle | FileSystemFileHandle>;
 };
@@ -116,11 +118,10 @@ export class FileSystemFactory {
   }
 
   /**
-   * 通过路径读取文件
+   * 通过路径获取文件句柄
    * @param path 例如 /foo/bar/demo.txt
-   * @param encoding 例如 "utf-8"
    */
-  public async readFileTxt(path: string, encoding: Encoding = "utf-8") {
+  public async getFileHandle(path: string) {
     // 去掉首位 /
     if (path.startsWith("/")) {
       path = path.substring(1);
@@ -152,11 +153,61 @@ export class FileSystemFactory {
       throw new Error("文件不存在");
     }
 
-    const file = await (handle as FileSystemFileHandle).getFile();
+    return handle as FileSystemFileHandle;
+  }
+
+  /**
+   * 获取文件文本内容
+   * @param path 例如 /foo/bar/demo.txt
+   * @param encoding 例如 "utf-8"
+   */
+  static async readFilehandleText(
+    handle: FileSystemFileHandle,
+    encoding: Encoding = "utf-8"
+  ) {
+    const file = await handle.getFile();
     const arrayBuffer = await file.arrayBuffer();
     const decoder = new TextDecoder(encoding);
     const text = decoder.decode(arrayBuffer);
 
     return text;
+  }
+
+  /**
+   * 写入文件文本内容
+   * @param handle 文件句柄
+   * @param text 文本内容
+   * @param encoding 例如 "utf-8"
+   */
+  static async writeFilehandleText(
+    handle: FileSystemFileHandle,
+    text: string,
+    options?: {
+      encoding?: Encoding;
+      isPush?: boolean;
+    }
+  ) {
+    const { encoding = "utf-8", isPush = false } = options || {};
+
+    const encodedContent = iconv.encode(text, encoding);
+    
+    const writableStream = await handle.createWritable();
+
+    if (isPush) {
+      await writableStream.seek((await handle.getFile()).size);
+    }
+
+    await writableStream.write(encodedContent);
+    await writableStream.close();
+  }
+
+  /**
+   * 通过路径获取文件文本内容
+   * @param path 例如 /foo/bar/demo.txt
+   * @param encoding 例如 "utf-8"
+   */
+  public async readFileTxtByPath(path: string, encoding: Encoding = "utf-8") {
+    const handle = await this.getFileHandle(path);
+    return FileSystemFactory.readFilehandleText(handle, encoding);
   }
 }
