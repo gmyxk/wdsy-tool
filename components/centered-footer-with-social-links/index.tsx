@@ -16,6 +16,13 @@ const socialItems = [
       <Icon {...props} icon="simple-icons:tencentqq" />
     ),
   },
+  {
+    name: "Github",
+    href: "https://github.com/liu245933567/wdsy-tool",
+    icon: (props: SocialIconProps) => (
+      <Icon {...props} icon="bi:github" />
+    ),
+  },
 ];
 
 const features = [
@@ -72,11 +79,10 @@ export default function Component() {
               key={item.name}
               isExternal
               className="text-default-400"
-              onClick={() => open(item.href)}
-              // href={item.href}
+              href={item.href}
             >
               <span className="sr-only">{item.name}</span>
-              <item.icon aria-hidden="true" className="w-5" />
+              <item.icon aria-hidden="true" width={24} />
             </Link>
           ))}
         </div>
