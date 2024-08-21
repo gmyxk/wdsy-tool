@@ -2,32 +2,26 @@ import { NextRequest, NextResponse } from "next/server";
 import iconv from "iconv-lite";
 import { ContetFactory } from "@/lib/content";
 import db from "@/lib/db";
-import { RowDataPacket } from "mysql2";
+import { cookies } from "next/headers";
 
-interface LoginDataDto extends RowDataPacket {
-  name: string;
-  content: string;
-}
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
 
-interface GidInfo extends RowDataPacket {
-  gid: string;
-  name: string;
-  content: string;
-}
+  const searchRoleName = searchParams.get("roleName");
 
-export async function GET() {
   try {
-    const pool = db.usePool("release_ddb");
+    const pool = db.usePool("release_ddb", cookies());
 
-    const [accounts] = await pool.query<LoginDataDto[]>(
+    // 查询角色账号
+    const [accounts] = await pool.query<DBData.LoginDataTable[]>(
       "SELECT name, content FROM login_data ORDER BY path DESC"
     );
 
     const accountMap = accounts.reduce<Record<string, string>>(
       (acc, { name, content }) => {
-        const obj = ContetFactory.parse<{
-          chars: string[];
-        }>(iconv.decode(Buffer.from(content, "binary"), "GB2312"));
+        const obj = ContetFactory.parse<DBData.LoginDataContent>(
+          iconv.decode(Buffer.from(content, "binary"), "gb2312")
+        );
 
         if (obj.chars && obj.chars.length > 0) {
           obj.chars.forEach((gid) => {
@@ -40,18 +34,41 @@ export async function GET() {
       {}
     );
 
-    const [payloads] = await pool.query<GidInfo[]>(
-      `SELECT g.gid, g.name, u.content FROM gid_info g INNER JOIN user_data u ON g.gid = u.name WHERE g.type = 'user' ORDER BY g.gid DESC`
+    // 查询在线角色
+    const [inLineDatas] = await pool.query<DBData.LoginDataTable[]>(
+      "SELECT name, content FROM data WHERE path = 'runtime' ORDER BY path DESC"
     );
 
-    const data: API.UserListItem[] = payloads.map((item) => {
+    const inLineMap = inLineDatas.reduce<Record<string, 1>>(
+      (acc, { name, content }) => {
+        const obj = ContetFactory.parse<DBData.DataRuntimeContent>(
+          iconv.decode(Buffer.from(content, "binary"), "gb2312")
+        );
+
+        acc[obj.locked_gid] = 1;
+        return acc;
+      },
+      {}
+    );
+
+    const likeStr = searchRoleName
+      ? `AND g.name LIKE '%${iconv
+          .encode(searchRoleName, "gb2312")
+          .toString("binary")}%'`
+      : "";
+
+    const [payloads] = await pool.query<DBData.GidInfoTable[]>(
+      `SELECT g.gid, g.name, u.content FROM gid_info g INNER JOIN user_data u ON g.gid = u.name WHERE g.type = 'user' ${likeStr} ORDER BY g.gid DESC`
+    );
+
+    const data = payloads.map<API.UserListItem>((item) => {
       const { gid, content, name } = item;
 
-      const roleName = iconv.decode(Buffer.from(name, "binary"), "gbk");
+      const roleName = iconv.decode(Buffer.from(name, "binary"), "gb2312");
 
       const decodedContent = iconv.decode(
         Buffer.from(content, "binary"),
-        "gbk"
+        "gb2312"
       );
 
       const obj = ContetFactory.parse<API.UserDataContent>(decodedContent);
@@ -61,7 +78,7 @@ export async function GET() {
         clazz: "1",
         roleName,
         gender: 1,
-        status: 1,
+        status: inLineMap[gid] || 0,
         level: 130,
         ability: obj[49] * 1000,
         gid,
@@ -71,16 +88,21 @@ export async function GET() {
       };
     });
 
+    const sortedData = data.sort((a, b) => {
+      return b.status - a.status;
+    });
+
     return NextResponse.json(
       {
         success: true,
-        data,
+        data: sortedData,
       },
       {
         status: 200,
       }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       {
         success: false,

@@ -26,8 +26,6 @@ export default function CustomGiftPackage() {
       return;
     }
 
-    console.log("fileSystemFactory = ", fileSystemFactory);
-
     const init = async () => {
       if (!fileSystemFactory) {
         return;
@@ -52,7 +50,6 @@ export default function CustomGiftPackage() {
         });
       } catch (error) {
         console.error(error);
-        console.log("没权限");
       }
     };
 

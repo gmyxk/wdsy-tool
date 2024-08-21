@@ -1,8 +1,6 @@
 declare namespace API {
   interface UserListQueryParams {
-    account?: string;
     roleName?: string;
-    status?: string;
   }
 
   interface UserListItem {
@@ -38,4 +36,43 @@ declare namespace API {
   }
 
   type UserDataContent = any;
+
+  interface LoginDataContent {
+    chars: string[];
+  }
+}
+
+declare namespace DBData {
+  interface RowDataPacket {
+    constructor: {
+      name: "RowDataPacket";
+    };
+    [column: string]: any;
+    [column: number]: any;
+  }
+
+  interface LoginDataTable extends RowDataPacket {
+    name: string;
+    content: string;
+  }
+
+  interface LoginDataContent {
+    chars: string[];
+  }
+
+  interface GidInfoTable extends RowDataPacket {
+    gid: string;
+    name: string;
+    content: string;
+  }
+
+  interface DataRuntimeContent {
+    create_time: string;
+    active_char: string;
+    startup_id: number;
+    game_server: string;
+    locked_gid: string;
+    time: number;
+    user_cache_uid: string;
+  }
 }

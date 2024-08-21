@@ -1,11 +1,21 @@
 # 某道手游数据库管理工具
 
+## 开发环境配置
+
+Node.js 版本要求：18.17.0+
+
+pnpm 版本要求：7.0.0+
+
+项目启动
+
+```bash
+pnpm dev
+```
+
 ## 环境变量配置
 
 环境变量讲解
 
-- `USER_NAME`：默认的用户名
-- `USER_PASS`：默认的用户密码
 - `DB_HOST`：数据库地址
 - `DB_PORT`：数据库端口
 - `DB_USER`：数据库用户名
@@ -14,8 +24,6 @@
 `.env.local` 文件示例
 
 ```env
-USER_NAME=admin
-USER_PASSWORD=admin123
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_USER=root

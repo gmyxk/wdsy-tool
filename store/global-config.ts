@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import Cookies from "js-cookie";
 
 export type GlobalConfigState = {
   storgeConfig: {
@@ -19,9 +20,9 @@ export const useGloblaConfigStore = create(
     (set) => {
       return {
         storgeConfig: {
-          user: "root",
           host: "127.0.0.1",
-          port: "8080",
+          port: "3306",
+          user: "root",
           password: "",
         },
         setGlobalConfig: (config: GlobalConfigState) => {
@@ -31,7 +32,31 @@ export const useGloblaConfigStore = create(
     },
     {
       name: "global-config",
-      getStorage: () => localStorage,
+      // getStorage: () => localStorage,
+      getStorage: () => ({
+        getItem: (name) => {
+          return window.localStorage.getItem(name);
+        },
+        setItem(name, value) {
+          if (value) {
+            const obj = JSON.parse(value) as {
+              state: GlobalConfigState;
+            };
+
+            const { host, port, user, password } = obj.state.storgeConfig;
+
+            if (host && port && user && password) {
+              Cookies.set("host", host, { expires: 7 });
+              Cookies.set("port", port, { expires: 7 });
+              Cookies.set("user", user, { expires: 7 });
+              Cookies.set("password", password, { expires: 7 });
+            }
+          }
+          return window.localStorage.setItem(name, value);
+        },
+
+        removeItem: window.localStorage.removeItem,
+      }),
     }
   )
 );

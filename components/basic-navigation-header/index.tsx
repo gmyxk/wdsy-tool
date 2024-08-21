@@ -19,18 +19,14 @@ import { Icon } from "@iconify/react";
 import { WdIcon } from "./social";
 import GlobalConfigCard from "./global-config-card";
 import { useTheme } from "next-themes";
-import { message } from "antd";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const navList = [
   {
     href: "/",
     label: "用户管理",
-  },
-  {
-    href: "/mail",
-    label: "邮件发送",
   },
   {
     href: "/etc-editor",
@@ -49,22 +45,12 @@ const navList = [
 export default function Component() {
   const { theme, setTheme } = useTheme();
 
-  const [messageApi, contextHolder] = message.useMessage();
-
   const [globalConfigOpen, setGlobalConfigOpen] = React.useState(false);
 
   const pathname = usePathname();
 
   return (
-    <Navbar
-      classNames={{
-        base: "lg:bg-transparent lg:backdrop-filter-none",
-        item: "data-[active=true]:text-primary",
-        wrapper: "px-4 sm:px-6",
-      }}
-      height="56px"
-      data-tauri-drag-region
-    >
+    <Navbar isBordered data-tauri-drag-region className="h-14">
       <NavbarBrand data-tauri-drag-region>
         <NavbarMenuToggle className="mr-2 h-6 sm:hidden" />
         {/* <AcmeIcon /> */}
@@ -125,7 +111,7 @@ export default function Component() {
               <GlobalConfigCard
                 className="w-full shadow-none"
                 onSaved={() => {
-                  messageApi.success("保存成功");
+                  toast.success("保存设置成功");
                   setGlobalConfigOpen(false);
                 }}
               />
@@ -153,7 +139,6 @@ export default function Component() {
           );
         })}
       </NavbarMenu>
-      {contextHolder}
     </Navbar>
   );
 }
