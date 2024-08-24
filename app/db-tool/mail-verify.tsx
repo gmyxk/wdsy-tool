@@ -1,4 +1,4 @@
-import { genChecksum } from "@/lib/game-data";
+import { DBEncoder } from "@/lib/encoding";
 import { Button, Input } from "@nextui-org/react";
 import { Alert } from "antd";
 import React from "react";
@@ -37,7 +37,7 @@ export const MailVerify = () => {
   const [checksum, setChecksum] = React.useState<number>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const r = genChecksum(
+    const r = DBEncoder.genChecksum(
       data.id +
         data.to_gid +
         data.status +

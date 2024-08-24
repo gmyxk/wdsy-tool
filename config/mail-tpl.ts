@@ -1,7 +1,13 @@
+interface MailTpl {
+  title: string;
+  attach: string;
+  deleteble?: true;
+}
+
 /**
  * 邮件模板预设
  */
-export const MAIL_ATTACH_INIT = [
+export const MAIL_ATTACH_INIT: MailTpl[] = [
   {
     title: "人物经验 1000w",
     attach: "#I经验|人物经验#r10000000#I",

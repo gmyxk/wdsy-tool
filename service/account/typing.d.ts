@@ -10,15 +10,15 @@ declare namespace API {
      * 门派
      * 分别对应金木水火土
      */
-    clazz: "1" | "2" | "3" | "4" | "5";
+    clazz: 1 | 2 | 3 | 4 | 5;
     /** 角色名称 */
     roleName: string;
     /**
      * 角色性别
-     * 0: 女
+     * 2: 女
      * 1: 男
      */
-    gender: 0 | 1;
+    gender: 1 | 2;
     /** 角色在线状态 */
     status: 0 | 1;
     /** 角色等级 */
@@ -43,36 +43,14 @@ declare namespace API {
 }
 
 declare namespace DBData {
-  interface RowDataPacket {
-    constructor: {
-      name: "RowDataPacket";
-    };
-    [column: string]: any;
-    [column: number]: any;
-  }
-
   interface LoginDataTable extends RowDataPacket {
     name: string;
     content: string;
-  }
-
-  interface LoginDataContent {
-    chars: string[];
   }
 
   interface GidInfoTable extends RowDataPacket {
     gid: string;
     name: string;
     content: string;
-  }
-
-  interface DataRuntimeContent {
-    create_time: string;
-    active_char: string;
-    startup_id: number;
-    game_server: string;
-    locked_gid: string;
-    time: number;
-    user_cache_uid: string;
   }
 }

@@ -6,3 +6,13 @@ declare namespace API {
     total?: number;
   };
 }
+
+declare namespace DBData {
+  interface RowDataPacket {
+    constructor: {
+      name: "RowDataPacket";
+    };
+    [column: string]: any;
+    [column: number]: any;
+  }
+}

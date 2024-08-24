@@ -1,8 +1,8 @@
 "use client";
+import { BaseContent } from "@/content";
 import { Input, Button, Textarea } from "@nextui-org/react";
 import { message } from "antd";
 import React from "react";
-import { ContetFactory } from "@/lib/content";
 
 /**
  * 格式化数据库中的大对象
@@ -23,10 +23,10 @@ export const FormatObjectStr = () => {
       setJsonVaule("");
       return;
     }
-    setFormatValue(ContetFactory.deformat(val));
+    setFormatValue(BaseContent.deformat(val));
 
     try {
-      const tar = ContetFactory.parse(val);
+      const tar = BaseContent.parse(val);
       setJsonVaule(JSON.stringify(tar, null, 2));
     } catch (err) {
       setJsonVaule("Error");
@@ -99,20 +99,20 @@ export const FormatObjectStr = () => {
           isDisabled={!formatValue}
           className="mt-4 w-full"
           onClick={() => {
-            copy(ContetFactory.enformat(formatValue));
+            copy(BaseContent.enformat(formatValue));
           }}
         >
-          生成原始报文格式并复制到粘贴板
+          还原为原始报文格式并复制到粘贴板
         </Button>
         <Button
           color="primary"
           isDisabled={!formatValue}
           className="mt-4 w-full"
           onClick={() => {
-            copy(ContetFactory.stringify(JSON.parse(jsonValue)));
+            copy(BaseContent.stringify(JSON.parse(jsonValue)));
           }}
         >
-          stringify JSON
+          将 Json 转换为 content 并复制到粘贴板
         </Button>
       </div>
     </div>

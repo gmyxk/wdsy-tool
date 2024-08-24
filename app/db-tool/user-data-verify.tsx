@@ -1,4 +1,4 @@
-import { genChecksum } from "@/lib/game-data";
+import { DBEncoder } from "@/lib/encoding";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -18,7 +18,7 @@ export const UserDataVerify = () => {
   const [checksum, setChecksum] = React.useState<number>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const r = genChecksum("user" + data.gid + data.content);
+    const r = DBEncoder.genChecksum("user" + data.gid + data.content);
 
     setChecksum(r);
   };

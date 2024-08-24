@@ -1,5 +1,4 @@
 import { DBEncoder } from "@/lib/encoding";
-import { genChecksum } from "@/lib/game-data";
 import { SendMailApiReq } from "@/verification";
 import dayjs from "dayjs";
 import { Pool } from "mysql2/promise";
@@ -34,7 +33,7 @@ export const sendMailService = async (pool: Pool, params: SendMailApiReq) => {
 
     const data = `${maid}${gid}${status}${title}${status}${create_time}${expired_time}${attachment}${misc}`;
 
-    const checksum = genChecksum(data);
+    const checksum = DBEncoder.genChecksum(data);
 
     return [
       maid,
@@ -53,11 +52,10 @@ export const sendMailService = async (pool: Pool, params: SendMailApiReq) => {
     ];
   });
 
-  // 假设 excuteList 已经被填充为二维数组
   const placeholders = excuteList
     .map(() => "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
     .join(", ");
-  const values = excuteList.flat(); // 将二维数组展平为一维数组
+  const values = excuteList.flat();
 
   const res = await pool.execute(
     `INSERT INTO mail (id, sender, to_gid, status, title, type, log_type, create_time, expired_time, attachment, fetch_mark, misc, checksum) VALUES ${placeholders}`,

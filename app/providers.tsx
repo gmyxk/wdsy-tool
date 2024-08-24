@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { getQueryClient } from "@/app/get-query-client";
-import { NextUIProvider } from "@nextui-org/react";
-import zhCN from "antd/lib/locale/zh_CN";
-import { ConfigProvider, theme as themeAntd } from "antd";
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { ToastContainer } from "react-toastify";
+import { getQueryClient } from '@/app/get-query-client';
+import { NextUIProvider } from '@nextui-org/react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ConfigProvider, theme as themeAntd } from 'antd';
+import zhCN from 'antd/lib/locale/zh_CN';
+import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
 
-import "react-toastify/ReactToastify.min.css";
+import 'react-toastify/ReactToastify.min.css';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
@@ -37,7 +37,7 @@ export function AntdProvider({ children }: { children: React.ReactNode }) {
       locale={zhCN}
       theme={{
         algorithm:
-          theme === "dark"
+          theme === 'dark'
             ? themeAntd.darkAlgorithm
             : themeAntd.defaultAlgorithm,
       }}
