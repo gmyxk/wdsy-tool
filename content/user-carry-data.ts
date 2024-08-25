@@ -1,5 +1,5 @@
 import { DBEncoder } from '@/lib/encoding';
-import { SendJewelryItem } from '@/verification';
+import { SendHorcruxItem, SendJewelryItem } from '@/verification';
 import { produce } from 'immer';
 import { BaseContent } from './base';
 
@@ -94,6 +94,71 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
 
     for (let i = 0; i < jewelries.length; i++) {
       this.addJewelry(jewelries[i], emptyPositions[i]);
+    }
+  }
+
+  private addHorcruxItem(horcrux: SendHorcruxItem, position: number) {
+    const data = this.currentData;
+
+    const {
+      name,
+      level,
+      skillLevel,
+      preLightAttrNum,
+      preDarkAttrNum,
+      attributes,
+    } = horcrux;
+
+    const attrs: [number, number, string, number, string, number][] = [];
+
+    attributes.forEach((item) => {
+      attrs.push([
+        item.lightAttrNum ?? preLightAttrNum,
+        item.darkAttrNum ?? preDarkAttrNum,
+        item.lightAttribute,
+        item.lightAttributeValue,
+        item.darkAttribute,
+        item.darkAttributeValue,
+      ]);
+    });
+
+    this.setData(
+      produce(data, (draft) => {
+        draft.carry[position] = [
+          name,
+          {
+            '47': 1,
+            '49': 50000,
+            '226': 0,
+            '232': 41,
+            '233': DBEncoder.genRandomId(),
+            '240': 8,
+            '243': level,
+            '244': 8,
+            '262': 0,
+            '274': 1,
+            '324': skillLevel,
+            '325': attrs,
+            '345': 3,
+          },
+        ];
+      })
+    );
+  }
+
+  /**
+   * 批量添加魂器
+   * @param horcruxs
+   */
+  public addHorcruxBatch(horcruxs: SendHorcruxItem[]) {
+    const emptyPositions = this.getBaggageEmptyPostion();
+
+    if (emptyPositions.length < horcruxs.length) {
+      throw new Error('包裹位置不足, 请清理后再操作');
+    }
+
+    for (let i = 0; i < horcruxs.length; i++) {
+      this.addHorcruxItem(horcruxs[i], emptyPositions[i]);
     }
   }
 }

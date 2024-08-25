@@ -21,6 +21,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Empty } from 'antd';
 import { debounce } from 'lodash-es';
 import React from 'react';
+import { HorcruSend } from './roles/horcrux';
 import { JewelrySend } from './roles/jewelry';
 import { MailSend } from './roles/mail';
 import { RoleItem } from './roles/role-item';
@@ -56,7 +57,6 @@ export default function Home() {
     data?.data.filter((item) => item.status === 1).length || 0;
 
   const filteredList = React.useMemo(() => {
-    console.log('searchName = ', searchName);
     if (!data?.data) {
       return [];
     }
@@ -150,10 +150,10 @@ export default function Home() {
           <Tab title="首饰发送" key="jewelry">
             <JewelrySend gids={selectedGids as string[]} />
           </Tab>
-          <Tab title="装备发送" key="equipment">
-            该功能暂未开放，敬请期待
-          </Tab>
           <Tab title="魂器发送" key="soul-weapon">
+            <HorcruSend gids={selectedGids as string[]} />
+          </Tab>
+          <Tab title="装备发送" key="equipment">
             该功能暂未开放，敬请期待
           </Tab>
         </Tabs>

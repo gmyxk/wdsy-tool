@@ -311,9 +311,7 @@ export const JewelrySend = ({ gids }: JewelrySendProps) => {
                 })}
               >
                 <CardBody
-                  // className="pt-0"
                   onClick={() => {
-                    console.log(item.title);
                     onSelectedTplsChange(item.title);
                   }}
                 >
@@ -321,11 +319,11 @@ export const JewelrySend = ({ gids }: JewelrySendProps) => {
                   <div className="text-small text-inherit">
                     {arr[arr.length - 1]}
                   </div>
-                  {item.attributes.map((item) => {
+                  {item.attributes.map((item, index) => {
                     const attr = attrMap.get(item.attribute);
                     return (
                       <div
-                        key={item.attribute}
+                        key={`${item.attribute}${index}`}
                         className="text-tiny text-foreground-400"
                       >
                         {attr || '??'} {item.value}
@@ -343,7 +341,7 @@ export const JewelrySend = ({ gids }: JewelrySendProps) => {
                       <div className="flex items-center text-tiny text-inherit">
                         <Icon
                           icon="material-symbols:delete"
-                          width={14}
+                          width={16}
                           color="red"
                           className="mr-1"
                         />
