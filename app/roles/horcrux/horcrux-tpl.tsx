@@ -100,7 +100,9 @@ export const HorcruxTpl = (props: {
                 </div>
 
                 <div className="text-tiny text-foreground-400">
-                  <div>{`(阳${data.preLightAttrNum}/阴${data.preDarkAttrNum})`}</div>
+                  <div>
+                    混沌值{data.chaosValue} / 阳属比例{data.lightProportion}
+                  </div>
                   {data.attributes.map((attr, index) => {
                     return (
                       <div key={`${index}`} className="flex">

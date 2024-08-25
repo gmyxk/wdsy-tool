@@ -129,21 +129,21 @@ export const HorcruxForm = (props: HorcruxFormProps) => {
           })}
         />
         <Input
-          label="阳属混沌"
+          label="混沌值"
           type="number"
           size="sm"
           isInvalid={!!errors.level}
-          {...register(`preLightAttrNum`, {
+          {...register(`chaosValue`, {
             required: true,
             valueAsNumber: true,
           })}
         />
         <Input
-          label="阴属混沌"
+          label="阴属比例%"
           type="number"
           size="sm"
           isInvalid={!!errors.level}
-          {...register(`preDarkAttrNum`, {
+          {...register(`lightProportion`, {
             required: true,
             valueAsNumber: true,
           })}

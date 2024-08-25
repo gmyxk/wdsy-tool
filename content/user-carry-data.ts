@@ -104,8 +104,8 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
       name,
       level,
       skillLevel,
-      preLightAttrNum,
-      preDarkAttrNum,
+      chaosValue,
+      lightProportion,
       attributes,
     } = horcrux;
 
@@ -113,8 +113,8 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
 
     attributes.forEach((item) => {
       attrs.push([
-        item.lightAttrNum ?? preLightAttrNum,
-        item.darkAttrNum ?? preDarkAttrNum,
+        item.lightAttrNum ?? chaosValue,
+        item.darkAttrNum ?? lightProportion,
         item.lightAttribute,
         item.lightAttributeValue,
         item.darkAttribute,

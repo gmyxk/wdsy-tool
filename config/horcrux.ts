@@ -198,8 +198,8 @@ export const HORCRUX_PRE_TPL: Array<{
       name: '魂器·锋芒',
       level: 100,
       skillLevel: 5,
-      preLightAttrNum: 100,
-      preDarkAttrNum: 100,
+      chaosValue: 100,
+      lightProportion: 70,
       attributes: [
         {
           lightAttribute: 'phy_power',
@@ -240,8 +240,8 @@ export const HORCRUX_PRE_TPL: Array<{
       name: '魂器·灵咒',
       level: 100,
       skillLevel: 5,
-      preLightAttrNum: 100,
-      preDarkAttrNum: 100,
+      chaosValue: 100,
+      lightProportion: 70,
       attributes: [
         {
           lightAttribute: 'mag_power',

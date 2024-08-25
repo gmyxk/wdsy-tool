@@ -86,8 +86,8 @@ export const SendHorcruxItem = z.object({
   name: z.string().includes('魂器·'),
   level: z.number().int().min(1).max(169),
   skillLevel: z.number().int().min(1).max(5),
-  preLightAttrNum: z.number().int().min(1),
-  preDarkAttrNum: z.number().int().min(1),
+  chaosValue: z.number().int().min(1),
+  lightProportion: z.number().int().min(1),
   attributes: SendHorcruxAttrItem.array().length(5),
 });
 
