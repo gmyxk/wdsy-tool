@@ -1,7 +1,10 @@
+'use client';
+
 import { ATTRIBUTE_CONFIG, INITIAL_JEWELRY, JEWELRY_ENUM } from '@/config';
 import { axiosPost } from '@/lib/axios';
+import { SendJewelryApiReq } from '@/scheme';
+import { useRoleStore } from '@/store';
 import { cn } from '@/utils';
-import { SendJewelryApiReq } from '@/verification';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import {
   Button,
@@ -188,15 +191,13 @@ const useHistoryTpl = () => {
   };
 };
 
-interface JewelrySendProps {
-  gids: string[];
-}
-
 /**
  * 首饰发送
  * @returns
  */
-export const JewelrySend = ({ gids }: JewelrySendProps) => {
+export const SendJewelry = () => {
+  const gids = useRoleStore((state) => state.selectedRoles.map((i) => i.gid));
+
   const {
     register,
     control,

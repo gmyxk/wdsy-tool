@@ -4,8 +4,9 @@ import {
   HORCRUX_PRE_TPL,
   HORCRUX_TYPE,
 } from '@/config';
+import { SendHorcruxItem } from '@/scheme';
+import { useRoleStore } from '@/store';
 import { cn } from '@/utils';
-import { SendHorcruxItem } from '@/verification';
 import {
   Button,
   Card,
@@ -26,7 +27,6 @@ import { requestSendHorcruxApi } from './request';
 
 interface HorcruxFormProps {
   className?: string;
-  gids: string[];
   saveHistory?: (data: { templateName: string; data: SendHorcruxItem }) => void;
 }
 
@@ -42,7 +42,9 @@ const defaultValues = omit(HORCRUX_PRE_TPL[0].data, ['tplName']);
  * @returns
  */
 export const HorcruxForm = (props: HorcruxFormProps) => {
-  const { className, gids, saveHistory } = props;
+  const { className, saveHistory } = props;
+
+  const gids = useRoleStore((state) => state.selectedRoles.map((i) => i.gid));
 
   const {
     register,
@@ -139,7 +141,7 @@ export const HorcruxForm = (props: HorcruxFormProps) => {
           })}
         />
         <Input
-          label="阴属比例%"
+          label="阳属比例%"
           type="number"
           size="sm"
           isInvalid={!!errors.level}

@@ -3,7 +3,7 @@ declare namespace API {
     roleName?: string;
   }
 
-  interface UserListItem {
+  interface RoleListItem {
     /** 角色账号 */
     account: string;
     /**

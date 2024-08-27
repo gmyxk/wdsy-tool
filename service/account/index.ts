@@ -61,7 +61,7 @@ export const queryRolesService = async (
     `SELECT g.gid, g.name, u.content FROM gid_info g INNER JOIN user_data u ON g.gid = u.name WHERE g.type = 'user' ${likeStr} ORDER BY g.gid DESC`
   );
 
-  const data = payloads.map<API.UserListItem>((item) => {
+  const data = payloads.map<API.RoleListItem>((item) => {
     const { gid, content, name } = item;
 
     const roleName = DBEncoder.decodeGb2312(name);

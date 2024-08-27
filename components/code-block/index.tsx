@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import hljs from "highlight.js/lib/core";
+import React from 'react';
 
-import lua from "highlight.js/lib/languages/lua";
+import hljs from 'highlight.js/lib/core';
+
+import lua from 'highlight.js/lib/languages/lua';
 // import java from "highlight.js/lib/languages/java";
 // import csharp from "highlight.js/lib/languages/csharp";
 // import php from "highlight.js/lib/languages/php";
@@ -12,11 +13,11 @@ import lua from "highlight.js/lib/languages/lua";
 // import bash from "highlight.js/lib/languages/bash";
 
 // import "highlight.js/styles/default.css";
-import "highlight.js/styles/github.css";
-import "highlight.js/styles/atom-one-dark.css";
-import { cn } from "@/utils";
+import { cn } from '@/utils';
+import 'highlight.js/styles/atom-one-dark.css';
+import 'highlight.js/styles/github.css';
 
-hljs.registerLanguage("java", lua);
+hljs.registerLanguage('java', lua);
 // hljs.registerLanguage("java", java);
 // hljs.registerLanguage("csharp", csharp);
 // hljs.registerLanguage("php", php);
@@ -31,11 +32,11 @@ interface CodeBlockProps {
   classNames?: {
     pre?: string;
   };
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export default function CodeBlock(props: CodeBlockProps) {
-  const { language = "txt", code, className, classNames } = props;
+  const { language = 'txt', code, className, classNames } = props;
   const preRef = React.useRef(null);
 
   const loaded = React.useRef(false);
@@ -48,10 +49,10 @@ export default function CodeBlock(props: CodeBlockProps) {
   }, []);
 
   return (
-    <div className={cn("relative mt-2", className)}>
+    <div className={cn('relative mt-2', className)}>
       <pre
         className={cn(classNames?.pre, {
-          "text-xs": props.size === "sm",
+          'text-xs': props.size === 'sm',
         })}
       >
         <code ref={preRef} className={language}>

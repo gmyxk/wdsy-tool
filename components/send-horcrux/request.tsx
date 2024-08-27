@@ -1,5 +1,5 @@
 import { axiosPost } from '@/lib/axios';
-import { SendHorcruxApiReq } from '@/verification';
+import { SendHorcruxApiReq } from '@/scheme';
 
 export const requestSendHorcruxApi = (data: SendHorcruxApiReq) => {
   SendHorcruxApiReq.parse(data);

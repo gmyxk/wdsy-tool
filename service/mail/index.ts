@@ -1,5 +1,5 @@
 import { DBEncoder } from "@/lib/encoding";
-import { SendMailApiReq } from "@/verification";
+import { SendMailApiReq } from "@/scheme";
 import dayjs from "dayjs";
 import { Pool } from "mysql2/promise";
 

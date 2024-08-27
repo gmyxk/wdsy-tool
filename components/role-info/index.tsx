@@ -18,7 +18,7 @@ const AVATAR_ENUM: Record<string, string> = {
 
 // const GENDER = ['', '男', '女']
 
-export const RoleItem = ({ data }: { data: API.UserListItem }) => {
+export const RoleInfo = ({ data }: { data: API.RoleListItem }) => {
   return (
     <div className="flex w-full justify-between gap-2">
       <User

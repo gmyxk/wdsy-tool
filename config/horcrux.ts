@@ -1,4 +1,4 @@
-import { SendHorcruxItem } from '@/verification';
+import { SendHorcruxItem } from '@/scheme';
 
 export const HORCRUX_TYPE = [
   '魂器·锋芒',

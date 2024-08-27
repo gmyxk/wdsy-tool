@@ -1,7 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Icon } from '@iconify/react';
 import {
+  Button,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -9,36 +10,39 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
-  Button,
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@nextui-org/react";
-import { Icon } from "@iconify/react";
+} from '@nextui-org/react';
+import React from 'react';
 
-import { WdIcon } from "./social";
-import GlobalConfigCard from "./global-config-card";
-import { useTheme } from "next-themes";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { toast } from "react-toastify";
+import { useTheme } from 'next-themes';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { toast } from 'react-toastify';
+import GlobalConfigCard from './global-config-card';
+import { WdIcon } from './social';
 
 const navList = [
   {
-    href: "/",
-    label: "用户管理",
+    href: '/',
+    label: '用户管理',
   },
   {
-    href: "/etc-editor",
-    label: "Etc 修改",
+    href: '/etc-editor',
+    label: 'Etc 修改',
   },
   {
-    href: "/db-tool",
-    label: "小工具",
+    href: '/db-tool',
+    label: '小工具',
   },
   {
-    href: "/about",
-    label: "关于",
+    href: '/docs/changelog',
+    label: '更新日志',
+  },
+  {
+    href: '/about',
+    label: '关于',
   },
 ];
 
@@ -58,7 +62,7 @@ export default function Component() {
         <p className="font-bold text-inherit">WDB管理工具</p>
       </NavbarBrand>
       <NavbarContent
-        className="ml-4 hidden h-12 w-full max-w-fit gap-4 rounded-full bg-content2 px-4 dark:bg-content1 sm:flex"
+        className="ml-4 hidden h-12 w-full max-w-fit gap-4 rounded-full bg-content2 px-4 sm:flex dark:bg-content1"
         justify="start"
       >
         {navList.map(({ href, label }) => {
@@ -81,12 +85,12 @@ export default function Component() {
             radius="full"
             variant="light"
             onClick={() => {
-              setTheme(theme === "light" ? "dark" : "light");
+              setTheme(theme === 'light' ? 'dark' : 'light');
             }}
           >
             <Icon
               className="text-default-500"
-              icon={theme === "dark" ? "solar:sun-linear" : "solar:moon-linear"}
+              icon={theme === 'dark' ? 'solar:sun-linear' : 'solar:moon-linear'}
               width={24}
             />
           </Button>
@@ -111,7 +115,7 @@ export default function Component() {
               <GlobalConfigCard
                 className="w-full shadow-none"
                 onSaved={() => {
-                  toast.success("保存设置成功");
+                  toast.success('保存设置成功');
                   setGlobalConfigOpen(false);
                 }}
               />
@@ -129,8 +133,8 @@ export default function Component() {
             <NavbarMenuItem key={href} isActive={isActive}>
               <Link
                 className="w-full"
-                aria-current={isActive ? "page" : undefined}
-                color={isActive ? "primary" : "foreground"}
+                aria-current={isActive ? 'page' : undefined}
+                color={isActive ? 'primary' : 'foreground'}
                 href={href}
               >
                 {label}

@@ -35,19 +35,22 @@ export class BaseContent<Data extends Record<string | number, any>> {
    * @returns
    */
   static parse<T extends Record<string, any>>(content: string) {
+    let text = content;
+
+    text = text.replace(/:([0-9]):([0-9])/g, (_match, p1, p2) => {
+      return `_${p1}_${p2}`;
+    });
+
     // 替换所有 :key: 为 ":key:":
-    let text = content.replace(/:([A-Z0-9]{1,}):/g, (_match, p1) => {
+    text = text.replace(/:([A-Z0-9]{5,}):/g, (_match, p1) => {
       return `':${p1}:'`;
     });
 
-    // 替换所有 U 为 "VAR_U":
-    text = text.replace(/U,/g, '"VAR_U",');
+    // 替换所有 U 为 \"VAR_U\":
+    text = text.replace(/U,/g, "'VAR_U',");
 
     // 替换所有双转义符
     text = text.replace(/\\\\"/g, '\\"');
-    // text = text.replace(/(?<=[{\[:,])[A-Z]{1,},/g, (_match, p1) => {
-    //   return `"VAR_${p1}",`;
-    // });
 
     text = text.replace(/\(\[/g, '{');
     text = text.replace(/\]\)/g, '}');
@@ -155,13 +158,17 @@ export class BaseContent<Data extends Record<string | number, any>> {
     });
 
     // 将 \":6ACAC234234:\" 转换为 :6ACAC234234:
-    content = content.replace(/\\":([A-Za-z0-9]{1,}):\\"/g, (_match, p1) => {
+    content = content.replace(/\\":([A-Z0-9]{5,}):\\"/g, (_match, p1) => {
       return `:${p1}:`;
     });
 
     // 将 ":6ACAC234234:" 转换为 :6ACAC234234:
-    content = content.replace(/":([A-Za-z0-9]{1,}):"/g, (_match, p1) => {
+    content = content.replace(/":([A-Z0-9]{5,}):"/g, (_match, p1) => {
       return `:${p1}:`;
+    });
+
+    content = content.replace(/_([0-9])_([0-9])/g, (_match, p1, p2) => {
+      return `:${p1}:${p2}`;
     });
 
     return content;
@@ -177,11 +184,12 @@ export class BaseContent<Data extends Record<string | number, any>> {
     let str = content.replace(/\(\[/g, '([\n');
     str = str.replace(/\({/g, '({\n');
     str = str.replace(/,/g, ',\n');
-    str = str.replace(/:([A-Z0-9]{1,}):/g, (_match, p1) => {
+    // 对 :60ACDE123123: 的字符串进行特殊处理
+    str = str.replace(/:([A-Z0-9]{5,}):/g, (_match, p1) => {
       return `AAA_${p1}_AAA`;
     });
     str = str.replace(/:/g, ': ');
-    str = str.replace(/AAA_([A-Z0-9]{1,})_AAA/g, (_match, p1) => {
+    str = str.replace(/AAA_([A-Z0-9]{5,})_AAA/g, (_match, p1) => {
       return `:${p1}:`;
     });
 

@@ -1,7 +1,10 @@
-import { MAIL_ATTACH_INIT } from "@/config";
-import { axiosPost } from "@/lib/axios";
-import { SendMailApiReq } from "@/verification";
-import { Icon } from "@iconify/react";
+'use client';
+
+import { MAIL_ATTACH_INIT } from '@/config';
+import { axiosPost } from '@/lib/axios';
+import { SendMailApiReq } from '@/scheme';
+import { useRoleStore } from '@/store';
+import { Icon } from '@iconify/react';
 import {
   Button,
   Checkbox,
@@ -16,12 +19,12 @@ import {
   ModalHeader,
   ScrollShadow,
   Textarea,
-} from "@nextui-org/react";
-import { produce } from "immer";
-import { omit } from "lodash-es";
-import React, { useEffect, useMemo } from "react";
-import { useForm, SubmitHandler, Controller, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
+} from '@nextui-org/react';
+import { produce } from 'immer';
+import { omit } from 'lodash-es';
+import React, { useEffect, useMemo } from 'react';
+import { Controller, SubmitHandler, useForm, useWatch } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 type Inputs = {
   title: string;
@@ -33,12 +36,12 @@ type Inputs = {
 };
 
 const defaultValues: Inputs = {
-  title: "山有扶苏的祝福",
-  message: "祝您生活愉快每一天~",
-  attachment: "",
+  title: '山有扶苏的祝福',
+  message: '祝您生活愉快每一天~',
+  attachment: '',
   needSaveAsTpl: false,
   needSendAll: false,
-  tplName: "",
+  tplName: '',
 };
 
 interface MailSendProps {
@@ -52,7 +55,7 @@ interface MailTpl {
 }
 
 const getTotalTpl = () => {
-  const history = window.localStorage.getItem("mail_tpl_history");
+  const history = window.localStorage.getItem('mail_tpl_history');
 
   let historyList: MailTpl[] = [];
 
@@ -66,8 +69,13 @@ const getTotalTpl = () => {
   return [...historyList, ...MAIL_ATTACH_INIT];
 };
 
-export const MailSend = (props: MailSendProps) => {
-  const { gids } = props;
+/**
+ * 发送邮件
+ * @param props
+ * @returns
+ */
+export const SendMail = () => {
+  const gids = useRoleStore((state) => state.selectedRoles.map((i) => i.gid));
 
   const {
     register,
@@ -80,15 +88,15 @@ export const MailSend = (props: MailSendProps) => {
 
   const needSaveAsTpl = useWatch({
     control,
-    name: "needSaveAsTpl",
+    name: 'needSaveAsTpl',
   });
 
   const attachment = useWatch({
     control,
-    name: "attachment",
+    name: 'attachment',
   });
 
-  const [searchTxt, setSearchTxt] = React.useState("");
+  const [searchTxt, setSearchTxt] = React.useState('');
 
   const [totalTpl, setTotalTpl] = React.useState<MailTpl[]>([]);
 
@@ -101,9 +109,9 @@ export const MailSend = (props: MailSendProps) => {
       return;
     }
     window.localStorage.setItem(
-      "mail_tpl_history",
+      'mail_tpl_history',
       JSON.stringify(
-        totalTpl.filter((i) => i.deleteble).map((i) => omit(i, ["deleteble"]))
+        totalTpl.filter((i) => i.deleteble).map((i) => omit(i, ['deleteble']))
       )
     );
   }, [totalTpl]);
@@ -129,18 +137,18 @@ export const MailSend = (props: MailSendProps) => {
   }, [selectedTpls, totalTpl]);
 
   const allAttachment = useMemo(() => {
-    const selectText = currentSelectTpl.map((i) => i.attach).join("");
+    const selectText = currentSelectTpl.map((i) => i.attach).join('');
 
-    return selectText + (attachment || "");
+    return selectText + (attachment || '');
   }, [attachment, currentSelectTpl]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (!gids || gids.length < 1) {
-      toast.error("请选择角色");
+      toast.error('请选择角色');
       return;
     }
     if (!allAttachment) {
-      toast.error("请至少选择一个模板或填写自定义内容");
+      toast.error('请至少选择一个模板或填写自定义内容');
       return;
     }
 
@@ -177,8 +185,8 @@ export const MailSend = (props: MailSendProps) => {
 
     try {
       SendMailApiReq.parse(reqData);
-      await axiosPost<never, SendMailApiReq>("/api/mail", reqData);
-      toast.success("邮件发送成功");
+      await axiosPost<never, SendMailApiReq>('/api/mail', reqData);
+      toast.success('邮件发送成功');
     } catch (e) {
       console.error(e);
       toast.error(`邮件发送失败: ${(e as Error).message}`);
@@ -186,7 +194,7 @@ export const MailSend = (props: MailSendProps) => {
   };
 
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
       <div className="flex flex-col gap-4">
         <h5>历史添加模板</h5>
         <div className="flex justify-between">
@@ -280,21 +288,21 @@ export const MailSend = (props: MailSendProps) => {
         </div>
         <Input
           label="邮件标题"
-          isInvalid={!!errors["title"]}
-          errorMessage={errors["title"]?.message}
-          {...register("title", {
+          isInvalid={!!errors['title']}
+          errorMessage={errors['title']?.message}
+          {...register('title', {
             required: true,
           })}
         />
         <Input
           label="附加标题"
-          isInvalid={!!errors["message"]}
-          errorMessage={errors["message"]?.message}
-          {...register("message", {
+          isInvalid={!!errors['message']}
+          errorMessage={errors['message']?.message}
+          {...register('message', {
             required: true,
           })}
         />
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex flex-wrap gap-2">
           <div className="inline-block">已选择模板: </div>
           {currentSelectTpl.map((i) => (
             <Chip key={i.title} size="sm">
@@ -305,9 +313,9 @@ export const MailSend = (props: MailSendProps) => {
         <Textarea
           label="自定义发送内容"
           placeholder={`自定义发送内容会与模板选择的内容合并，当选中 "保存为模板" 时，也会合并保存到模板发送信息中`}
-          isInvalid={!!errors["attachment"]}
-          errorMessage={errors["attachment"]?.message}
-          {...register("attachment", {
+          isInvalid={!!errors['attachment']}
+          errorMessage={errors['attachment']?.message}
+          {...register('attachment', {
             validate(value) {
               if (!value) {
                 return true;
@@ -320,7 +328,7 @@ export const MailSend = (props: MailSendProps) => {
                 return true;
               }
 
-              return "请检查自定义发送内容是否正确";
+              return '请检查自定义发送内容是否正确';
             },
           })}
         />
@@ -329,9 +337,9 @@ export const MailSend = (props: MailSendProps) => {
           <Input
             label="模板名称"
             placeholder="该名称作为唯一值，不可与之前添加的名称重复"
-            isInvalid={!!errors["tplName"]}
-            errorMessage={errors["tplName"]?.message}
-            {...register("tplName", {
+            isInvalid={!!errors['tplName']}
+            errorMessage={errors['tplName']?.message}
+            {...register('tplName', {
               required: needSaveAsTpl,
             })}
           />
@@ -343,7 +351,12 @@ export const MailSend = (props: MailSendProps) => {
         >
           发送信息预览
         </Button>
-        <Button type="submit" color="primary" isLoading={isSubmitting}>
+        <Button
+          type="submit"
+          color="primary"
+          isLoading={isSubmitting}
+          isDisabled={gids.length === 0}
+        >
           确认发送
         </Button>
       </form>
@@ -359,8 +372,8 @@ export const MailSend = (props: MailSendProps) => {
           </ModalHeader>
           <ModalBody>
             {allAttachment
-              .replace(/#I#I/g, "#I\n#I")
-              .split("\n")
+              .replace(/#I#I/g, '#I\n#I')
+              .split('\n')
               .map((text, index) => (
                 <Code key={`${text}${index}`}>{text}</Code>
               ))}

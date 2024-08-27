@@ -6,8 +6,9 @@ import {
   HORCRUX_PRE_TPL,
 } from '@/config';
 import { useTemplates } from '@/hook/useTemplates';
+import { SendHorcruxItem } from '@/scheme';
+import { useRoleStore } from '@/store';
 import { cn } from '@/utils';
-import { SendHorcruxItem } from '@/verification';
 import { Icon } from '@iconify/react';
 import { Button, Card, CardBody, Divider, Input } from '@nextui-org/react';
 import { useRequest } from 'ahooks';
@@ -27,10 +28,9 @@ export type HorcruxTplActionRef = {
 };
 
 export const HorcruxTpl = (props: {
-  gids: string[];
   actionRef?: React.MutableRefObject<HorcruxTplActionRef | undefined>;
 }) => {
-  const { gids } = props;
+  const gids = useRoleStore((state) => state.selectedRoles.map((i) => i.gid));
 
   const {
     clearSelectedTemplate,

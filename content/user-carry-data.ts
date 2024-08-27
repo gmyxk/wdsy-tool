@@ -1,5 +1,5 @@
 import { DBEncoder } from '@/lib/encoding';
-import { SendHorcruxItem, SendJewelryItem } from '@/verification';
+import { SendHorcruxItem, SendJewelryItem } from '@/scheme';
 import { produce } from 'immer';
 import { BaseContent } from './base';
 
@@ -43,6 +43,11 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
     return missingPositions;
   }
 
+  /**
+   * 添加首饰
+   * @param jewelry
+   * @param position
+   */
   private addJewelry(jewelry: SendJewelryItem, position: number) {
     const data = this.currentData;
 
@@ -97,17 +102,16 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
     }
   }
 
+  /**
+   * 添加魂器
+   * @param horcrux
+   * @param position
+   */
   private addHorcruxItem(horcrux: SendHorcruxItem, position: number) {
     const data = this.currentData;
 
-    const {
-      name,
-      level,
-      skillLevel,
-      chaosValue,
-      lightProportion,
-      attributes,
-    } = horcrux;
+    const { name, level, skillLevel, chaosValue, lightProportion, attributes } =
+      horcrux;
 
     const attrs: [number, number, string, number, string, number][] = [];
 
@@ -131,7 +135,7 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
             '49': 50000,
             '226': 0,
             '232': 41,
-            '233': DBEncoder.genRandomId(),
+            '233': `:${DBEncoder.genRandomId()}:`,
             '240': 8,
             '243': level,
             '244': 8,
@@ -160,5 +164,37 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
     for (let i = 0; i < horcruxs.length; i++) {
       this.addHorcruxItem(horcruxs[i], emptyPositions[i]);
     }
+  }
+
+  /**
+   * 清理背包
+   * @param target
+   */
+  public clearBaggage(target: string[]) {
+    let rangeArr: [number, number][] = [];
+    if (target.includes('PAK-00')) {
+      rangeArr.push([1, 40]);
+    }
+    if (target.includes('PAK-01')) {
+      rangeArr.push([41, 65]);
+    }
+    if (target.includes('PAK-02')) {
+      rangeArr.push([66, 90]);
+    }
+    if (target.includes('PAK-03')) {
+      rangeArr.push([91, 115]);
+    }
+    if (target.includes('PAK-04')) {
+      rangeArr.push([116, 140]);
+    }
+    if (target.includes('PAK-05')) {
+      rangeArr.push([141, 165]);
+    }
+
+    rangeArr.forEach(([start, end]) => {
+      for (let i = start; i <= end; i++) {
+        delete this.currentData.carry[i];
+      }
+    });
   }
 }
