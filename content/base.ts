@@ -50,7 +50,7 @@ export class BaseContent<Data extends Record<string | number, any>> {
     text = text.replace(/U,/g, "'VAR_U',");
 
     // 替换所有双转义符
-    text = text.replace(/\\\\"/g, '\\"');
+    // text = text.replace(/\\\\"/g, '\\"');
 
     text = text.replace(/\(\[/g, '{');
     text = text.replace(/\]\)/g, '}');
@@ -90,7 +90,7 @@ export class BaseContent<Data extends Record<string | number, any>> {
     } catch (error) {
       const originMesssage = (error as Error).message;
       (error as Error).message =
-        `Serialization Error, ${originMesssage} ${content}`;
+        `Serialization Error, ${originMesssage} ${content} \n ${text}`;
       throw error;
     }
   }
