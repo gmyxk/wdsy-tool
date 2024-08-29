@@ -68,23 +68,40 @@ export const queryRolesService = async (
 
     const decodedContent = DBEncoder.decodeGb2312(content);
 
-    const ins = new UserDataContent(decodedContent);
+    try {
+      const ins = new UserDataContent(decodedContent);
 
-    const roleInfo = ins.roleInfo;
+      const roleInfo = ins.roleInfo;
 
-    return {
-      account: accountMap[gid],
-      clazz: roleInfo.clazz,
-      roleName,
-      gender: roleInfo.gender,
-      status: inLineMap[gid] || 0,
-      level: roleInfo.level,
-      ability: roleInfo.ability,
-      gid,
-      lastLoginTime: '2023-10-01T12:00:00Z',
-      gold: 500,
-      createTime: '2023-10-01T12:00:00Z',
-    };
+      return {
+        account: accountMap[gid],
+        clazz: roleInfo.clazz,
+        roleName,
+        gender: roleInfo.gender,
+        status: inLineMap[gid] || 0,
+        level: roleInfo.level,
+        ability: roleInfo.ability,
+        gid,
+        lastLoginTime: '2023-10-01T12:00:00Z',
+        gold: 500,
+        createTime: '2023-10-01T12:00:00Z',
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        account: accountMap[gid],
+        clazz: 1,
+        roleName: `Error - ${roleName}`,
+        gender: 1,
+        status: inLineMap[gid] || 0,
+        level: 0,
+        ability: 0,
+        gid,
+        lastLoginTime: '2023-10-01T12:00:00Z',
+        gold: 500,
+        createTime: '2023-10-01T12:00:00Z',
+      };
+    }
   });
 
   const sortedData = data.sort((a, b) => {
