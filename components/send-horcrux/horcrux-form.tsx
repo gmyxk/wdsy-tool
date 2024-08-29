@@ -1,3 +1,5 @@
+'use client';
+
 import {
   HORCRUX_ATTR_DARK,
   HORCRUX_ATTR_LIGHT,

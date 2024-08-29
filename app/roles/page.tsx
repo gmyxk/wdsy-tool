@@ -4,6 +4,7 @@ import {
   ClearPackage,
   EditConsumptionPoints,
   RoleList,
+  SendEquipment,
   SendHorcrux,
   SendJewelry,
   SendMail,
@@ -36,8 +37,8 @@ export default function Home() {
             <SendHorcrux />
           </Tab>
           <Tab title="装备发送" key="equipment">
-            该功能暂未开放, 敬请期待~
-            {/* <SendEquipment /> */}
+            {/* 该功能暂未开放, 敬请期待~ */}
+            <SendEquipment />
           </Tab>
           <Tab title="其他功能" key="other">
             <Tabs isVertical={!isMobile}>

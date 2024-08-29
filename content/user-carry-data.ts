@@ -1,5 +1,5 @@
 import { DBEncoder } from '@/lib/encoding';
-import { SendHorcruxItem, SendJewelryItem } from '@/scheme';
+import { SendEquipmentItem, SendHorcruxItem, SendJewelryItem } from '@/scheme';
 import { produce } from 'immer';
 import { BaseContent } from './base';
 
@@ -163,6 +163,115 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
 
     for (let i = 0; i < horcruxs.length; i++) {
       this.addHorcruxItem(horcruxs[i], emptyPositions[i]);
+    }
+  }
+
+  /**
+   * 添加装备
+   * @param horcrux
+   * @param position
+   */
+  private addEquipItem(equipment: SendEquipmentItem, position: number) {
+    const data = this.currentData;
+
+    const {
+      name,
+      level,
+      type,
+      transLevel,
+      anis,
+      blueAttrs,
+      pinkAttrs,
+      yellowAttrs,
+      greenAttrs,
+      greenDarkAttrs,
+      transAttrs,
+      resonanceAttr,
+    } = equipment;
+
+    const getAttrObj = (attrs: SendEquipmentItem['blueAttrs']) => {
+      const obj = attrs.reduce(
+        (acc, cur) => {
+          acc[cur.attribute] = cur.value;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
+      return obj;
+    };
+
+    const transAttrObj = getAttrObj(transAttrs);
+
+    if (transAttrObj && transAttrObj[3]) {
+      transAttrObj[11] = Math.ceil(transAttrObj[3] / 1.334);
+    }
+
+    this.setData(
+      produce(data, (draft) => {
+        draft.carry[position] = [
+          name,
+          {
+            // 固定为 1
+            47: 1,
+            // 固定为 3800000
+            49: 3800000,
+            // 改造等级
+            54: transLevel,
+            // 装备品阶
+            55: '绿色',
+            // 相性
+            224: anis,
+            // ？？？？？？
+            226: 0,
+            // 蓝属性
+            229: getAttrObj(blueAttrs),
+            // 粉属性
+            231: getAttrObj(pinkAttrs),
+            // 物品存储位置
+            232: position,
+            // id
+            233: `:${DBEncoder.genRandomId()}:`,
+            // 黄属性
+            234: getAttrObj(yellowAttrs),
+            // 暗属性
+            235: getAttrObj(greenDarkAttrs),
+            // 绿属性
+            236: getAttrObj(greenAttrs),
+            // 写死8
+            240: 8,
+            // 物品等级
+            243: level,
+            // 装备类型
+            244: type,
+            // 改造属性
+            246: transAttrObj,
+            // ？？？？？？
+            250: 0,
+            // ？？？？？？？
+            262: 10000,
+            // 固定为 1
+            274: 1,
+            // 共鸣属性
+            282: resonanceAttr,
+          },
+        ];
+      })
+    );
+  }
+
+  /**
+   * 批量添加装备
+   * @param equip
+   */
+  public addEquipBatch(equip: SendEquipmentItem[]) {
+    const emptyPositions = this.getBaggageEmptyPostion();
+
+    if (emptyPositions.length < equip.length) {
+      throw new Error('包裹位置不足, 请清理后再操作');
+    }
+
+    for (let i = 0; i < equip.length; i++) {
+      this.addEquipItem(equip[i], emptyPositions[i]);
     }
   }
 

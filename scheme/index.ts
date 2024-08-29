@@ -112,3 +112,46 @@ export const EditConsumptionPointsApiReq = z.object({
 export type EditConsumptionPointsApiReq = z.infer<
   typeof EditConsumptionPointsApiReq
 >;
+
+const SendEquipmentItemAttr = z.object({
+  attribute: z.number().int(),
+  value: z.number().int(),
+});
+
+/**
+ * 装备发放
+ */
+export const SendEquipmentItem = z.object({
+  /** 装备等级 */
+  level: z.number().int().min(1).max(169),
+  type: z
+    .number()
+    .int()
+    .refine((val) => [1, 2, 3, 10].includes(val), {
+      message: '数据不合法',
+    }),
+  name: z.string(),
+  /** 套装相性 */
+  anis: z.number().int().min(1).max(5),
+  /** 改造等级 */
+  transLevel: z.number().int().min(1).max(12),
+  blueAttrs: SendEquipmentItemAttr.array().min(3),
+  pinkAttrs: SendEquipmentItemAttr.array().min(1),
+  yellowAttrs: SendEquipmentItemAttr.array().min(1),
+  greenAttrs: SendEquipmentItemAttr.array().min(1),
+  greenDarkAttrs: SendEquipmentItemAttr.array().min(1),
+  transAttrs: SendEquipmentItemAttr.array().min(2),
+  /** 共鸣属性 */
+  resonanceAttr: z.string(),
+});
+
+export type SendEquipmentItem = z.infer<typeof SendEquipmentItem>;
+
+export const SendEquipmentApiReq = z.object({
+  /** 角色 id合集 */
+  gid: z.string(),
+  /** 装备物品信息 */
+  equips: SendEquipmentItem.array().min(1),
+});
+
+export type SendEquipmentApiReq = z.infer<typeof SendEquipmentApiReq>;

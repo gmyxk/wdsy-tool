@@ -71,6 +71,8 @@ export default function About() {
           </div>
         </div>
         <Spacer y={6} />
+        <div>有BUG或建议请联系 QQ: 245933567</div>
+        <Spacer y={6} />
         <div className="flex justify-center gap-x-4">
           {socialItems.map((item) => (
             <Link
