@@ -2,6 +2,7 @@ export { default as BasicNavigationHeader } from './basic-navigation-header';
 export { default as CodeBlock } from './code-block';
 
 export * from './clear-package';
+export * from './edit-baggage';
 export * from './edit-consumption-points';
 
 export * from './role-list';

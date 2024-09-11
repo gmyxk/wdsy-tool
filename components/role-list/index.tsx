@@ -10,6 +10,7 @@ import {
   CardFooter,
   CardHeader,
   Chip,
+  cn,
   Input,
   Listbox,
   ListboxItem,
@@ -21,7 +22,11 @@ import { debounce } from 'lodash-es';
 import React, { useEffect, useMemo } from 'react';
 import { RoleInfo } from '../role-info';
 
-export const RoleList = () => {
+interface RoleListProps {
+  className?: string;
+}
+
+export const RoleList = (props: RoleListProps) => {
   const selectedRoles = useRoleStore((state) => state.selectedRoles);
 
   const setSelectedRoles = useRoleStore((state) => state.setSelectedRoles);
@@ -100,7 +105,7 @@ export const RoleList = () => {
   }, [data]);
 
   return (
-    <Card className="flex h-[calc(100vh-88px)] flex-col gap-2">
+    <Card className={cn('flex flex-col gap-2', props.className)}>
       <CardHeader className="flex gap-2">
         <Input
           startContent={<Icon icon="ion:search-outline" width={18} />}

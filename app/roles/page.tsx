@@ -2,6 +2,7 @@
 
 import {
   ClearPackage,
+  EditBaggage,
   EditConsumptionPoints,
   RoleList,
   SendEquipment,
@@ -19,7 +20,7 @@ export default function Home() {
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-      <RoleList />
+      <RoleList className='h-[calc(100vh-88px)] md:sticky md:top-[72px]' />
       <div className="col-span-1 xl:col-span-2">
         <Tabs
           destroyInactiveTabPanel={false}
@@ -37,8 +38,10 @@ export default function Home() {
             <SendHorcrux />
           </Tab>
           <Tab title="装备发送" key="equipment">
-            {/* 该功能暂未开放, 敬请期待~ */}
             <SendEquipment />
+          </Tab>
+          <Tab title="查看包裹" key="baggage">
+            <EditBaggage />
           </Tab>
           <Tab title="其他功能" key="other">
             <Tabs isVertical={!isMobile}>

@@ -306,4 +306,20 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
       }
     });
   }
+
+  public get carryitemList() {
+    if (!this.currentData.carry) {
+      return [];
+    }
+
+    const items = Object.entries(this.currentData.carry);
+
+    return items.map(([positionId, [name, info]]) => {
+      return {
+        positionId: Number(positionId),
+        name,
+        payload: info,
+      };
+    });
+  }
 }

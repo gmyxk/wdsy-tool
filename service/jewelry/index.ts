@@ -187,3 +187,34 @@ export const clearBaggageService = async (
 
   return result;
 };
+
+/**
+ * 获取携带物品信息
+ * @param pool
+ * @param params
+ * @returns
+ */
+export const getCarryListService = async (
+  pool: Pool,
+  params: {
+    gid: string;
+  }
+) => {
+  if (!params.gid) {
+    throw new Error('角色ID不能为空');
+  }
+
+  const [datas] = await pool.query<DBData.LoginDataTable[]>(
+    `SELECT * FROM user_carry_data WHERE name = '${params.gid}'`
+  );
+
+  if (!datas || datas.length === 0) {
+    throw new Error('角色信息查询失败');
+  }
+
+  const content = DBEncoder.decodeGb2312(datas[0].content);
+
+  const ins = new UserCarryDataContent(content);
+
+  return ins.carryitemList as API.CarryItem[];
+};
