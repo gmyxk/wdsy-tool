@@ -1,55 +1,98 @@
-import { axiosGet } from '@/lib/axios';
-import { useRoleStore } from '@/store';
+import { clearBaggageRequest, getRoleBaggageRequest } from '@/api-request';
+import { useClient } from '@/hook';
 import {
+  Button,
   Card,
-  CardHeader,
-  Spinner,
+  CardBody,
+  Divider,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Skeleton,
   Tab,
   Tabs,
-  Tooltip,
 } from '@nextui-org/react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Empty } from 'antd';
 import React from 'react';
+import { toast } from 'react-toastify';
+
+const EditBaggageSkeleton = () => {
+  return (
+    <div>
+      <Skeleton className="flex h-9 rounded-lg" />
+
+      <div className="mt-4 grid grid-cols-5 gap-2">
+        {Array.from({ length: 25 }).map((_, index) => {
+          return <Skeleton className="flex h-[52px] rounded-lg" key={index} />;
+        })}
+      </div>
+    </div>
+  );
+};
+
+const configList: [string, string, (positionId: number) => boolean][] = [
+  ['PAK-00', '已装备', (positionId) => positionId > 0 && positionId <= 40],
+  ['PAK-01', '包裹1', (positionId) => positionId > 40 && positionId <= 65],
+  ['PAK-02', '包裹2', (positionId) => positionId > 65 && positionId <= 90],
+  ['PAK-03', '包裹3', (positionId) => positionId > 90 && positionId <= 115],
+  ['PAK-04', '包裹4', (positionId) => positionId > 115 && positionId <= 140],
+  ['PAK-05', '包裹5', (positionId) => positionId > 140 && positionId <= 165],
+];
 
 /**
  * 编辑包裹
  * @returns
  */
-export const EditBaggage = () => {
-  const gids = useRoleStore((state) => state.selectedRoles.map((i) => i.gid));
-
+export const EditBaggage = ({ gid }: { gid: string }) => {
   const { data, isLoading, isFetching, refetch } = useQuery({
-    queryKey: ['baggage', gids[0]],
-    queryFn: () =>
-      axiosGet<API.CarryItem[]>('/api/baggage', {
-        gid: gids[0],
-      }),
-    enabled: !!gids[0],
+    queryKey: ['baggageInfo', gid],
+    staleTime: 5 * 60 * 1000,
+    queryFn: ({ queryKey }) => getRoleBaggageRequest(queryKey[1]),
   });
+  const [modalInfo, setModalInfo] = React.useState<{
+    open: boolean;
+    data?: API.CarryItem;
+  }>({
+    open: false,
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: clearBaggageRequest,
+    onSuccess: () => {
+      toast.success('清理成功');
+      setModalInfo({
+        open: false,
+      });
+      refetch();
+    },
+    onError: (error) => {
+      toast.error(error.message || '清理失败');
+    },
+  });
+
+  const isClient = useClient();
 
   const chunkList = React.useMemo(() => {
     return (data?.data || []).reduce<
-      { chunkName: string; chunkContent: API.CarryItem[] }[]
+      { key: string; chunkName: string; chunkContent: API.CarryItem[] }[]
     >((prev, cur) => {
-      const configList: [string, (positionId: number) => boolean][] = [
-        ['穿着物品', (positionId) => positionId > 0 && positionId <= 40],
-        ['包裹1', (positionId) => positionId > 40 && positionId <= 65],
-        ['包裹2', (positionId) => positionId > 65 && positionId <= 90],
-        ['包裹3', (positionId) => positionId > 90 && positionId <= 115],
-        ['包裹4', (positionId) => positionId > 115 && positionId <= 140],
-        ['包裹5', (positionId) => positionId > 140 && positionId <= 165],
-      ];
-
-      const config = configList.find((i) => i[1](cur.positionId));
+      const config = configList.find((i) => i[2](cur.positionId));
 
       if (!config) {
         return prev;
       }
 
-      const tar = prev.find((i) => i.chunkName === config[0]);
+      const tar = prev.find((i) => i.key === config[0]);
 
       if (!tar) {
-        prev.push({ chunkName: config[0], chunkContent: [cur] });
+        prev.push({
+          key: config[0],
+          chunkName: config[1],
+          chunkContent: [cur],
+        });
       } else {
         tar.chunkContent.push(cur);
       }
@@ -58,46 +101,117 @@ export const EditBaggage = () => {
     }, []);
   }, [data?.data]);
 
-  if (isFetching || isLoading) {
-    return <Spinner size="lg" />;
+  if (isFetching || isLoading || !isClient) {
+    return <EditBaggageSkeleton />;
   }
 
-  if (!data) {
-    return <div>请先查询</div>;
+  if (data?.data?.length === 0) {
+    return <Empty description="当前人物身上没有物品~" />;
   }
 
   return (
     <div>
-      <Tabs>
+      <Tabs size="sm">
         {chunkList.map((item) => {
           return (
-            <Tab key={item.chunkName} title={item.chunkName}>
+            <Tab key={item.key} title={item.chunkName}>
               <div className="grid grid-cols-5 gap-2">
                 {item.chunkContent.map((item) => {
                   return (
                     <Card key={item.positionId}>
-                      <CardHeader>
-                        <Tooltip
-                          content={
-                            <div className="max-w-80">
-                              <h6>位置: {item.positionId}</h6>
-                              <pre className="max-h-[48vh] overflow-y-auto">
-                                {JSON.stringify(item.payload, null, 2)}
-                              </pre>
-                            </div>
-                          }
-                        >
-                          <span className="cursor-pointer">{item.name}</span>
-                        </Tooltip>
-                      </CardHeader>
+                      <CardBody
+                        className="cursor-pointer p-2"
+                        onClick={() => {
+                          setModalInfo({ open: true, data: item });
+                        }}
+                      >
+                        <div className="flex min-h-9 items-center justify-center text-center text-tiny text-default-500">
+                          {item.name}
+                        </div>
+                      </CardBody>
                     </Card>
                   );
                 })}
               </div>
+              <Button
+                className="mt-4 w-full"
+                size="sm"
+                color="danger"
+                variant="bordered"
+                isLoading={isPending}
+                onClick={() => {
+                  mutate({
+                    gid,
+                    target: [item.key],
+                  });
+                }}
+              >
+                清除当前页
+              </Button>
             </Tab>
           );
         })}
       </Tabs>
+      <Button
+        className="w-full"
+        size="sm"
+        color="danger"
+        isLoading={isPending}
+        onClick={() => {
+          mutate({
+            gid,
+            target: [
+              'PAK-00',
+              'PAK-01',
+              'PAK-02',
+              'PAK-03',
+              'PAK-04',
+              'PAK-05',
+            ],
+          });
+        }}
+      >
+        清空全部携带物品
+      </Button>
+      <Modal
+        // size="sm"
+        isOpen={modalInfo.open}
+        onClose={() => {
+          setModalInfo({ open: false });
+        }}
+      >
+        <ModalContent>
+          {modalInfo.data ? (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                {modalInfo.data.name}
+              </ModalHeader>
+              <ModalBody>
+                <pre className="max-h-[48vh] overflow-y-auto">
+                  {JSON.stringify(modalInfo.data.payload, null, 2)}
+                </pre>
+              </ModalBody>
+            </>
+          ) : null}
+          <Divider />
+          <ModalFooter>
+            <Button
+              color="danger"
+              onClick={() => {
+                if (!modalInfo.data?.positionId) {
+                  return;
+                }
+                mutate({
+                  gid,
+                  target: [modalInfo.data.positionId.toString()],
+                });
+              }}
+            >
+              删除
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

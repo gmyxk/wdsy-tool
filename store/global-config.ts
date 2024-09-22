@@ -1,57 +1,51 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import Cookies from "js-cookie";
+import { GlobalConfig, GlobalDbConfig } from '@/scheme';
+import { produce } from 'immer';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-export type GlobalConfigState = {
-  storgeConfig: {
-    user: string;
-    host: string;
-    port: string;
-    password: string;
-  };
-};
+type GlobalConfigState = GlobalConfig;
 
 type GlobalConfigAction = {
-  setGlobalConfig: (config: GlobalConfigState) => void;
+  setDbConfig: (config: GlobalDbConfig) => void;
 };
 
 export const useGloblaConfigStore = create(
   persist<GlobalConfigState & GlobalConfigAction>(
     (set) => {
       return {
-        storgeConfig: {
-          host: "127.0.0.1",
-          port: "3306",
-          user: "root",
-          password: "",
+        dbConfig: {
+          connect: {
+            host: '127.0.0.1',
+            port: 3306,
+            user: 'root',
+            password: '',
+          },
+          databases: [
+            {
+              name: '默认区组',
+              sdk: '90sdk',
+              adb: 'release_adb',
+              ddb: 'release_ddb',
+            },
+          ],
+          effectiveZone: '默认区组',
         },
-        setGlobalConfig: (config: GlobalConfigState) => {
-          set(config);
+        setDbConfig: (val) => {
+          set(
+            produce((draft) => {
+              draft.dbConfig = val;
+            })
+          );
         },
       };
     },
     {
-      name: "global-config",
-      // getStorage: () => localStorage,
+      name: 'GLOBAL_CONFIG',
       getStorage: () => ({
         getItem: (name) => {
           return window.localStorage.getItem(name);
         },
         setItem(name, value) {
-          if (value) {
-            const obj = JSON.parse(value) as {
-              state: GlobalConfigState;
-            };
-
-            const { host, port, user, password } = obj.state.storgeConfig;
-
-            if (host && port && user && password) {
-              Cookies.set("host", host, { expires: 7 });
-              Cookies.set("port", port, { expires: 7 });
-              Cookies.set("user", user, { expires: 7 });
-              Cookies.set("password", password, { expires: 7 });
-            }
-          }
           return window.localStorage.setItem(name, value);
         },
 

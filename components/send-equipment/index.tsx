@@ -1,25 +1,28 @@
-import React from 'react';
-import { EquipmentForm } from './equipment-form';
-import { EquipmentTpl, EquipmentTplActionRef } from './equipment-tpl';
+'use client';
 
-/**
- * 发送装备
- * @returns
- */
-export const SendEquipment = () => {
-  const actionRef = React.useRef<EquipmentTplActionRef>();
+import { SendEquipmentItem } from '@/scheme';
+import { Tab, Tabs } from '@nextui-org/react';
+import React from 'react';
+import { SendTemplateActionRef, SendThingCommonProps } from '../send-common';
+import { SendEquipmentCustom } from './equipment-form';
+import { SendEquipmentTemplate } from './equipment-tpl';
+
+export function SendEquipment(props: SendThingCommonProps<SendEquipmentItem>) {
+  const actionRef = React.useRef<SendTemplateActionRef<SendEquipmentItem>>();
 
   return (
-    <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-      <div>
-        <EquipmentTpl actionRef={actionRef} />
-      </div>
-
-      <EquipmentForm
-        saveHistory={(data) => {
-          actionRef.current?.saveHistory(data);
-        }}
-      />
-    </div>
+    <Tabs size="sm" destroyInactiveTabPanel={false}>
+      <Tab key="custom" title="自定义发放">
+        <SendEquipmentCustom
+          onSaveTemplate={(data) => {
+            actionRef.current?.saveToHistory(data);
+          }}
+          {...props}
+        />
+      </Tab>
+      <Tab key="templates" title="模板发放">
+        <SendEquipmentTemplate actionRef={actionRef} {...props} />
+      </Tab>
+    </Tabs>
   );
-};
+}

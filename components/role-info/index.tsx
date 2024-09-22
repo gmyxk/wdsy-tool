@@ -1,5 +1,5 @@
 import { pointsToYearsDaysPoints } from '@/lib/game-data';
-import { Chip, User } from '@nextui-org/react';
+import { Chip, Skeleton, User } from '@nextui-org/react';
 
 const AVATAR_ENUM: Record<string, string> = {
   '1_1': 'http://img.gyyxcdn.cn/qibao/Images/itemImages/6001.jpg',
@@ -31,12 +31,14 @@ export const RoleInfo = ({ data }: { data: API.RoleListItem }) => {
         name={data.roleName}
       />
       <div className="flex flex-col items-end">
-        <span className="text-xs leading-6 text-default-500">
+        <span className="text-xs leading-4 text-default-500">
           {/* {CLAZZ[data.clazz]}{GENDER[data.gender]} -  */}
           {pointsToYearsDaysPoints(data.ability)}
         </span>
         <div>
-          <span className="text-xs text-default-500">Lv.{data.level}</span>
+          <span className="text-xs font-semibold text-default-500">
+            Lv.{data.level}
+          </span>
           <Chip
             color={data.status === 1 ? 'primary' : 'danger'}
             size="sm"
@@ -46,6 +48,20 @@ export const RoleInfo = ({ data }: { data: API.RoleListItem }) => {
             {data.status === 1 ? '在线' : '离线'}
           </Chip>
         </div>
+      </div>
+    </div>
+  );
+};
+
+export const RoleInfoSkeleton = () => {
+  return (
+    <div className="flex w-full max-w-[300px] items-center gap-3">
+      <div>
+        <Skeleton className="flex h-10 w-12 rounded-lg" />
+      </div>
+      <div className="flex w-full flex-col gap-2">
+        <Skeleton className="h-3 w-3/5 rounded-lg" />
+        <Skeleton className="h-3 w-4/5 rounded-lg" />
       </div>
     </div>
   );

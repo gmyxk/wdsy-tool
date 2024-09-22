@@ -7,7 +7,6 @@ import {
   HORCRUX_TYPE,
 } from '@/config';
 import { SendHorcruxItem } from '@/scheme';
-import { useRoleStore } from '@/store';
 import { cn } from '@/utils';
 import {
   Button,
@@ -25,12 +24,7 @@ import {
   useForm,
 } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { requestSendHorcruxApi } from './request';
-
-interface HorcruxFormProps {
-  className?: string;
-  saveHistory?: (data: { templateName: string; data: SendHorcruxItem }) => void;
-}
+import { SendHorcruxCommonProps } from './common';
 
 type Inputs = SendHorcruxItem & {
   templateName?: string;
@@ -43,11 +37,17 @@ const defaultValues = omit(HORCRUX_PRE_TPL[0].data, ['tplName']);
  * @param props
  * @returns
  */
-export const HorcruxForm = (props: HorcruxFormProps) => {
-  const { className, saveHistory } = props;
-
-  const gids = useRoleStore((state) => state.selectedRoles.map((i) => i.gid));
-
+export const SendHorcruxCustom = ({
+  onSaveTemplate,
+  mutationFn,
+  onSendSuccess,
+}: {
+  onSaveTemplate?: (data: {
+    templateName: string;
+    data: SendHorcruxItem;
+    deleteble: boolean;
+  }) => void;
+} & SendHorcruxCommonProps) => {
   const {
     register,
     control,
@@ -65,18 +65,19 @@ export const HorcruxForm = (props: HorcruxFormProps) => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { templateName, ...rest } = data;
     try {
-      await requestSendHorcruxApi({
-        gid: gids[0],
+      await mutationFn({
         horcruxs: [rest],
       });
 
-      if (templateName && saveHistory) {
-        saveHistory({
+      if (templateName && onSaveTemplate) {
+        onSaveTemplate({
           templateName,
           data: rest,
+          deleteble: true,
         });
       }
       toast.success('发送成功');
+      onSendSuccess?.();
     } catch (error) {
       toast.error((error as Error).message);
     }
@@ -84,7 +85,7 @@ export const HorcruxForm = (props: HorcruxFormProps) => {
 
   return (
     <form
-      className={cn('flex flex-col gap-4', className)}
+      className={cn('flex flex-col gap-4')}
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="grid grid-cols-3 gap-2">
@@ -254,12 +255,7 @@ export const HorcruxForm = (props: HorcruxFormProps) => {
         {...register('templateName')}
       />
 
-      <Button
-        type="submit"
-        color="primary"
-        isDisabled={!gids || gids.length < 1}
-        isLoading={isSubmitting}
-      >
+      <Button type="submit" color="primary" isLoading={isSubmitting}>
         确认发送
       </Button>
     </form>

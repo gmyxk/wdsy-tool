@@ -19,11 +19,12 @@ import {
 } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import { debounce } from 'lodash-es';
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 import { RoleInfo } from '../role-info';
 
 interface RoleListProps {
   className?: string;
+  onSelect?: () => void;
 }
 
 export const RoleList = (props: RoleListProps) => {
@@ -40,7 +41,7 @@ export const RoleList = (props: RoleListProps) => {
     enabled: false,
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     setRoles(data?.data || []);
   }, [setRoles, data]);
 
@@ -76,7 +77,7 @@ export const RoleList = (props: RoleListProps) => {
     return (
       <Listbox
         items={filteredList}
-        label="Assigned to"
+        label="角色列表"
         selectionMode="single"
         emptyContent="请尝试查询~"
         selectedKeys={selectedRoles.map((i) => i.gid) as unknown as Set<string>}
@@ -100,7 +101,7 @@ export const RoleList = (props: RoleListProps) => {
     );
   };
 
-  const onLineNumber = useMemo(() => {
+  const onLineNumber = React.useMemo(() => {
     return data?.data.filter((item) => item.status === 1).length || 0;
   }, [data]);
 
@@ -122,7 +123,7 @@ export const RoleList = (props: RoleListProps) => {
           />
         </Button>
       </CardHeader>
-      <CardBody className="h-full p-1">
+      <CardBody className="flex-grow p-1">
         <ScrollShadow className="h-full">{renderContent()}</ScrollShadow>
       </CardBody>
       <CardFooter className="flex justify-between text-xs">

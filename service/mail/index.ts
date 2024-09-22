@@ -1,7 +1,7 @@
-import { DBEncoder } from "@/lib/encoding";
-import { SendMailApiReq } from "@/scheme";
-import dayjs from "dayjs";
-import { Pool } from "mysql2/promise";
+import { DBEncoder } from '@/lib/encoding';
+import { SendMailApiReq } from '@/scheme';
+import dayjs from 'dayjs';
+import { Pool } from 'mysql2/promise';
 
 /**
  * 发送邮件
@@ -11,50 +11,47 @@ import { Pool } from "mysql2/promise";
 export const sendMailService = async (pool: Pool, params: SendMailApiReq) => {
   SendMailApiReq.parse(params);
 
-  const {
-    message = "祝道友身体健康, 万事如意！",
-    attachment,
-    gids,
-    title,
-  } = params;
+  const { gid, mails } = params;
 
-  const excuteList = gids.map((gid) => {
-    const create_time = dayjs().unix();
+  const excuteList = mails.map(
+    ({ message = '祝您生活愉快~', title = '山有扶苏的祝福', attachment }) => {
+      const create_time = dayjs().unix();
 
-    const expired_time = dayjs().add(14, "day").unix();
+      const expired_time = dayjs().add(14, 'day').unix();
 
-    let randomNumber = Math.floor(Math.random() * 900) + 100;
+      let randomNumber = Math.floor(Math.random() * 900) + 100;
 
-    const misc = `(["read_time":${create_time},"log_type":0,"para":([]),"message":"${message}",])`;
+      const misc = `(["read_time":${create_time},"log_type":0,"para":([]),"message":"${message}",])`;
 
-    const maid = `${gid.slice(0, -1)}${create_time}${randomNumber}`;
+      const maid = `${gid.slice(0, -1)}${create_time}${randomNumber}`;
 
-    const status = 0;
+      const status = 0;
 
-    const data = `${maid}${gid}${status}${title}${status}${create_time}${expired_time}${attachment}${misc}`;
+      const data = `${maid}${gid}${status}${title}${status}${create_time}${expired_time}${attachment}${misc}`;
 
-    const checksum = DBEncoder.genChecksum(data);
+      const checksum = DBEncoder.genChecksum(data);
 
-    return [
-      maid,
-      "",
-      gid,
-      0,
-      DBEncoder.encodeToGb2312(title),
-      0,
-      0,
-      create_time,
-      expired_time,
-      DBEncoder.encodeToGb2312(attachment),
-      "",
-      DBEncoder.encodeToGb2312(misc),
-      checksum,
-    ];
-  });
+      return [
+        maid,
+        '',
+        gid,
+        0,
+        DBEncoder.encodeToGb2312(title),
+        0,
+        0,
+        create_time,
+        expired_time,
+        DBEncoder.encodeToGb2312(attachment),
+        '',
+        DBEncoder.encodeToGb2312(misc),
+        checksum,
+      ];
+    }
+  );
 
   const placeholders = excuteList
-    .map(() => "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-    .join(", ");
+    .map(() => '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+    .join(', ');
   const values = excuteList.flat();
 
   const res = await pool.execute(

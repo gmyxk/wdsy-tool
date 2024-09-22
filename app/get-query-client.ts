@@ -1,41 +1,41 @@
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import {
   QueryClient,
   defaultShouldDehydrateQuery,
   isServer,
-} from "@tanstack/react-query";
-// import { persistQueryClient } from "@tanstack/react-query-persist-client";
-// import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+} from '@tanstack/react-query';
+import { persistQueryClient } from '@tanstack/react-query-persist-client';
 
 function makeQueryClient() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60 * 1000,
-        gcTime: 24 * 60 * 60 * 1000,
+        // staleTime: 60 * 1000,
+        // gcTime: 24 * 60 * 60 * 1000,
       },
       dehydrate: {
         // include pending queries in dehydration
         shouldDehydrateQuery: (query) =>
           defaultShouldDehydrateQuery(query) ||
-          query.state.status === "pending",
+          query.state.status === 'pending',
       },
     },
   });
 
   // 持久化缓存
-  // const localStoragePersister = createSyncStoragePersister({
-  //   storage: typeof window !== "undefined" ? window.localStorage : undefined,
-  // });
+  const localStoragePersister = createSyncStoragePersister({
+    storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+  });
 
-  // persistQueryClient({
-  //   queryClient,
-  //   persister: localStoragePersister,
-  //   maxAge: 24 * 60 * 60 * 1000,
-  //   dehydrateOptions: {
-  //     shouldDehydrateQuery: (query) =>
-  //       query.state.status === "success" && !!query.meta?.persist,
-  //   },
-  // });
+  persistQueryClient({
+    queryClient,
+    persister: localStoragePersister,
+    maxAge: 24 * 60 * 60 * 1000,
+    // dehydrateOptions: {
+    //   shouldDehydrateQuery: (query) =>
+    //     query.state.status === 'success' && !!query.meta?.persist,
+    // },
+  });
 
   return queryClient;
 }

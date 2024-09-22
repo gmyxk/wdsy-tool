@@ -1,27 +1,27 @@
-'use clint';
+'use client';
 
+import { Tab, Tabs } from '@nextui-org/react';
 import React from 'react';
-import { HorcruxForm } from './horcrux-form';
-import { HorcruxTpl, HorcruxTplActionRef } from './horcrux-tpl';
+import { SendHorcruxCommonProps } from './common';
+import { SendHorcruxCustom } from './horcrux-form';
+import { HorcruxTplActionRef, SendHorcruxTemplate } from './horcrux-tpl';
 
-/**
- * 魂器发送
- * @returns 
- */
-export const SendHorcrux = () => {
+export function SendHorcrux(props: SendHorcruxCommonProps) {
   const actionRef = React.useRef<HorcruxTplActionRef>();
 
   return (
-    <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-      <div>
-        <HorcruxTpl actionRef={actionRef} />
-      </div>
-
-      <HorcruxForm
-        saveHistory={(data) => {
-          actionRef.current?.saveHistory(data);
-        }}
-      />
-    </div>
+    <Tabs size="sm" destroyInactiveTabPanel={false}>
+      <Tab key="custom" title="自定义发放">
+        <SendHorcruxCustom
+          onSaveTemplate={(data) => {
+            actionRef.current?.saveToHistory(data);
+          }}
+          {...props}
+        />
+      </Tab>
+      <Tab key="templates" title="模板发放">
+        <SendHorcruxTemplate actionRef={actionRef} {...props} />
+      </Tab>
+    </Tabs>
   );
-};
+}

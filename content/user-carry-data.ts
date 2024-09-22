@@ -280,7 +280,8 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
    * @param target
    */
   public clearBaggage(target: string[]) {
-    let rangeArr: [number, number][] = [];
+    let rangeArr: [number, number][] = []; 
+
     if (target.includes('PAK-00')) {
       rangeArr.push([1, 40]);
     }
@@ -299,6 +300,13 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
     if (target.includes('PAK-05')) {
       rangeArr.push([141, 165]);
     }
+
+    target.forEach((item) => {
+      // 如果是标准的正整数
+      if (/^\d+$/.test(item)) {
+        rangeArr.push([Number(item), Number(item)]);
+      }
+    });
 
     rangeArr.forEach(([start, end]) => {
       for (let i = start; i <= end; i++) {

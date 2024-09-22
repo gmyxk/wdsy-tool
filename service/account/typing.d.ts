@@ -3,16 +3,20 @@ declare namespace API {
     roleName?: string;
   }
 
-  interface RoleListItem {
+  /**
+   * 角色信息
+   */
+  interface RoleInfo {
     /** 角色账号 */
     account: string;
+    /** 角色名称 */
+    roleName: string;
     /**
      * 门派
      * 分别对应金木水火土
      */
     clazz: 1 | 2 | 3 | 4 | 5;
-    /** 角色名称 */
-    roleName: string;
+
     /**
      * 角色性别
      * 2: 女
@@ -33,12 +37,24 @@ declare namespace API {
     gold: number;
     /** 注册时间 */
     createTime: string;
+    userDataContent: string;
   }
+
+  type RoleListItem = Omit<RoleInfo, 'userDataContent'>;
 
   type UserDataContent = any;
 
   interface LoginDataContent {
     chars: string[];
+  }
+
+  /**
+   * 区组信息
+   */
+  interface ZoneInfo {
+    aaa: string;
+    dist: string;
+    ip: string;
   }
 }
 
@@ -52,5 +68,11 @@ declare namespace DBData {
     gid: string;
     name: string;
     content: string;
+  }
+
+  interface AaaTable extends RowDataPacket {
+    aaa: string;
+    dist: string;
+    ip: string;
   }
 }

@@ -6,6 +6,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ConfigProvider, theme as themeAntd } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -45,8 +46,8 @@ export function AntdProvider({ children }: { children: React.ReactNode }) {
       {children}
       <ToastContainer
         theme={theme}
+        autoClose={2000}
         // position="top-right"
-        // autoClose={5000}
         // hideProgressBar={false}
         // newestOnTop={false}
         // closeOnClick
@@ -55,6 +56,12 @@ export function AntdProvider({ children }: { children: React.ReactNode }) {
         // draggable
         // pauseOnHover
         // transition: Bounce,
+      />
+      <ProgressBar
+        height="4px"
+        color="#006fee"
+        options={{ showSpinner: true }}
+        // shallowRouting
       />
     </ConfigProvider>
   );

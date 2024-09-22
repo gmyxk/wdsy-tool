@@ -1,11 +1,11 @@
-import mysql from "mysql2/promise";
-import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { GlobalDbConnectConfig } from '@/scheme';
+import mysql from 'mysql2/promise';
 
 // 创建全局的 MySQL 连接池
 class DB {
   private config: mysql.PoolOptions = {
     connectionLimit: 10,
-    charset: "latin1",
+    charset: 'latin1',
   };
 
   private poolMap = new Map<string, mysql.Pool>();
@@ -23,30 +23,14 @@ class DB {
     this.poolMap.clear();
   }
 
-  public usePool(database: string, cookie?: ReadonlyRequestCookies) {
-    let connectConf = {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      port: process.env.DB_PORT,
-    };
-
-    if (cookie) {
-      connectConf = {
-        host: cookie.get("host")?.value,
-        user: cookie.get("user")?.value,
-        password: cookie.get("password")?.value,
-        port: cookie.get("port")?.value,
-      };
-    }
-
+  public usePool(database: string, connectConf: GlobalDbConnectConfig) {
     if (
       !connectConf.host ||
       !connectConf.user ||
       !connectConf.password ||
       !connectConf.port
     ) {
-      throw new Error("请配置数据库连接信息");
+      throw new Error('请配置数据库连接信息');
     }
 
     const dbConnectHash = `${connectConf.host}-${connectConf.port}-${connectConf.user}-${connectConf.password}-${database}`;

@@ -1,6 +1,38 @@
-import axios from 'axios';
+import { useGloblaConfigStore } from '@/store';
+import axios, { type AxiosRequestConfig } from 'axios';
+import { Encrypt } from './crypto';
 
 const axiosIns = axios.create();
+
+axiosIns.interceptors.request.use(
+  (config) => {
+    const headers = config.headers || {};
+
+    if (config.url?.includes('/wd/') && !headers['Avid']) {
+      const state = useGloblaConfigStore.getState();
+
+      const { effectiveZone, databases, connect } = state.dbConfig;
+
+      const tar = databases.find((i) => i.name === effectiveZone);
+
+      if (!tar) {
+        throw new Error('无效的区组');
+      }
+
+      headers['Avid'] = Encrypt(
+        JSON.stringify({
+          connect,
+          database: tar,
+        })
+      );
+    }
+
+    return config;
+  },
+  (error) => {
+    return error;
+  }
+);
 
 axiosIns.interceptors.response.use(
   (response) => {
@@ -22,10 +54,12 @@ axiosIns.interceptors.response.use(
 
 export const axiosGet = async <Res = any, Req = any>(
   url: string,
-  params?: Req
+  params?: Req,
+  config?: AxiosRequestConfig
 ) => {
   const response = await axiosIns.get<API.ResponsTpl<Res>>(url, {
     params,
+    ...config,
   });
 
   return response.data;
@@ -33,19 +67,26 @@ export const axiosGet = async <Res = any, Req = any>(
 
 export const axiosPost = async <Res = any, Req = any>(
   url: string,
-  params: Req
+  params?: Req,
+  config?: AxiosRequestConfig
 ) => {
-  const response = await axiosIns.post<API.ResponsTpl<Res>>(url, params);
+  const response = await axiosIns.post<API.ResponsTpl<Res>>(
+    url,
+    params,
+    config
+  );
 
   return response.data;
 };
 
 export const axiosDelete = async <Res = any, Req = any>(
   url: string,
-  data?: Req
+  data?: Req,
+  config?: AxiosRequestConfig
 ) => {
   const response = await axiosIns.delete<API.ResponsTpl<Res>>(url, {
     data,
+    ...config,
   });
 
   return response.data;

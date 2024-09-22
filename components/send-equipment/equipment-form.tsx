@@ -26,7 +26,7 @@ import {
   useWatch,
 } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { sendEquipRequest } from './request';
+import { SendCustomCommonProps } from '../send-common';
 
 type Inputs = SendEquipmentItem & {
   templateName?: string;
@@ -49,14 +49,11 @@ const ANIS = {
   5: '土',
 };
 
-interface EquipmentFormProps {
-  saveHistory?: (data: {
-    templateName: string;
-    data: SendEquipmentItem;
-  }) => void;
-}
-
-export const EquipmentForm = ({ saveHistory }: EquipmentFormProps) => {
+export const SendEquipmentCustom = ({
+  onSaveTemplate,
+  onSendSuccess,
+  mutationFn,
+}: SendCustomCommonProps<SendEquipmentItem>) => {
   const gids = useRoleStore((state) => state.selectedRoles.map((i) => i.gid));
 
   const {
@@ -203,18 +200,19 @@ export const EquipmentForm = ({ saveHistory }: EquipmentFormProps) => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { templateName, ...rest } = data;
     try {
-      await sendEquipRequest({
-        gid: gids[0],
-        equips: [rest],
+      await mutationFn({
+        records: [rest],
       });
 
-      if (templateName && saveHistory) {
-        saveHistory({
+      if (templateName && onSaveTemplate) {
+        onSaveTemplate({
           templateName,
           data: rest,
+          deleteble: true,
         });
       }
       toast.success('发送成功');
+      onSendSuccess?.();
     } catch (error) {
       toast.error((error as Error).message);
     }

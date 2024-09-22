@@ -2,7 +2,7 @@ import { produce } from 'immer';
 import { debounce, omit } from 'lodash-es';
 import React from 'react';
 
-type InData<T = any> = {
+export type InData<T = any> = {
   templateName: string;
   data: T;
   deleteble?: boolean;
@@ -10,7 +10,7 @@ type InData<T = any> = {
 
 interface UseTemplatesOption<T = any> {
   storgeKey: string;
-  initTemplates: InData<T>[];
+  initTemplates?: InData<T>[];
 }
 
 export const useTemplates = <T = any>(opeions: UseTemplatesOption<T>) => {
@@ -27,16 +27,14 @@ export const useTemplates = <T = any>(opeions: UseTemplatesOption<T>) => {
   React.useEffect(() => {
     const history = window.localStorage.getItem(storgeKey);
 
-    let all = initTemplates;
+    let all = initTemplates || [];
 
     if (history) {
-      const allPreTplname = initTemplates.reduce<Record<string, true>>(
-        (pre, cur) => {
+      const allPreTplname =
+        initTemplates?.reduce<Record<string, true>>((pre, cur) => {
           pre[cur.templateName] = true;
           return pre;
-        },
-        {}
-      );
+        }, {}) || {};
 
       const list = (JSON.parse(history) as InData<T>[])
         .map((i) => ({
@@ -49,7 +47,8 @@ export const useTemplates = <T = any>(opeions: UseTemplatesOption<T>) => {
     }
 
     setTemplates(all);
-  }, [storgeKey, initTemplates]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storgeKey]);
 
   React.useEffect(() => {
     if (!templates || !templates.length) {
