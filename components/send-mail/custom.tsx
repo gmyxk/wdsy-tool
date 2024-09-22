@@ -6,6 +6,7 @@ import { Button, Input, Textarea } from '@nextui-org/react';
 import { cloneDeep } from 'lodash-es';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { z } from 'zod';
 import { SendCustomCommonProps } from '../send-common';
 
 type SendMailFormValues = SendMailItem & {
@@ -28,24 +29,26 @@ export const SendMailCustom = ({
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SendMailFormValues>({
-    resolver: zodResolver(SendMailItem),
+    resolver: zodResolver(
+      SendMailItem.merge(z.object({ templateName: z.string() }))
+    ),
     defaultValues: cloneDeep(defaultValues),
   });
 
   const onSubmit: SubmitHandler<SendMailFormValues> = async (data) => {
     const { templateName, ...rest } = data;
 
-    if (templateName) {
-      onSaveTemplate?.({
-        templateName,
-        data: rest,
-      });
-    }
-
     try {
       await mutationFn({
         records: [rest],
       });
+      if (templateName) {
+        onSaveTemplate?.({
+          templateName,
+          data: rest,
+          deleteble: true,
+        });
+      }
       toast.success('邮件发送成功');
       onSendSuccess?.();
     } catch (e) {
