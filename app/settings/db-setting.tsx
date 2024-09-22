@@ -290,8 +290,8 @@ export const DbSetting = () => {
                     label="DDB"
                     size="sm"
                     control={control}
-                    name={`databases.${index}.adb`}
-                    isInvalid={!!errors?.databases?.[index]?.adb}
+                    name={`databases.${index}.ddb`}
+                    isInvalid={!!errors?.databases?.[index]?.ddb}
                     errorMessage={errors?.databases?.[index]?.adb?.message}
                   />
                 </CardBody>
@@ -306,7 +306,7 @@ export const DbSetting = () => {
       <Button
         variant="bordered"
         onClick={() => {
-          append({ name: '', sdk: '', adb: 'release_adb', ddb: 'release_ddb' });
+          append({ name: '', sdk: '', adb: '', ddb: '' });
         }}
       >
         添加数据库设置
