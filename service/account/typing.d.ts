@@ -31,16 +31,33 @@ declare namespace API {
     ability: number;
     /** 角色 ID */
     gid: string;
-    /** 上次登录时间 */
-    lastLoginTime: string;
-    /** 金元宝数量 */
-    gold: number;
-    /** 注册时间 */
-    createTime: string;
+    /** 仙魔类型 4: 魔    3: 仙 */
+    riseType?: 4 | 3;
+    /** 元婴等级 */
+    yuanBabyLevel?: number;
+    /** 消费积分 */
+    consumptions?: number;
+    /** 人物数据原始 LPC 报文 */
     userDataContent: string;
+    /** 上次登录时间 */
+    // lastLoginTime: string;
+    /** 金元宝数量 */
+    // gold: number;
+    /** 注册时间 */
+    // createTime: string;
   }
 
-  type RoleListItem = Omit<RoleInfo, 'userDataContent'>;
+  type RoleListItem = Pick<
+    RoleInfo,
+    | 'account'
+    | 'roleName'
+    | 'clazz'
+    | 'gender'
+    | 'status'
+    | 'level'
+    | 'ability'
+    | 'gid'
+  >;
 
   type UserDataContent = any;
 

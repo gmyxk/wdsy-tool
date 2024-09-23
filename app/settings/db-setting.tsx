@@ -1,10 +1,10 @@
 'use client';
 
 import { testConnectRequest } from '@/api-request';
-import { ControllerInput } from '@/components';
 import { useTemplates } from '@/hook/useTemplates';
 import { GlobalDbConfig } from '@/scheme';
 import { useGloblaConfigStore } from '@/store';
+import { change2NumberFactor, value2String } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import {
@@ -15,10 +15,11 @@ import {
   Divider,
   Input,
 } from '@nextui-org/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { cloneDeep } from 'lodash-es';
 import React from 'react';
 import {
+  Controller,
   SubmitHandler,
   useFieldArray,
   useForm,
@@ -80,6 +81,8 @@ const ConnectIcon = ({
 };
 
 export const DbSetting = () => {
+  const queryClient = useQueryClient();
+
   const dbConfig = useGloblaConfigStore((state) => state.dbConfig);
 
   const setDbConfig = useGloblaConfigStore((state) => state.setDbConfig);
@@ -118,6 +121,9 @@ export const DbSetting = () => {
       data,
       deleteble: true,
     });
+    queryClient.invalidateQueries({
+      queryKey: ['roles'],
+    });
   };
 
   const { fields, remove, append } = useFieldArray({
@@ -151,36 +157,59 @@ export const DbSetting = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        <ControllerInput
+        <Controller
           control={control}
           name="connect.host"
-          label="数据库连接地址"
-          isInvalid={!!errors?.connect?.host}
-          errorMessage={errors?.connect?.host?.message}
+          render={({ field: { onChange, value } }) => (
+            <Input
+              label="数据库连接地址"
+              value={value}
+              onChange={onChange}
+              isInvalid={!!errors?.connect?.host}
+              errorMessage={errors?.connect?.host?.message}
+            />
+          )}
         />
-        <ControllerInput
+        <Controller
           control={control}
           name="connect.port"
-          label="端口号"
-          type="number"
-          isInvalid={!!errors?.connect?.port}
-          errorMessage={errors?.connect?.port?.message}
+          render={({ field: { onChange, value } }) => (
+            <Input
+              label="端口号"
+              type="number"
+              value={value2String(value)}
+              onValueChange={change2NumberFactor(onChange)}
+              isInvalid={!!errors?.connect?.port}
+              errorMessage={errors?.connect?.port?.message}
+            />
+          )}
         />
-        <ControllerInput
+        <Controller
           control={control}
           name="connect.user"
-          label="用户名"
-          isInvalid={!!errors?.connect?.user}
-          errorMessage={errors?.connect?.user?.message}
+          render={({ field: { onChange, value } }) => (
+            <Input
+              label="用户名"
+              isInvalid={!!errors?.connect?.user}
+              errorMessage={errors?.connect?.user?.message}
+              value={value}
+              onChange={onChange}
+            />
+          )}
         />
-        <ControllerInput
+        <Controller
           control={control}
           name="connect.password"
-          label="数据库密码"
-          className="m-x-8"
-          type="password"
-          isInvalid={!!errors?.connect?.password}
-          errorMessage={errors?.connect?.password?.message}
+          render={({ field: { onChange, value } }) => (
+            <Input
+              label="数据库密码"
+              value={value}
+              onChange={onChange}
+              type="password"
+              isInvalid={!!errors?.connect?.password}
+              errorMessage={errors?.connect?.password?.message}
+            />
+          )}
         />
       </div>
 
@@ -260,39 +289,62 @@ export const DbSetting = () => {
                       ) : null}
                     </div>
                   </div>
-                  <ControllerInput
-                    label="区组名"
-                    size="sm"
+                  <Controller
                     control={control}
                     name={`databases.${index}.name`}
-                    placeholder="可通过连接测试完善"
-                    isInvalid={!!errors?.databases?.[index]?.name}
-                    errorMessage={errors?.databases?.[index]?.name?.message}
+                    render={({ field: { onChange, value } }) => (
+                      <Input
+                        label="区组名"
+                        size="sm"
+                        placeholder="可通过连接测试完善"
+                        isInvalid={!!errors?.databases?.[index]?.name}
+                        errorMessage={errors?.databases?.[index]?.name?.message}
+                        value={value}
+                        onChange={onChange}
+                      />
+                    )}
                   />
-                  <ControllerInput
-                    label="账号库"
-                    size="sm"
+                  <Controller
                     control={control}
                     name={`databases.${index}.sdk`}
-                    placeholder="可通过连接测试完善"
-                    isInvalid={!!errors?.databases?.[index]?.sdk}
-                    errorMessage={errors?.databases?.[index]?.sdk?.message}
+                    render={({ field: { onChange, value } }) => (
+                      <Input
+                        label="账号库"
+                        size="sm"
+                        isInvalid={!!errors?.databases?.[index]?.sdk}
+                        errorMessage={errors?.databases?.[index]?.sdk?.message}
+                        value={value}
+                        onChange={onChange}
+                      />
+                    )}
                   />
-                  <ControllerInput
-                    label="ADB"
-                    size="sm"
+                  <Controller
                     control={control}
                     name={`databases.${index}.adb`}
-                    isInvalid={!!errors?.databases?.[index]?.adb}
-                    errorMessage={errors?.databases?.[index]?.adb?.message}
+                    render={({ field: { onChange, value } }) => (
+                      <Input
+                        label="ADB"
+                        size="sm"
+                        isInvalid={!!errors?.databases?.[index]?.adb}
+                        errorMessage={errors?.databases?.[index]?.adb?.message}
+                        value={value}
+                        onChange={onChange}
+                      />
+                    )}
                   />
-                  <ControllerInput
-                    label="DDB"
-                    size="sm"
+                  <Controller
                     control={control}
                     name={`databases.${index}.ddb`}
-                    isInvalid={!!errors?.databases?.[index]?.ddb}
-                    errorMessage={errors?.databases?.[index]?.adb?.message}
+                    render={({ field: { onChange, value } }) => (
+                      <Input
+                        label="DDB"
+                        size="sm"
+                        isInvalid={!!errors?.databases?.[index]?.ddb}
+                        errorMessage={errors?.databases?.[index]?.ddb?.message}
+                        value={value}
+                        onChange={onChange}
+                      />
+                    )}
                   />
                 </CardBody>
               </Card>

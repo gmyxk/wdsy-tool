@@ -7,5 +7,5 @@ export default function Home({
 }: Readonly<{
   params: { gid: string };
 }>) {
-  return redirect(`/role/${params.gid}/baggage`);
+  return redirect(`/role/${params.gid}/info`);
 }

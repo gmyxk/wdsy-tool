@@ -32,9 +32,9 @@ const formatRoleInfo = (
       level: roleInfo.level,
       ability: roleInfo.ability,
       gid,
-      lastLoginTime: '2023-10-01T12:00:00Z',
-      gold: 500,
-      createTime: '2023-10-01T12:00:00Z',
+      // lastLoginTime: '2023-10-01T12:00:00Z',
+      // gold: 500,
+      // createTime: '2023-10-01T12:00:00Z',
     };
   } catch (error) {
     console.error(error);
@@ -47,9 +47,9 @@ const formatRoleInfo = (
       level: 0,
       ability: 0,
       gid,
-      lastLoginTime: '2023-10-01T12:00:00Z',
-      gold: 500,
-      createTime: '2023-10-01T12:00:00Z',
+      // lastLoginTime: '2023-10-01T12:00:00Z',
+      // gold: 500,
+      // createTime: '2023-10-01T12:00:00Z',
     };
   }
 };
@@ -178,30 +178,4 @@ export const queryRoleInlineService = async (
   );
 
   return rows.length > 0;
-};
-
-/**
- * 查询指定角色信息
- * @param ddb
- * @param param
- * @returns
- */
-export const queryRoleInfoService = async (
-  ddb: Pool,
-  param: {
-    gid: string;
-  }
-) => {
-  const isInline = await queryRoleInlineService(ddb, param);
-  const account = await queryRoleInAccountService(ddb, param);
-
-  const [payloads] = await ddb.query<DBData.GidInfoTable[]>(
-    `SELECT g.gid, g.name, u.content FROM gid_info g INNER JOIN user_data u ON g.gid = u.name WHERE g.type = 'user' AND g.gid = '${param.gid}'`
-  );
-
-  return formatRoleInfo({
-    ...payloads[0],
-    account,
-    isOnline: isInline ? 1 : 0,
-  });
 };

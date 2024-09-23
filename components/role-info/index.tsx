@@ -14,10 +14,6 @@ const AVATAR_ENUM: Record<string, string> = {
   '5_2': 'http://img.gyyxcdn.cn/qibao/Images/itemImages/7005.jpg',
 };
 
-// const CLAZZ = ["", "金", "木", "水", "火", "土"];
-
-// const GENDER = ['', '男', '女']
-
 export const RoleInfo = ({ data }: { data: API.RoleListItem }) => {
   return (
     <div className="flex w-full justify-between gap-2">

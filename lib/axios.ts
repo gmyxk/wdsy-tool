@@ -91,3 +91,13 @@ export const axiosDelete = async <Res = any, Req = any>(
 
   return response.data;
 };
+
+export const axiosPut = async <Res = any, Req = any>(
+  url: string,
+  data?: Req,
+  config?: AxiosRequestConfig
+) => {
+  const response = await axiosIns.put<API.ResponsTpl<Res>>(url, data, config);
+
+  return response.data;
+};

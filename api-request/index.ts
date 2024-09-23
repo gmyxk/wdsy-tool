@@ -1,6 +1,8 @@
-import { axiosDelete, axiosGet, axiosPost } from '@/lib/axios';
+import { axiosDelete, axiosGet, axiosPost, axiosPut } from '@/lib/axios';
 import { Encrypt } from '@/lib/crypto';
 import {
+  EditRoleInfoApiReq,
+  EditRoleInfoPayload,
   SendEquipmentApiReq,
   SendHorcruxApiReq,
   SendJewelryApiReq,
@@ -34,7 +36,7 @@ export const getRolesRequest = () => {
  * @returns
  */
 export const getRoleInfoRequest = (gid: string) => {
-  return axiosGet<API.RoleListItem>(`/api/wd/role`, { gid });
+  return axiosGet<API.RoleInfo>(`/api/wd/role`, { gid });
 };
 
 /**
@@ -96,3 +98,25 @@ export const clearBaggageRequest = (params: {
   gid: string;
   target: string[];
 }) => axiosDelete('/api/wd/baggage', params);
+
+/**
+ * 编辑角色信息
+ * @param data
+ * @returns
+ */
+export const editRoleInfoRequest = (data: EditRoleInfoApiReq) => {
+  EditRoleInfoPayload.parse(data);
+  return axiosPut('/api/wd/role', data);
+};
+
+/**
+ * 覆盖角色信息
+ * @param data
+ * @returns
+ */
+export const coverRoleInfoRequest = (data: {
+  gid: string;
+  content: string;
+}) => {
+  return axiosPost('/api/wd/role', data);
+};

@@ -4,7 +4,6 @@ export { default as CodeBlock } from './code-block';
 export * from './dashboard-nav';
 
 export * from './edit-baggage';
-export * from './edit-consumption-points';
 
 export * from './role-info';
 export * from './role-list';

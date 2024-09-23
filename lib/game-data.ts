@@ -1,6 +1,6 @@
 /**
  * 获取道行描述
- * @param points
+ * @param points 天
  * @returns
  */
 export function pointsToYearsDaysPoints(points: number) {

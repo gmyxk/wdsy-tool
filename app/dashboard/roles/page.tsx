@@ -54,7 +54,7 @@ function RolesPage() {
   }, [data, searchText]);
 
   const onLineNumber = React.useMemo(() => {
-    return data?.data.filter((item) => item.status === 1).length || 0;
+    return data?.data?.filter((item) => item.status === 1).length || 0;
   }, [data]);
 
   const renderContent = () => {
