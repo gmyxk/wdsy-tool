@@ -13,10 +13,10 @@ export default function SendEquipmentPage({
 
   return (
     <SendHorcrux
-      mutationFn={({ horcruxs }) =>
+      mutationFn={({ records }) =>
         sendHorcruxRequest({
           gid: params.gid,
-          horcruxs,
+          horcruxs: records,
         })
       }
       onSendSuccess={() => {

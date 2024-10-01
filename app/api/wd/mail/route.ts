@@ -1,6 +1,5 @@
 import { sendMailService } from "@/service";
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import db from "@/lib/db";
 import { getDbConfigFormRequest } from "@/lib/api";
 

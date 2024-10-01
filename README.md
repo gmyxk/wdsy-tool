@@ -26,6 +26,8 @@ pnpm dev
 - `DB_PORT`：数据库端口
 - `DB_USER`：数据库用户名
 - `DB_PASS`：数据库密码
+- `CRYPTO_KEY` 十六位的十六进制字符
+- `CRYPTO_IV` 十六位的十六进制字符
 
 `.env.local` 文件示例
 

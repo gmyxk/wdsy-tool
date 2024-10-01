@@ -1,7 +1,7 @@
 import { GlobalConfig, GlobalDbConfig } from '@/scheme';
 import { produce } from 'immer';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 type GlobalConfigState = GlobalConfig;
 
@@ -41,16 +41,7 @@ export const useGloblaConfigStore = create(
     },
     {
       name: 'GLOBAL_CONFIG',
-      getStorage: () => ({
-        getItem: (name) => {
-          return window.localStorage.getItem(name);
-        },
-        setItem(name, value) {
-          return window.localStorage.setItem(name, value);
-        },
-
-        removeItem: window.localStorage.removeItem,
-      }),
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

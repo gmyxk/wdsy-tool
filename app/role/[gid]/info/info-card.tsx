@@ -6,6 +6,7 @@ import { CLAZZ, GENDER, RISE_TYPE } from '@/config';
 import { pointsToYearsDaysPoints } from '@/lib/game-data';
 import { EditRoleInfoPayload } from '@/scheme';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Icon } from '@iconify/react/dist/iconify.js';
 import {
   Button,
   Card,
@@ -108,22 +109,33 @@ export const InfoCrad = ({ gid }: { gid: string }) => {
             <p className="text-md">{info.roleName}</p>
             <p className="text-tiny text-default-500">@{info.account}</p>
           </div>
-          <Button
-            size="sm"
-            onClick={() => {
-              setIsEditing(!isEditing);
-            }}
-            {...(isEditing
-              ? {
-                  color: 'danger',
-                  variant: 'bordered',
-                }
-              : {
-                  color: 'primary',
-                })}
-          >
-            {isEditing ? '取消' : '编辑'}
-          </Button>
+          <div className='flex gap-2'>
+            <Button
+              size="sm"
+              onClick={() => {
+                refetch();
+              }}
+              isIconOnly
+            >
+              <Icon icon="material-symbols:refresh" width={24} />
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => {
+                setIsEditing(!isEditing);
+              }}
+              {...(isEditing
+                ? {
+                    color: 'danger',
+                    variant: 'bordered',
+                  }
+                : {
+                    color: 'primary',
+                  })}
+            >
+              {isEditing ? '取消' : '编辑'}
+            </Button>
+          </div>
         </CardHeader>
         <CardBody className="flex flex-col gap-2">
           <CellValue

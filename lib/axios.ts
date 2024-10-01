@@ -23,6 +23,8 @@ axiosIns.interceptors.request.use(
         JSON.stringify({
           connect,
           database: tar,
+          // 生成随机的六位小数
+          rdm: Math.random().toFixed(6).toString(),
         })
       );
     }
@@ -52,7 +54,7 @@ axiosIns.interceptors.response.use(
   }
 );
 
-export const axiosGet = async <Res = any, Req = any>(
+export const axiosGet = async <Res = object, Req = object>(
   url: string,
   params?: Req,
   config?: AxiosRequestConfig
@@ -65,7 +67,7 @@ export const axiosGet = async <Res = any, Req = any>(
   return response.data;
 };
 
-export const axiosPost = async <Res = any, Req = any>(
+export const axiosPost = async <Res = object, Req = object>(
   url: string,
   params?: Req,
   config?: AxiosRequestConfig
@@ -79,7 +81,7 @@ export const axiosPost = async <Res = any, Req = any>(
   return response.data;
 };
 
-export const axiosDelete = async <Res = any, Req = any>(
+export const axiosDelete = async <Res = object, Req = object>(
   url: string,
   data?: Req,
   config?: AxiosRequestConfig
@@ -92,7 +94,7 @@ export const axiosDelete = async <Res = any, Req = any>(
   return response.data;
 };
 
-export const axiosPut = async <Res = any, Req = any>(
+export const axiosPut = async <Res = object, Req = object>(
   url: string,
   data?: Req,
   config?: AxiosRequestConfig

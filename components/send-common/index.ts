@@ -1,6 +1,6 @@
 import { InData } from '@/hook/useTemplates';
 
-export interface SendThingCommonProps<T = any> {
+export interface SendThingCommonProps<T = object> {
   /**
    * 接口请求
    * @param data
@@ -14,7 +14,7 @@ export interface SendThingCommonProps<T = any> {
   onSendSuccess?: () => void;
 }
 
-export type SendCustomCommonProps<T = any> = SendThingCommonProps<T> & {
+export type SendCustomCommonProps<T = object> = SendThingCommonProps<T> & {
   /**
    * 模板保存
    * @param data
@@ -23,10 +23,10 @@ export type SendCustomCommonProps<T = any> = SendThingCommonProps<T> & {
   onSaveTemplate?: (data: InData<T>) => void;
 };
 
-export type SendTemplateActionRef<T = any> = {
+export type SendTemplateActionRef<T = object> = {
   saveToHistory: (data: InData<T>) => void;
 };
 
-export type SendTemplateCommonProps<T = any> = SendThingCommonProps<T> & {
+export type SendTemplateCommonProps<T = object> = SendThingCommonProps<T> & {
   actionRef?: React.MutableRefObject<SendTemplateActionRef<T> | undefined>;
 };

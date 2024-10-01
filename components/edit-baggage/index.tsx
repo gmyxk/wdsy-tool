@@ -40,6 +40,7 @@ const configList: [string, string, (positionId: number) => boolean][] = [
   ['PAK-03', '包裹3', (positionId) => positionId > 90 && positionId <= 115],
   ['PAK-04', '包裹4', (positionId) => positionId > 115 && positionId <= 140],
   ['PAK-05', '包裹5', (positionId) => positionId > 140 && positionId <= 165],
+  ['PAK-06', '武魂', (positionId) => positionId > 900 && positionId <= 905],
 ];
 
 /**
@@ -76,7 +77,7 @@ export const EditBaggage = ({ gid }: { gid: string }) => {
   const isClient = useClient();
 
   const chunkList = React.useMemo(() => {
-    return (data?.data || []).reduce<
+    return (data?.data?.carryItems || []).reduce<
       { key: string; chunkName: string; chunkContent: API.CarryItem[] }[]
     >((prev, cur) => {
       const config = configList.find((i) => i[2](cur.positionId));
@@ -105,7 +106,7 @@ export const EditBaggage = ({ gid }: { gid: string }) => {
     return <EditBaggageSkeleton />;
   }
 
-  if (data?.data?.length === 0) {
+  if (data?.data?.carryItems.length === 0) {
     return <Empty description="当前人物身上没有物品~" />;
   }
 
@@ -161,12 +162,7 @@ export const EditBaggage = ({ gid }: { gid: string }) => {
           mutate({
             gid,
             target: [
-              'PAK-00',
-              'PAK-01',
-              'PAK-02',
-              'PAK-03',
-              'PAK-04',
-              'PAK-05',
+              'ALL'
             ],
           });
         }}

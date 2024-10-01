@@ -7,4 +7,9 @@ declare namespace API {
     name: string;
     payload: any;
   }
+
+  interface GetUserCarryDataRes {
+    carryItems: CarryItem[];
+    carryContent: string;
+  }
 }

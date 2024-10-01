@@ -5,14 +5,12 @@ import {
   HORCRUX_ATTR_LIGHT,
   HORCRUX_PRE_TPL,
 } from '@/config';
-import { InData } from '@/hook/useTemplates';
 import { SendHorcruxItem } from '@/scheme';
 import { cn } from '@/utils';
 import { Icon } from '@iconify/react';
 import { Card, CardBody, Divider } from '@nextui-org/react';
-import React from 'react';
+import { SendTemplateCommonProps } from '../send-common';
 import { TemplatePiaker } from '../template-picker';
-import { SendHorcruxCommonProps } from './common';
 
 const attrMap = [...HORCRUX_ATTR_LIGHT, ...HORCRUX_ATTR_DARK].reduce<
   Record<string, string>
@@ -21,22 +19,16 @@ const attrMap = [...HORCRUX_ATTR_LIGHT, ...HORCRUX_ATTR_DARK].reduce<
   return pre;
 }, {});
 
-export type HorcruxTplActionRef = {
-  saveToHistory: (data: InData<SendHorcruxItem>) => void;
-};
-
 export const SendHorcruxTemplate = ({
   onSendSuccess,
   mutationFn,
   actionRef,
-}: {
-  actionRef?: React.MutableRefObject<HorcruxTplActionRef | undefined>;
-} & SendHorcruxCommonProps) => {
+}: SendTemplateCommonProps<SendHorcruxItem>) => {
   return (
-    <TemplatePiaker
+    <TemplatePiaker<SendHorcruxItem>
       storgeKey="TPL_HORCRUX"
       initTemplates={HORCRUX_PRE_TPL}
-      mutationFn={(horcruxs) => mutationFn({ horcruxs })}
+      mutationFn={(horcruxs) => mutationFn({ records: horcruxs })}
       onSendSuccess={onSendSuccess}
       classNames={{
         content: 'grid-cols-2',
@@ -87,7 +79,7 @@ export const SendHorcruxTemplate = ({
               {item.deleteble ? (
                 <div
                   onClick={(evt) => {
-                    evt.stopPropagation;
+                    evt.stopPropagation();
                     deleteHistory(item.templateName);
                   }}
                 >

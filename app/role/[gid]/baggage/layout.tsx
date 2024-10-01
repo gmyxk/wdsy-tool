@@ -43,6 +43,10 @@ export default function CheckBaggage({
         href: `/role/${params.gid}/baggage/send-horcrux`,
         title: '发送魂器',
       },
+      {
+        href: `/role/${params.gid}/baggage/content-editor`,
+        title: 'Content 编辑',
+      },
     ];
   }, [params.gid]);
 
@@ -95,7 +99,7 @@ export default function CheckBaggage({
           <EditBaggage gid={params.gid} />
         </div>
         <div
-          className={cn({
+          className={cn('xl:col-span-2', {
             hidden: isMobile && activePageIndex !== ActivePageIndex.Action,
           })}
         >

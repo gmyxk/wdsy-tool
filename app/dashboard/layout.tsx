@@ -1,11 +1,9 @@
 'use client';
 
-import { ScrollShadow, Tab, Tabs } from '@nextui-org/react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { DashbordNav } from '@/components';
 import React from 'react';
 
-const TABS = [
+const navs = [
   {
     href: '/dashboard/roles',
     title: '角色管理',
@@ -25,39 +23,9 @@ export default function DashbordLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-
   return (
-    <div className="mt-[-16px]">
-      <ScrollShadow
-        hideScrollBar
-        className="mb-4 flex w-full justify-between gap-8 border-b border-divider px-4 sm:px-8"
-        orientation="horizontal"
-      >
-        <Tabs
-          aria-label="Navigation Tabs"
-          selectedKey={pathname}
-          classNames={{
-            tabList: 'w-full relative rounded-none p-0 gap-4 lg:gap-6',
-            tab: 'max-w-fit px-0 h-12',
-            cursor: 'w-full',
-            tabContent: 'text-default-400',
-          }}
-          radius="full"
-          variant="underlined"
-        >
-          {TABS.map((item) => (
-            <Tab
-              key={item.href}
-              title={
-                <Link key={item.href} href={item.href} className="block py-3">
-                  {item.title}
-                </Link>
-              }
-            />
-          ))}
-        </Tabs>
-      </ScrollShadow>
+    <div className="mt-[100vh-16px]">
+      <DashbordNav navs={navs} pathnameLevel={2} />
       {children}
     </div>
   );

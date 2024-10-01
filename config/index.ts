@@ -5,3 +5,4 @@ export * from './horcrux';
 export * from './jewelry';
 export * from './mail-tpl';
 export * from './role';
+export * from './wuhun';

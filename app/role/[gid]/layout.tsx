@@ -14,7 +14,7 @@ const RoleInfoTop = ({ gid }: { gid: string }) => {
     queryFn: ({ queryKey }) => getRoleInfoRequest(queryKey[1]),
   });
 
-  if (isPending || !data) {
+  if (isPending || !data?.data) {
     return <RoleInfoSkeleton />;
   }
 

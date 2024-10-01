@@ -2,18 +2,18 @@
 
 import {
   Button,
+  Link,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  useDisclosure,
 } from '@nextui-org/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
 export const BannerNotice = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [isOpen, setOpen] = useState(false);
 
   const isMobile = useMediaQuery('(max-width: 768px)');
 
@@ -22,14 +22,14 @@ export const BannerNotice = () => {
     if (isAgreed) {
       return;
     }
-    onOpen();
-  }, [onOpen]);
+    setOpen(true);
+  }, []);
 
   return (
     <Modal
       isOpen={isOpen}
       placement={isMobile ? 'bottom' : 'auto'}
-      onOpenChange={onOpenChange}
+      onOpenChange={setOpen}
       backdrop="blur"
     >
       <ModalContent>
@@ -40,6 +40,12 @@ export const BannerNotice = () => {
                 重要公告
               </ModalHeader>
               <ModalBody className="max-h-[calc(100vh-200px)] overflow-y-auto text-sm">
+                <p>
+                  国内访问地址已上线，访问速度更快哦！
+                  <Link href="https://wdt.oneddd.com" showAnchorIcon>
+                    https://wdt.oneddd.com
+                  </Link>
+                </p>
                 <p>山有扶苏在此声明:</p>
                 <p>
                   1.
@@ -51,7 +57,8 @@ export const BannerNotice = () => {
                 </p>
                 <p>3. 此工具没有后门，本人对各种下三滥的行为没兴趣</p>
                 <p>
-                  4. 有BUG或建议请联系本人唯一QQ:245933567；本人还是想把此工具做好的，有时间就更新；有React开发能力并且想帮一把的可以找我要源码。
+                  4.
+                  有BUG或建议请联系本人唯一QQ:245933567；本人还是想把此工具做好的，有时间就更新；有React开发能力并且想帮一把的可以找我要源码。
                 </p>
                 <p>
                   4. “君子爱财，取之有道” , 希望大家生活开心，感谢大家的使用,

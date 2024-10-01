@@ -3,6 +3,11 @@ declare namespace API {
     roleName?: string;
   }
 
+  interface GidItem {
+    gid: string;
+    name: string;
+  }
+
   /**
    * 角色信息
    */

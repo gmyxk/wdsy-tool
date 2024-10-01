@@ -199,13 +199,14 @@ export const getCarryListService = async (
   params: {
     gid: string;
   }
-) => {
+): Promise<API.GetUserCarryDataRes> => {
   if (!params.gid) {
     throw new Error('角色ID不能为空');
   }
 
-  const [datas] = await pool.query<DBData.LoginDataTable[]>(
-    `SELECT * FROM user_carry_data WHERE name = '${params.gid}'`
+  const [datas] = await pool.execute<DBData.LoginDataTable[]>(
+    `SELECT name, content FROM user_carry_data WHERE name = ?`,
+    [params.gid]
   );
 
   if (!datas || datas.length === 0) {
@@ -216,5 +217,45 @@ export const getCarryListService = async (
 
   const ins = new UserCarryDataContent(content);
 
-  return ins.carryitemList as API.CarryItem[];
+  return {
+    carryContent: content,
+    carryItems: ins.carryitemList
+  }
+};
+
+/**
+ * 覆盖携带物品信息
+ * @param pool
+ * @param params
+ * @returns
+ */
+export const coverUserCarryService = async (
+  pool: Pool,
+  params: {
+    gid: string;
+    content: string;
+  }
+) => {
+  if (!params.gid) {
+    throw new Error('角色ID不能为空');
+  }
+
+  const [datas] = await pool.query<DBData.LoginDataTable[]>(
+    `SELECT name FROM user_carry_data WHERE name = '${params.gid}'`
+  );
+
+  if (!datas || datas.length === 0) {
+    throw new Error('角色信息查询失败');
+  }
+
+  const checksum = DBEncoder.genChecksum(
+    `user_carry${params.gid}${params.content}`
+  );
+
+  const result = await pool.execute(
+    `UPDATE user_carry_data SET content=?,checksum=? WHERE name=?`,
+    [DBEncoder.encodeToGb2312(params.content), checksum, params.gid]
+  );
+
+  return result;
 };

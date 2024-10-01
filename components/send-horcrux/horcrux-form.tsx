@@ -24,7 +24,7 @@ import {
   useForm,
 } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { SendHorcruxCommonProps } from './common';
+import { SendCustomCommonProps } from '../send-common';
 
 type Inputs = SendHorcruxItem & {
   templateName?: string;
@@ -41,13 +41,7 @@ export const SendHorcruxCustom = ({
   onSaveTemplate,
   mutationFn,
   onSendSuccess,
-}: {
-  onSaveTemplate?: (data: {
-    templateName: string;
-    data: SendHorcruxItem;
-    deleteble: boolean;
-  }) => void;
-} & SendHorcruxCommonProps) => {
+}: SendCustomCommonProps<SendHorcruxItem>) => {
   const {
     register,
     control,
@@ -66,7 +60,7 @@ export const SendHorcruxCustom = ({
     const { templateName, ...rest } = data;
     try {
       await mutationFn({
-        horcruxs: [rest],
+        records: [rest],
       });
 
       if (templateName && onSaveTemplate) {

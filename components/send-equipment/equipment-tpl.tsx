@@ -88,7 +88,7 @@ export const SendEquipmentTemplate = ({
               {item.deleteble ? (
                 <div
                   onClick={(evt) => {
-                    evt.stopPropagation;
+                    evt.stopPropagation();
                     deleteHistory(item.templateName);
                   }}
                 >

@@ -13,12 +13,14 @@ import React from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
 function RolesPage() {
-  const { data, isPending, isFetching, isLoading, refetch, error } = useQuery({
-    queryKey: ['roles'],
-    queryFn: getRolesRequest,
-    staleTime: 24 * 60 * 60 * 1000,
-    gcTime: 24 * 60 * 60 * 1000,
-  });
+  const { data, isPending, isFetching, isLoading, refetch, isError } = useQuery(
+    {
+      queryKey: ['roles'],
+      queryFn: getRolesRequest,
+      staleTime: 24 * 60 * 60 * 1000,
+      gcTime: 24 * 60 * 60 * 1000,
+    }
+  );
 
   const isClient = useClient();
 
@@ -58,6 +60,15 @@ function RolesPage() {
   }, [data]);
 
   const renderContent = () => {
+    if (isError) {
+      return (
+        <div className="flex h-64 items-center justify-center">
+          <Icon icon="ic:baseline-error-outline" width={24} />
+          <div className="text-error-500 ml-2 text-sm">获取角色失败</div>
+        </div>
+      );
+    }
+
     if (isPending || isFetching || isLoading || !isClient) {
       return Array.from({ length: 20 }).map((_, index) => (
         <Card key={index}>

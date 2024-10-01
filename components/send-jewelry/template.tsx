@@ -89,7 +89,7 @@ export const SendJewelryTemplate = ({
               {item.deleteble ? (
                 <div
                   onClick={(evt) => {
-                    evt.stopPropagation;
+                    evt.stopPropagation();
                     deleteHistory(item.templateName);
                   }}
                 >

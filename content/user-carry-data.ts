@@ -53,9 +53,9 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
 
     const { level, type, name, attributes } = jewelry;
 
-    let first: Record<string, number> = {};
+    const first: Record<string, number> = {};
 
-    let second: Record<string, number> = {};
+    const second: Record<string, number> = {};
 
     attributes.forEach((item) => {
       if (first[item.attribute] !== undefined) {
@@ -280,7 +280,11 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
    * @param target
    */
   public clearBaggage(target: string[]) {
-    let rangeArr: [number, number][] = []; 
+    if (target.includes('ALL')) {
+      this.currentData.carry = {};
+      return;
+    }
+    const rangeArr: [number, number][] = [];
 
     if (target.includes('PAK-00')) {
       rangeArr.push([1, 40]);
@@ -299,6 +303,9 @@ export class UserCarryDataContent extends BaseContent<UserCarryDataContentParse>
     }
     if (target.includes('PAK-05')) {
       rangeArr.push([141, 165]);
+    }
+    if (target.includes('PAK-06')) {
+      rangeArr.push([900, 905]);
     }
 
     target.forEach((item) => {

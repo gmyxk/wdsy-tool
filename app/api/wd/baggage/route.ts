@@ -1,6 +1,6 @@
 import { getDbConfigFormRequest } from '@/lib/api';
 import db from '@/lib/db';
-import { clearBaggageService, getCarryListService } from '@/service';
+import { clearBaggageService, coverUserCarryService, getCarryListService } from '@/service';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (request: NextRequest) => {
@@ -31,6 +31,30 @@ export const GET = async (request: NextRequest) => {
     });
   }
 };
+
+const coverUserCarryApi = async (request: NextRequest) => {
+  try {
+    const body = await request.json();
+
+    const { database, connect } = getDbConfigFormRequest(request);
+
+    const ddb = db.usePool(database.ddb, connect);
+
+    await coverUserCarryService(ddb, body);
+
+    return NextResponse.json({
+      success: true,
+      message: '修改成功',
+    });
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      message: (error as Error).message || '操作失败',
+    });
+  }
+}
+
+export const POST = coverUserCarryApi;
 
 export const DELETE = async (request: NextRequest) => {
   try {

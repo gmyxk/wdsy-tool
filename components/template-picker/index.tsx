@@ -6,18 +6,18 @@ import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 import { toast } from 'react-toastify';
 
-export type TemplatePiakerActionRef<T = any> = {
+export type TemplatePiakerActionRef<T = object> = {
   saveToHistory: (data: InData<T>) => void;
 };
 
-interface TemplatePiakerProps<T = any> {
+interface TemplatePiakerProps<T = object> {
   storgeKey: string;
   initTemplates?: InData<T>[];
   mutationFn?: (records: T[]) => Promise<API.ResponsTpl>;
   classNames?: {
     content?: string;
   };
-  actionRef?: React.MutableRefObject<TemplatePiakerActionRef | undefined>;
+  actionRef?: React.MutableRefObject<TemplatePiakerActionRef<T> | undefined>;
   children: (
     record: InData<T>,
     props: {
@@ -34,7 +34,7 @@ interface TemplatePiakerProps<T = any> {
  * @param props
  * @returns
  */
-export const TemplatePiaker = <T extends any>(
+export const TemplatePiaker = <T extends object>(
   props: TemplatePiakerProps<T>
 ) => {
   const {

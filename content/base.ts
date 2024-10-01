@@ -37,16 +37,28 @@ export class BaseContent<Data extends Record<string | number, any>> {
   static parse<T extends Record<string, any>>(content: string) {
     let text = content;
 
+    // 替换所有 \n 为 SYB_N
+    text = text.replace(/\n/g, 'SYB_N');
+
+    // 替换所有 前面不为 '(' 的 '['
+    text = text.replace(/(?<!\()\[/g, 'SYB_BS');
+    // 替换所有 后面不为 ')' 的 ']'
+    text = text.replace(/\](?!\))/g, 'SYB_BE');
+    // 替换所有 前面不为 '(' 的 '{'
+    text = text.replace(/(?<!\()\{/g, 'SYB_BLS');
+    // 替换所有 后面不为 ')' 的 '}'
+    text = text.replace(/\}(?!\))/g, 'SYB_BLE');
+
     text = text.replace(/:([0-9]):([0-9])/g, (_match, p1, p2) => {
       return `_${p1}_${p2}`;
     });
 
-    // 替换所有 :key: 为 ":key:":
+    // 替换所有 :key: 为 ':key:':
     text = text.replace(/:([A-Z0-9]{5,}):/g, (_match, p1) => {
       return `':${p1}:'`;
     });
 
-    // 替换所有 U 为 \"VAR_U\":
+    // 替换所有 U 为 'VAR_U':
     text = text.replace(/U,/g, "'VAR_U',");
 
     // 替换所有双转义符
@@ -90,7 +102,7 @@ export class BaseContent<Data extends Record<string | number, any>> {
     } catch (error) {
       const originMesssage = (error as Error).message;
       (error as Error).message =
-        `Serialization Error, ${originMesssage} ${content} \n ${text}`;
+        `Content Serialization Error, ${originMesssage}, the content is:\n ${content}`;
       throw error;
     }
   }
@@ -137,14 +149,14 @@ export class BaseContent<Data extends Record<string | number, any>> {
     content = content.replace(/(?<!\()\{/g, '([');
     content = content.replace(/\}(?!\))/g, '])');
 
-    // 将 \"2678\" 转换成 2678 即将纯数字的字符串转换成数字
-    content = content.replace(/\\"([0-9]{1,})\\"/g, (_match, p1) => {
-      return p1;
+    // 将 \"2678\": 转换成 2678: 即将纯数字的字符串转换成数字
+    content = content.replace(/\\"([0-9]{1,})\\":/g, (_match, p1) => {
+      return `${p1}:`;
     });
 
-    // 将 "2678" 转换成 2678 即将纯数字的字符串转换成数字
-    content = content.replace(/"([0-9]{1,})"/g, (_match, p1) => {
-      return p1;
+    // 将 "2678": 转换成 2678: 即将纯数字的字符串转换成数字
+    content = content.replace(/"([0-9]{1,})":/g, (_match, p1) => {
+      return `${p1}:`;
     });
 
     // 将 \"VAR_U\" 转换成 U
@@ -170,6 +182,27 @@ export class BaseContent<Data extends Record<string | number, any>> {
     content = content.replace(/_([0-9])_([0-9])/g, (_match, p1, p2) => {
       return `:${p1}:${p2}`;
     });
+
+    // 替换所有 SYB_BLE 为 ]
+    content = content.replace(/SYB_BLE/g, '}');
+    // 替换所有 SYB_BLS 为 [
+    content = content.replace(/SYB_BLS/g, '{');
+    // 替换所有 SYB_BE 为 ]
+    content = content.replace(/SYB_BE/g, ']');
+    // 替换所有 SYB_BS 为 [
+    content = content.replace(/SYB_BS/g, '[');
+
+    // 替换所有 SYB_N 为 \n
+    content = content.replace(/SYB_N/g, '\n');
+
+    try {
+      BaseContent.parse(content);
+    } catch (error) {
+      const originMesssage = (error as Error).message;
+      (error as Error).message =
+        `Content Stringify Error, ${originMesssage}, the content is:\n ${content}`;
+      throw error;
+    }
 
     return content;
   }
@@ -231,8 +264,13 @@ export class BaseContent<Data extends Record<string | number, any>> {
    * @returns
    */
   static enformat(content: string) {
-    let text = content.replaceAll('\n', '');
-    text = text.replaceAll(' ', '');
+    let text = content.replaceAll(' ', '');
+    text = text.replace(/\r\n/g, '\n');
+    text = text.replace(/\n/g, '');
+    // let text = content.replace(/\r\n/g, '\n');
+    // text = text.replace(/\r/g, '');
+    // text = text.replaceAll(' ', '');
+
 
     return text;
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface ErrorBoundaryProps {
   message?: React.ReactNode;
@@ -17,7 +17,7 @@ class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
   ErrorBoundaryStates
 > {
-  constructor(props: {}) {
+  constructor(props: object) {
     super(props);
     this.state = { error: null };
   }
@@ -27,15 +27,15 @@ class ErrorBoundary extends React.Component<
     return { error };
   }
 
-  componentDidCatch(error: any, errorInfo: any) {
+  componentDidCatch(error: unknown, errorInfo: unknown) {
     // 你可以将错误日志记录到错误报告服务
-    console.error("Error caught by ErrorBoundary:", error, errorInfo);
+    console.error('Error caught by ErrorBoundary:', error, errorInfo);
   }
 
   render() {
     if (this.state.error) {
       // 你可以渲染任何自定义的 fallback UI
-      return <h1 className="text-center py-20">出错了。</h1>;
+      return <h1 className="py-20 text-center">出错了。</h1>;
     }
 
     return this.props.children;

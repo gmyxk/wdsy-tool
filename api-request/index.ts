@@ -7,6 +7,7 @@ import {
   SendHorcruxApiReq,
   SendJewelryApiReq,
   SendMailApiReq,
+  SendWuhunReq,
   WdCommonApiReq,
 } from '@/scheme';
 
@@ -45,7 +46,7 @@ export const getRoleInfoRequest = (gid: string) => {
  * @returns
  */
 export const getRoleBaggageRequest = (gid: string) =>
-  axiosGet<API.CarryItem[]>('/api/wd/baggage', {
+  axiosGet<API.GetUserCarryDataRes>('/api/wd/baggage', {
     gid,
   });
 
@@ -90,6 +91,18 @@ export const sendMailRequest = (data: SendMailApiReq) => {
 };
 
 /**
+ * 覆盖角色物品信息
+ * @param data
+ * @returns
+ */
+export const coverUserCarryRequest = (data: {
+  gid: string;
+  content: string;
+}) => {
+  return axiosPost('/api/wd/baggage', data);
+};
+
+/**
  * 清理包裹
  * @param params
  * @returns
@@ -119,4 +132,45 @@ export const coverRoleInfoRequest = (data: {
   content: string;
 }) => {
   return axiosPost('/api/wd/role', data);
+};
+
+/**
+ * 获取全部 Gid
+ * @param data
+ * @returns
+ */
+export const queryGidsRequest = () => {
+  return axiosGet<API.GidItem[]>('/api/wd/gids');
+};
+
+/**
+ * 获取武魂信息
+ * @param data 
+ * @returns 
+ */
+export const queryWuhunStoreInfoRequest = (gid: string) => {
+  return axiosGet<API.QueryWuhunStoreInfoRes>(`/api/wd/role/${gid}/wuhun`);
+};
+
+/**
+ * 发送武魂
+ * @param data 
+ * @returns 
+ */
+export const sendWuhunRequest = (data: SendWuhunReq) => {
+  SendWuhunReq.parse(data);
+
+  return axiosPut(`/api/wd/role/${data.gid}/wuhun`, data);
+};
+
+/**
+ * 覆盖武魂信息
+ * @param data 
+ * @returns 
+ */
+export const coverStoreDataContentWhjpRequest = (data: {
+  gid: string;
+  content: string;
+}) => {
+  return axiosPost(`/api/wd/role/${data.gid}/wuhun`, data);
 };

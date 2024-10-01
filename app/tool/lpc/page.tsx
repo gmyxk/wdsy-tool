@@ -1,121 +1,131 @@
 'use client';
 
+import {
+  CodeEditor,
+  CodeEditorAction,
+  CodeEditorActionButton,
+} from '@/components';
 import { BaseContent } from '@/content';
-import { Button, Input, Textarea } from '@nextui-org/react';
-import { message } from 'antd';
-import React from 'react';
+import { useRef } from 'react';
+import { toast } from 'react-toastify';
 
 /**
  * 格式化数据库中的大对象
  */
 export default function FormatObjectStr() {
-  const [value, setValue] = React.useState('');
-
-  const [formatValue, setFormatValue] = React.useState('');
-
-  const [jsonValue, setJsonVaule] = React.useState('');
-
-  const [error, setError] = React.useState<Error>();
-
-  const handleChange = (val: string) => {
-    setError(undefined);
-    if (val.trim() === '') {
-      setFormatValue('');
-      setJsonVaule('');
-      return;
-    }
-    setFormatValue(BaseContent.deformat(val));
-
-    try {
-      const tar = BaseContent.parse(val);
-      setJsonVaule(JSON.stringify(tar, null, 2));
-    } catch (err) {
-      setJsonVaule('Error');
-      setError(err as Error);
-      console.error(err);
-    }
-  };
-
-  const copy = async (val: string) => {
-    try {
-      await navigator.clipboard.writeText(val);
-      message.success('复制成功');
-    } catch (err) {
-      console.error('Failed to copy: ', err);
-    }
-  };
+  const contentActionRef = useRef<CodeEditorAction>();
+  const jsonActionRef = useRef<CodeEditorAction>();
 
   return (
-    <div>
-      <div className="flex items-center gap-4">
-        <Input
-          type="email"
-          label="输入原始报文"
-          value={value}
-          onChange={(evt) => {
-            setValue(evt.target.value);
-            handleChange(evt.target.value);
-          }}
-          onClear={() => {
-            setValue('');
-            handleChange('');
-          }}
-          isClearable
-        />
-        <Button
-          className="h-14"
-          onClick={() => {
-            handleChange(value);
-          }}
-        >
-          重新生成
-        </Button>
-      </div>
-      <div className="mt-4 grid grid-cols-2 gap-4">
-        <Textarea
-          label="格式化后的原始报文"
-          classNames={{
-            innerWrapper: 'max-h-[calc(100vh-330px)] overflow-y-auto',
-          }}
-          placeholder={`请在上方输入格式为：\n\n (["rank":(["first_rank":([]),"act_end_time":1740911400,"data":([1:(["score":4000368,"exp":368,"percent":4829,"level":4,"now":1722820259,"name":"天尊","gid":"66A7A21EB634730001F9",]),0:(["exp":410,"score":4000410,"percent":5380,"name":"天亦","now":1722529548,"level":4,"gid":"66A7DE38A9D7DA0001F9",]),]),]),]) \n\n 的报文，输入后可根据原始报文自动生成`}
-          value={formatValue}
-          maxRows={10000}
-        />
-        <Textarea
-          label="JSON 报文"
-          classNames={{
-            innerWrapper: 'max-h-[calc(100vh-330px)] overflow-y-auto',
-          }}
-          placeholder={`请在上方输入格式为：\n\n (["rank":(["first_rank":([]),"act_end_time":1740911400,"data":([1:(["score":4000368,"exp":368,"percent":4829,"level":4,"now":1722820259,"name":"天尊","gid":"66A7A21EB634730001F9",]),0:(["exp":410,"score":4000410,"percent":5380,"name":"天亦","now":1722529548,"level":4,"gid":"66A7DE38A9D7DA0001F9",]),]),]),]) \n\n 的报文，输入后可根据原始报文自动生成`}
-          value={jsonValue}
-          onChange={(evt) => setJsonVaule(evt.target.value)}
-          maxRows={10000}
-          isInvalid={!!error}
-        />
-      </div>
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <CodeEditor
+        title="Content 编辑"
+        className="h-[calc(100vh-154px)]"
+        actionRef={contentActionRef}
+        actionRender={(action) => [
+          <CodeEditorActionButton
+            tooltip="美化"
+            icon="icon-park-outline:fireworks"
+            key="pb"
+            onClick={() => {
+              const zipedContent = BaseContent.enformat(action.getValue());
+              action.setValue(BaseContent.deformat(zipedContent));
+            }}
+          />,
+          <CodeEditorActionButton
+            tooltip="压缩"
+            icon="ph:file-zip"
+            key="zip"
+            onClick={() => {
+              const zipedContent = BaseContent.enformat(action.getValue());
+              action.setValue(zipedContent);
+            }}
+          />,
+          <CodeEditorActionButton
+            tooltip="复制压缩后的报文"
+            icon="ph:copy"
+            key="copy"
+            onClick={() => {
+              const zipedContent = BaseContent.enformat(action.getValue());
+              window.navigator.clipboard
+                .writeText(zipedContent)
+                .then(() => {
+                  toast.success('复制成功');
+                })
+                .catch(() => {
+                  toast.error('复制成功');
+                });
+            }}
+          />,
+          <CodeEditorActionButton
+            tooltip="转换成 json"
+            icon="tabler:json"
+            key="json"
+            onClick={() => {
+              const zipedContent = BaseContent.enformat(action.getValue());
+              const data = BaseContent.parse(zipedContent);
+              jsonActionRef.current?.setValue(JSON.stringify(data, null, 2));
+            }}
+          />,
+        ]}
+      />
 
-      <div className="mt-4 grid grid-cols-2 gap-4">
-        <Button
-          color="primary"
-          isDisabled={!formatValue}
-          className="mt-4 w-full"
-          onClick={() => {
-            copy(BaseContent.enformat(formatValue));
-          }}
-        >
-          还原为原始报文格式并复制到粘贴板
-        </Button>
-        <Button
-          color="primary"
-          isDisabled={!formatValue}
-          className="mt-4 w-full"
-          onClick={() => {
-            copy(BaseContent.stringify(JSON.parse(jsonValue)));
-          }}
-        >
-          将 Json 转换为 content 并复制到粘贴板
-        </Button>
-      </div>
+      <CodeEditor
+        title="Json 编辑"
+        className="h-[calc(100vh-154px)]"
+        actionRef={jsonActionRef}
+        editorProps={{ language: 'json' }}
+        actionRender={(action) => [
+          <CodeEditorActionButton
+            tooltip="转换成 content"
+            icon="tabler:transform"
+            key="content"
+            onClick={() => {
+              try {
+                const jsonValue = action.getValue();
+
+                if (!jsonValue) {
+                  return;
+                }
+
+                const data = JSON.parse(jsonValue);
+
+                const zipedContent = BaseContent.stringify(data);
+                contentActionRef.current?.setValue(
+                  BaseContent.deformat(zipedContent)
+                );
+              } catch (error) {
+                console.error(error);
+                toast.error('对不起，转换遇到了问题, 如需解决请联系开发者');
+              }
+            }}
+          />,
+          <CodeEditorActionButton
+            tooltip="复制压缩后的报文"
+            icon="ph:copy"
+            key="copy"
+            onClick={() => {
+              const jsonValue = action.getValue();
+
+              if (!jsonValue) {
+                return;
+              }
+
+              const data = JSON.parse(jsonValue);
+
+              const zipedContent = BaseContent.stringify(data);
+              window.navigator.clipboard
+                .writeText(zipedContent)
+                .then(() => {
+                  toast.success('复制成功');
+                })
+                .catch(() => {
+                  toast.error('复制成功');
+                });
+            }}
+          />,
+        ]}
+      />
     </div>
   );
 }

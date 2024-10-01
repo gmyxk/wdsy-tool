@@ -1,27 +1,25 @@
-"use client";
+'use client';
 
+import { Icon } from '@iconify/react';
 import {
   Accordion,
   AccordionItem,
+  Listbox,
+  ListboxItem,
+  ListboxSection,
+  Tooltip,
   type ListboxProps,
   type ListboxSectionProps,
   type Selection,
-} from "@nextui-org/react";
-import React from "react";
-import {
-  Listbox,
-  Tooltip,
-  ListboxItem,
-  ListboxSection,
-} from "@nextui-org/react";
-import { Icon } from "@iconify/react";
+} from '@nextui-org/react';
+import React from 'react';
 
-import { cn } from "@/utils";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { cn } from '@/utils';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export enum SidebarItemType {
-  Nest = "nest",
+  Nest = 'nest',
 }
 
 export type SidebarItem = {
@@ -36,13 +34,13 @@ export type SidebarItem = {
   className?: string;
 };
 
-export type SidebarProps = Omit<ListboxProps<SidebarItem>, "children"> & {
+export type SidebarProps = Omit<ListboxProps<SidebarItem>, 'children'> & {
   items: SidebarItem[];
   isCompact?: boolean;
   hideEndContent?: boolean;
   iconClassName?: string;
-  sectionClasses?: ListboxSectionProps["classNames"];
-  classNames?: ListboxProps["classNames"];
+  sectionClasses?: ListboxSectionProps['classNames'];
+  classNames?: ListboxProps['classNames'];
   defaultSelectedKey?: string;
   onSelect?: (key: string) => void;
 };
@@ -52,8 +50,8 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
     {
       items,
       isCompact,
-      defaultSelectedKey,
-      onSelect,
+      // defaultSelectedKey,
+      // onSelect,
       hideEndContent,
       sectionClasses: sectionClassesProp = {},
       itemClasses: itemClassesProp = {},
@@ -71,11 +69,11 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
 
     const sectionClasses = {
       ...sectionClassesProp,
-      base: cn(sectionClassesProp?.base, "w-full", {
-        "p-0 max-w-[44px]": isCompact,
+      base: cn(sectionClassesProp?.base, 'w-full', {
+        'p-0 max-w-[44px]': isCompact,
       }),
       group: cn(sectionClassesProp?.group, {
-        "flex flex-col gap-1": isCompact,
+        'flex flex-col gap-1': isCompact,
       }),
       heading: cn(sectionClassesProp?.heading, {
         hidden: isCompact,
@@ -85,7 +83,7 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
     const itemClasses = {
       ...itemClassesProp,
       base: cn(itemClassesProp?.base, {
-        "w-11 h-11 gap-0 p-0": isCompact,
+        'w-11 h-11 gap-0 p-0': isCompact,
       }),
     };
 
@@ -107,30 +105,30 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
           classNames={{
             base: cn(
               {
-                "h-auto p-0": !isCompact && isNestType,
+                'h-auto p-0': !isCompact && isNestType,
               },
               {
-                "inline-block w-11": isCompact && isNestType,
+                'inline-block w-11': isCompact && isNestType,
               }
             ),
           }}
           endContent={
             isCompact || isNestType || hideEndContent
               ? null
-              : item.endContent ?? null
+              : (item.endContent ?? null)
           }
           startContent={
             isCompact || isNestType ? null : item.icon ? (
               <Icon
                 className={cn(
-                  "text-default-500 group-data-[selected=true]:text-foreground",
+                  'text-default-500 group-data-[selected=true]:text-foreground',
                   iconClassName
                 )}
                 icon={item.icon}
                 width={24}
               />
             ) : (
-              item.startContent ?? null
+              (item.startContent ?? null)
             )
           }
           title={isCompact || isNestType ? null : item.title}
@@ -141,34 +139,34 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
                 {item.icon ? (
                   <Icon
                     className={cn(
-                      "text-default-500 group-data-[selected=true]:text-foreground",
+                      'text-default-500 group-data-[selected=true]:text-foreground',
                       iconClassName
                     )}
                     icon={item.icon}
                     width={24}
                   />
                 ) : (
-                  item.startContent ?? null
+                  (item.startContent ?? null)
                 )}
               </div>
             </Tooltip>
           ) : null}
           {!isCompact && isNestType ? (
-            <Accordion className={"p-0"}>
+            <Accordion className={'p-0'}>
               <AccordionItem
                 key={item.key}
                 aria-label={item.title}
                 classNames={{
-                  heading: "pr-3",
-                  trigger: "p-0",
-                  content: "py-0 pl-4",
+                  heading: 'pr-3',
+                  trigger: 'p-0',
+                  content: 'py-0 pl-4',
                 }}
                 title={
                   item.icon ? (
-                    <div className={"flex h-11 items-center gap-2 px-2 py-1.5"}>
+                    <div className={'flex h-11 items-center gap-2 px-2 py-1.5'}>
                       <Icon
                         className={cn(
-                          "text-default-500 group-data-[selected=true]:text-foreground",
+                          'text-default-500 group-data-[selected=true]:text-foreground',
                           iconClassName
                         )}
                         icon={item.icon}
@@ -179,15 +177,15 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
                       </span>
                     </div>
                   ) : (
-                    item.startContent ?? null
+                    (item.startContent ?? null)
                   )
                 }
               >
                 {item.items && item.items?.length > 0 ? (
                   <Listbox
-                    className={"mt-0.5"}
+                    className={'mt-0.5'}
                     classNames={{
-                      list: cn("border-l border-default-200 pl-4"),
+                      list: cn('border-l border-default-200 pl-4'),
                     }}
                     items={item.items}
                     variant="flat"
@@ -221,7 +219,7 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
           {...rest}
           key={item.key}
           endContent={
-            isCompact || hideEndContent ? null : item.endContent ?? null
+            isCompact || hideEndContent ? null : (item.endContent ?? null)
           }
           // classNames={{
           //   base: cn("p-0"),
@@ -230,20 +228,20 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
             isCompact ? null : item.icon ? (
               <Icon
                 className={cn(
-                  "text-default-500 group-data-[selected=true]:text-foreground",
+                  'text-default-500 group-data-[selected=true]:text-foreground',
                   iconClassName
                 )}
                 icon={item.icon}
                 width={24}
               />
             ) : (
-              item.startContent ?? null
+              (item.startContent ?? null)
             )
           }
           textValue={item.title}
           title={
             isCompact ? null : (
-              <Link href={href || "#"} className="w-full block px-3 py-2">
+              <Link href={href || '#'} className="block w-full px-3 py-2">
                 {title}
               </Link>
             )
@@ -255,14 +253,14 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
                 {item.icon ? (
                   <Icon
                     className={cn(
-                      "text-default-500 group-data-[selected=true]:text-foreground",
+                      'text-default-500 group-data-[selected=true]:text-foreground',
                       iconClassName
                     )}
                     icon={item.icon}
                     width={24}
                   />
                 ) : (
-                  item.startContent ?? null
+                  (item.startContent ?? null)
                 )}
               </div>
             </Tooltip>
@@ -273,24 +271,24 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
 
     return (
       <Listbox
-        key={isCompact ? "compact" : "default"}
+        key={isCompact ? 'compact' : 'default'}
         ref={ref}
         hideSelectedIcon
         as="nav"
-        className={cn("list-none", className)}
+        className={cn('list-none', className)}
         classNames={{
           ...classNames,
-          list: cn("items-center", classNames?.list),
+          list: cn('items-center', classNames?.list),
         }}
         color="default"
         itemClasses={{
           ...itemClasses,
           base: cn(
-            "px-3 min-h-11 rounded-large h-[44px] data-[selected=true]:bg-default-100",
+            'px-3 min-h-11 rounded-large h-[44px] data-[selected=true]:bg-default-100',
             itemClasses?.base
           ),
           title: cn(
-            "text-small font-medium text-default-500 group-data-[selected=true]:text-foreground",
+            'text-small font-medium text-default-500 group-data-[selected=true]:text-foreground',
             itemClasses?.title
           ),
         }}
@@ -329,4 +327,4 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
   }
 );
 
-Sidebar.displayName = "Sidebar";
+Sidebar.displayName = 'Sidebar';

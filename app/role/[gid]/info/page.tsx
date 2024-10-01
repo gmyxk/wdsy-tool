@@ -17,7 +17,7 @@ export default function RoleInfoPage({
         </div>
         <InfoCrad gid={params.gid} />
       </div>
-      <div className="md:col-span-2">
+      <div className="xl:col-span-2">
         <RoleContentEdit gid={params.gid} />
       </div>
     </div>

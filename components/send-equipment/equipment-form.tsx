@@ -61,7 +61,7 @@ export const SendEquipmentCustom = ({
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<Inputs>({
     defaultValues: EQUI_TPLS[0].data,
   });

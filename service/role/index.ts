@@ -23,6 +23,10 @@ export const queryRoleInfoService = async (
     `SELECT g.gid, g.name, u.content FROM gid_info g INNER JOIN user_data u ON g.gid = u.name WHERE g.type = 'user' AND g.gid = '${param.gid}'`
   );
 
+  if (!payloads || payloads.length === 0) {
+    throw new Error('查询角色信息失败');
+  }
+
   const { gid, content, name } = payloads[0];
 
   const roleName = DBEncoder.decodeGb2312(name);
@@ -122,4 +126,17 @@ export const coverRoleInfoService = async (
   );
 
   return result;
+};
+
+/**
+ * 获取所有角色
+ * @param ddb 
+ * @returns 
+ */
+export const getGidsService = async (ddb: Pool) => {
+  const [data] = await ddb.query<DBData.GidInfoTable[]>(
+    `SELECT gid, name FROM gid_info`
+  );
+
+  return data.map<API.GidItem>(({ name, gid }) => ({ name: DBEncoder.decodeGb2312(name), gid }));
 };

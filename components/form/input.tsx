@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Input,
   InputProps,
@@ -93,7 +95,7 @@ export const ControllerInput = <
 export const ControllerSelect = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  Item extends object = any,
+  Item extends object = object,
 >(
   props: Omit<ControllerProps<TFieldValues, TName>, 'render'> &
     SelectProps<Item> & {
@@ -155,14 +157,6 @@ export const ControllerSelect = <
     return val[0];
   };
 
-  const renderChangeValue = (val: string) => {
-    if (type === 'number') {
-      return Number(val);
-    } else {
-      return val;
-    }
-  };
-
   return (
     <Controller
       control={control}
@@ -173,16 +167,6 @@ export const ControllerSelect = <
             selectedKeys={formatValue(value)}
             onSelectionChange={(v) => {
               onChange(formatChangeValue(v));
-              // const val = [...v];
-
-              // if (selectProps.selectionMode === 'multiple') {
-              //   onChange((val as string[]).map(renderChangeValue));
-              //   return;
-              // } else {
-              //   onChange(
-              //     val[0] ? renderChangeValue(val[0] as string) : undefined
-              //   );
-              // }
             }}
             {...selectProps}
           />

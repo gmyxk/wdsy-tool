@@ -10,7 +10,7 @@ export const SendMailTemplate = ({
   mutationFn,
   onSendSuccess,
   actionRef,
-}: SendTemplateCommonProps) => {
+}: SendTemplateCommonProps<SendMailItem>) => {
   return (
     <TemplatePiaker<SendMailItem>
       storgeKey={StoreKey.MailTemplate}

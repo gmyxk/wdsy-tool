@@ -83,7 +83,7 @@ const SendJewelryItem = z.object({
 export type SendJewelryItem = z.infer<typeof SendJewelryItem>;
 
 export const SendJewelryApiReq = z.object({
-  /** 角色 id合集 */
+  /** 角色 id */
   gid: z.string(),
   /** 首饰物品信息 */
   jewelrys: SendJewelryItem.array().min(1),
