@@ -132,6 +132,10 @@ export const HORCRUX_ATTR_DARK = [
     label: '反震率',
   },
   {
+    value: 'counter_attack_rate',
+    label: '反击率',
+  },
+  {
     value: 'counter_attack',
     label: '反击次数',
   },
@@ -192,88 +196,88 @@ export const HORCRUX_PRE_TPL: Array<{
   templateName: string;
   data: SendHorcruxItem;
 }> = [
-  {
-    templateName: '100级力锋芒',
-    data: {
-      name: '魂器·锋芒',
-      level: 100,
-      skillLevel: 5,
-      chaosValue: 100,
-      lightProportion: 70,
-      attributes: [
-        {
-          lightAttribute: 'phy_power',
-          lightAttributeValue: 829,
-          darkAttribute: 'def',
-          darkAttributeValue: 2295,
-        },
-        {
-          lightAttribute: 'phy_power',
-          lightAttributeValue: 829,
-          darkAttribute: 'def',
-          darkAttributeValue: 2295,
-        },
-        {
-          lightAttribute: 'str',
-          lightAttributeValue: 20,
-          darkAttribute: 'max_life',
-          darkAttributeValue: 3443,
-        },
-        {
-          lightAttribute: 'str',
-          lightAttributeValue: 20,
-          darkAttribute: 'max_life',
-          darkAttributeValue: 3443,
-        },
-        {
-          lightAttribute: 'dex',
-          lightAttributeValue: 20,
-          darkAttribute: 'all_resist_except',
-          darkAttributeValue: 15,
-        },
-      ],
+    {
+      templateName: '100级力锋芒',
+      data: {
+        name: '魂器·锋芒',
+        level: 100,
+        skillLevel: 5,
+        chaosValue: 100,
+        lightProportion: 70,
+        attributes: [
+          {
+            lightAttribute: 'phy_power',
+            lightAttributeValue: 829,
+            darkAttribute: 'def',
+            darkAttributeValue: 2295,
+          },
+          {
+            lightAttribute: 'phy_power',
+            lightAttributeValue: 829,
+            darkAttribute: 'def',
+            darkAttributeValue: 2295,
+          },
+          {
+            lightAttribute: 'str',
+            lightAttributeValue: 20,
+            darkAttribute: 'max_life',
+            darkAttributeValue: 3443,
+          },
+          {
+            lightAttribute: 'str',
+            lightAttributeValue: 20,
+            darkAttribute: 'max_life',
+            darkAttributeValue: 3443,
+          },
+          {
+            lightAttribute: 'dex',
+            lightAttributeValue: 20,
+            darkAttribute: 'all_resist_except',
+            darkAttributeValue: 15,
+          },
+        ],
+      },
     },
-  },
-  {
-    templateName: '100级法灵咒',
-    data: {
-      name: '魂器·灵咒',
-      level: 100,
-      skillLevel: 5,
-      chaosValue: 100,
-      lightProportion: 70,
-      attributes: [
-        {
-          lightAttribute: 'mag_power',
-          lightAttributeValue: 730,
-          darkAttribute: 'def',
-          darkAttributeValue: 2295,
-        },
-        {
-          lightAttribute: 'mag_power',
-          lightAttributeValue: 730,
-          darkAttribute: 'def',
-          darkAttributeValue: 2295,
-        },
-        {
-          lightAttribute: 'wiz',
-          lightAttributeValue: 20,
-          darkAttribute: 'max_life',
-          darkAttributeValue: 3443,
-        },
-        {
-          lightAttribute: 'wiz',
-          lightAttributeValue: 20,
-          darkAttribute: 'max_life',
-          darkAttributeValue: 3443,
-        },
-        {
-          lightAttribute: 'dex',
-          lightAttributeValue: 20,
-          darkAttribute: 'all_resist_except',
-          darkAttributeValue: 15,
-        },
-      ],
+    {
+      templateName: '100级法灵咒',
+      data: {
+        name: '魂器·灵咒',
+        level: 100,
+        skillLevel: 5,
+        chaosValue: 100,
+        lightProportion: 70,
+        attributes: [
+          {
+            lightAttribute: 'mag_power',
+            lightAttributeValue: 730,
+            darkAttribute: 'def',
+            darkAttributeValue: 2295,
+          },
+          {
+            lightAttribute: 'mag_power',
+            lightAttributeValue: 730,
+            darkAttribute: 'def',
+            darkAttributeValue: 2295,
+          },
+          {
+            lightAttribute: 'wiz',
+            lightAttributeValue: 20,
+            darkAttribute: 'max_life',
+            darkAttributeValue: 3443,
+          },
+          {
+            lightAttribute: 'wiz',
+            lightAttributeValue: 20,
+            darkAttribute: 'max_life',
+            darkAttributeValue: 3443,
+          },
+          {
+            lightAttribute: 'dex',
+            lightAttributeValue: 20,
+            darkAttribute: 'all_resist_except',
+            darkAttributeValue: 15,
+          },
+        ],
+      },
     },
-  },
-];
+  ];

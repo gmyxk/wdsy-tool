@@ -12,6 +12,7 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
+        'hero-section-title': 'linear-gradient(91deg, hsl(var(--nextui-foreground)) 32.88%, hsla(0, 0%, 100%, .4) 99.12%)',
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',

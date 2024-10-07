@@ -1,89 +1,4 @@
 /**
- * 所有属性集合
- */
-export const ATTRIBUTE_ALL = [
-  { key: 2, name: 'str', description: '力量' },
-  { key: 3, name: 'phy_power', description: '物伤' },
-  { key: 4, name: 'accurate', description: '准确' },
-  { key: 5, name: 'con', description: '体质' },
-  { key: 7, name: 'max_life', description: '气血' },
-  { key: 8, name: 'def', description: '防御' },
-  { key: 9, name: 'penetrate', description: '破防' },
-  { key: 10, name: 'wiz', description: '灵力' },
-  { key: 11, name: 'mag_power', description: '法伤' },
-  { key: 13, name: 'max_mana', description: '法力' },
-  { key: 14, name: 'dex', description: '敏捷' },
-  { key: 15, name: 'speed', description: '速度' },
-  { key: 30, name: null, description: '金相性' },
-  { key: 31, name: null, description: '木相性' },
-  { key: 32, name: null, description: '水相性' },
-  { key: 33, name: null, description: '火相性' },
-  { key: 34, name: null, description: '土相性' },
-  { key: 36, name: 'resist_metal', description: '金抗性' },
-  { key: 37, name: 'resist_water', description: '水抗性' },
-  { key: 38, name: 'resist_wood', description: '木抗性' },
-  { key: 39, name: 'resist_fire', description: '火抗性' },
-  { key: 41, name: 'resist_earth', description: '土抗性' },
-  { key: 42, name: 'resist_poison', description: '抗中毒' },
-  { key: 43, name: 'resist_frozen', description: '抗冰冻' },
-  { key: 44, name: 'resist_sleep', description: '抗昏睡' },
-  { key: 45, name: 'resist_forgotten', description: '抗遗忘' },
-  { key: 46, name: 'resist_confusion', description: '抗混乱' },
-  { key: 51, name: 'double_hit', description: '物理连击次数' },
-  { key: 53, name: 'counter_attack', description: '反击次数' },
-  { key: 56, name: 'counter_attack_rate', description: '反击率' },
-  { key: 57, name: 'double_hit_rate', description: '物理连击率' },
-  { key: 58, name: 'stunt_rate', description: '物理必杀率' },
-  { key: 59, name: 'damage_sel', description: '反震度' },
-  { key: 60, name: 'damage_sel_rate', description: '反震率' },
-  { key: 64, name: null, description: '所有属性' },
-  { key: 65, name: null, description: '所有相性' },
-  { key: 66, name: 'all_resist_polar', description: '所有抗性' },
-  { key: 67, name: 'all_resist_except', description: '所有抗异常' },
-  { key: 68, name: null, description: '所有技能上升' },
-  { key: 73, name: 'penetrate_rate', description: '破防率' },
-  { key: 85, name: 'ignore_resist_metal', description: '忽视目标抗金' },
-  { key: 86, name: 'ignore_resist_wood', description: '忽视目标抗木' },
-  { key: 87, name: 'ignore_resist_water', description: '忽视目标抗水' },
-  { key: 88, name: 'ignore_resist_fire', description: '忽视目标抗火' },
-  { key: 89, name: 'ignore_resist_earth', description: '忽视目标抗土' },
-  { key: 90, name: 'ignore_resist_forgotten', description: '忽视目标抗遗忘' },
-  { key: 91, name: 'ignore_resist_poison', description: '忽视目标抗中毒' },
-  { key: 92, name: 'ignore_resist_frozen', description: '忽视目标抗冰冻' },
-  { key: 93, name: 'ignore_resist_sleep', description: '忽视目标抗昏睡' },
-  { key: 94, name: 'ignore_resist_confusion', description: '忽视目标抗混乱' },
-  { key: 95, name: 'super_excluse_metal', description: '强力克金' },
-  { key: 96, name: 'super_excluse_wood', description: '强力克木' },
-  { key: 97, name: 'super_excluse_water', description: '强力克水' },
-  { key: 98, name: 'super_excluse_fire', description: '强力克火' },
-  { key: 99, name: 'super_excluse_earth', description: '强力克土' },
-  { key: 100, name: 'B_skill_low_cost', description: '师门攻击技能消耗降低' },
-  { key: 101, name: 'C_skill_low_cost', description: '师门障碍技能消耗降低' },
-  { key: 102, name: 'D_skill_low_cost', description: '师门辅助技能消耗降低' },
-  { key: 103, name: null, description: '强力中毒' },
-  { key: 104, name: null, description: '强力昏睡' },
-  { key: 105, name: null, description: '强力遗忘' },
-  { key: 106, name: null, description: '强力混乱' },
-  { key: 107, name: null, description: '强力冰冻' },
-  { key: 108, name: null, description: '强金法伤害' },
-  { key: 109, name: null, description: '强木法伤害' },
-  { key: 110, name: null, description: '强水法伤害' },
-  { key: 111, name: null, description: '强火法伤害' },
-  { key: 112, name: null, description: '强土法伤害' },
-  { key: 113, name: null, description: '几率躲避攻击' },
-  { key: 119, name: 'ignore_all_resist_polar', description: '忽视所有抗性' },
-  { key: 200, name: null, description: '忽视所有抗异常' },
-  { key: 201, name: 'release_forgotten', description: '几率解除遗忘状态' },
-  { key: 202, name: 'release_poison', description: '几率解除中毒状态' },
-  { key: 203, name: 'release_frozen', description: '几率解除冰冻状态' },
-  { key: 204, name: 'release_sleep', description: '几率解除昏睡状态' },
-  { key: 205, name: 'release_confusion', description: '几率解除混乱状态' },
-  { key: 252, name: null, description: '强物理伤害' },
-  { key: 297, name: null, description: '伤害' },
-  { key: 348, name: null, description: '忽视躲避攻击' },
-];
-
-/**
  * 所有属性枚举
  */
 export const ATTRIBUTE_ENUM = {
@@ -177,8 +92,9 @@ export const getAttrEnumList = <T extends keyof typeof ATTRIBUTE_ENUM>(
   }[] = [];
 
   key.forEach((k) => {
-    ATTRIBUTE_ENUM[k]?.[1] &&
+    if (ATTRIBUTE_ENUM[k]?.[1]) {
       list.push({ lebel: ATTRIBUTE_ENUM[k][1], value: k });
+    }
   });
   return list;
 };

@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 import { Chip, Link, Spacer } from '@nextui-org/react';
 
 import { WdIcon } from '@/components/basic-navigation-header/social';
+import { NoticeContent } from '@/components/noice';
 
 type SocialIconProps = Omit<IconProps, 'icon'>;
 
@@ -53,6 +54,7 @@ export default function About() {
             该工具旨在方便游戏过程中对角色的管理, 采用交互扁平化设计，
             用户可以快速的实现对游戏角色进行信息修改、物品修改。目前本人缺乏对该游戏数据库表结构的了解，希望对数据库有研究的朋友若有兴趣的话能提供一些帮助。届时将共享代码及成果
           </p>
+          <NoticeContent />
           <div className="mt-8">
             <h3>目标实现功能</h3>
 
