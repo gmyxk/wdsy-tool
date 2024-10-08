@@ -24,14 +24,14 @@ interface UserDataContentParse {
     last_time: number;
     /** 总积分值 */
     total_score: number;
-    used_quota: {};
+    used_quota: unknown;
   };
   /** 飞升信息 */
   340: {
     max_polar_extra: 20;
     attrib_point: 34;
     /** 类型  4: 魔    3: 仙 */
-    type: 4 | 3;
+    type: 4 | 3 | 2;
     /** 元婴等级 */
     level: number;
     exp_to_next_level: 0;

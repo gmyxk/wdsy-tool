@@ -2,6 +2,7 @@
  * 飞升类型
  */
 export const RISE_TYPE = {
+  2: '无',
   3: '仙',
   4: '魔',
 };

@@ -37,7 +37,7 @@ declare namespace API {
     /** 角色 ID */
     gid: string;
     /** 仙魔类型 4: 魔    3: 仙 */
-    riseType?: 4 | 3;
+    riseType?: 4 | 3 | 2;
     /** 元婴等级 */
     yuanBabyLevel?: number;
     /** 消费积分 */
@@ -63,8 +63,6 @@ declare namespace API {
     | 'ability'
     | 'gid'
   >;
-
-  type UserDataContent = any;
 
   interface LoginDataContent {
     chars: string[];
