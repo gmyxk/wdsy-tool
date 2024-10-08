@@ -21,7 +21,7 @@ export const EditRoleInfoPayload = z.object({
     ])
     .optional(),
   /** 仙魔类型 4: 魔    3: 仙 */
-  riseType: z.union([z.literal(3), z.literal(4)]).optional(),
+  riseType: z.union([z.literal(2), z.literal(3), z.literal(4)]).optional(),
   /** 元婴等级 */
   yuanBabyLevel: z.number().int().min(1).max(999).optional(),
   /** 消费积分 */

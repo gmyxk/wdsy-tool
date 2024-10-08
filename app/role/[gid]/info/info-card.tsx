@@ -109,7 +109,7 @@ export const InfoCrad = ({ gid }: { gid: string }) => {
             <p className="text-md">{info.roleName}</p>
             <p className="text-tiny text-default-500">@{info.account}</p>
           </div>
-          <div className='flex gap-2'>
+          <div className="flex gap-2">
             <Button
               size="sm"
               onClick={() => {
