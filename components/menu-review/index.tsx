@@ -27,17 +27,23 @@ const configs: ConfigItem[] = [
     lightImageUrl: 'https://img.oneddd.com/alpha/2024/10/07/6703a24f09301.png',
   },
   {
-    title: '角色信息修改',
+    title: '角色信息管理',
     description:
       '可通过表单修改当前角色部分信息，也可以直接修改 content 报文并提交',
     darkImageUrl: 'https://img.oneddd.com/alpha/2024/10/07/6703a477f17b2.png',
     lightImageUrl: 'https://img.oneddd.com/alpha/2024/10/07/6703a467f1c3b.png',
   },
   {
-    title: '角色包裹信息修改',
+    title: '角色包裹管理',
     description: '可查看当前角色所携带物品，支持直接修改 content 报文并提交',
     darkImageUrl: 'https://img.oneddd.com/alpha/2024/10/07/6703a4f802f21.png',
     lightImageUrl: 'https://img.oneddd.com/alpha/2024/10/07/6703a50700132.png',
+  },
+  {
+    title: '角色宠物管理',
+    description: '可对当前角色的宠物进行增删改查操作',
+    darkImageUrl: 'https://img.oneddd.com/alpha/2024/10/09/67068175e476d.png',
+    lightImageUrl: 'https://img.oneddd.com/alpha/2024/10/09/670681680b472.png',
   },
   {
     title: '首饰发放',
@@ -58,7 +64,7 @@ const configs: ConfigItem[] = [
     lightImageUrl: 'https://img.oneddd.com/alpha/2024/10/07/6703a78101c5c.png',
   },
   {
-    title: '邮件发放',
+    title: '邮件管理',
     description: '支持手动填写发放，发放成功后会生成模板记录，方便直接选中发放',
     darkImageUrl: 'https://img.oneddd.com/alpha/2024/10/07/6703a7ddedf9d.png',
     lightImageUrl: 'https://img.oneddd.com/alpha/2024/10/07/6703a7f2ef07a.png',
@@ -88,6 +94,13 @@ const configs: ConfigItem[] = [
     darkImageUrl: 'https://img.oneddd.com/alpha/2024/10/07/6703acfc0164d.png',
     lightImageUrl: 'https://img.oneddd.com/alpha/2024/10/07/6703ad0900efe.png',
   },
+  {
+    title: '全服统一道行',
+    description:
+      '可根据等级区间，设置不同的统一道行，当角色道行超过目标道行时默认不会被统一',
+    darkImageUrl: 'https://img.oneddd.com/alpha/2024/10/09/670681002e71f.png',
+    lightImageUrl: 'https://img.oneddd.com/alpha/2024/10/09/6706811413490.png',
+  },
 ];
 
 const MenuCard = ({
@@ -100,6 +113,13 @@ const MenuCard = ({
   const { theme } = useTheme();
   const cardRef = useRef(null);
   const [inViewport] = useInViewport(cardRef);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (inViewport) {
+      setLoaded(true);
+    }
+  }, [inViewport]);
 
   const imageUrl = theme === 'dark' ? info.darkImageUrl : info.lightImageUrl;
 
@@ -111,7 +131,7 @@ const MenuCard = ({
       cover={
         <Image
           alt={info.title}
-          src={inViewport ? imageUrl : placeImageUrl}
+          src={inViewport || loaded ? imageUrl : placeImageUrl}
           preview={{
             src: imageUrl,
           }}

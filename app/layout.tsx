@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: '山有扶苏',
-  description: '提供日常工作生活中所需的一些工具',
+  description: '专注于某道手游的数据维护',
 };
 
 export default function RootLayout({

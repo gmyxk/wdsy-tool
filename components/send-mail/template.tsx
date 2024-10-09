@@ -1,7 +1,7 @@
 import { MAIL_ATTACH_INIT, StoreKey } from '@/config';
 import { SendMailItem } from '@/scheme';
 import { cn } from '@/utils';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 import { Button, Card, CardBody } from '@nextui-org/react';
 import { SendTemplateCommonProps } from '../send-common';
 import { TemplatePiaker } from '../template-picker';

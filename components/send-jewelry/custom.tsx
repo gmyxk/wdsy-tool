@@ -3,7 +3,7 @@ import { ATTRIBUTE_CONFIG, JEWELRY_ENUM } from '@/config';
 import { InData } from '@/hook/useTemplates';
 import { SendJewelryItem } from '@/scheme';
 import { cn } from '@/utils';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 import { Button, Input, Select, SelectItem } from '@nextui-org/react';
 import {
   Controller,

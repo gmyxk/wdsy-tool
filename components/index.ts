@@ -7,6 +7,8 @@ export * from './edit-baggage';
 export * from './code-editor';
 
 export * from './role-info';
+export * from './sidebar';
+export * from './sidebar-drawer';
 export * from './menu-review';
 
 export * from './send-equipment';

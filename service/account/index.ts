@@ -105,11 +105,11 @@ export const queryRolesService = async (
 
   // 查询在线角色
   const [inLineDatas] = await ddb.query<DBData.LoginDataTable[]>(
-    "SELECT name, content FROM data WHERE path = 'runtime'"
+    "SELECT content FROM data WHERE path = 'runtime'"
   );
 
   const inLineMap = inLineDatas.reduce<Record<string, 1>>(
-    (acc, { name, content }) => {
+    (acc, { content }) => {
       const ins = new DataRuntimeContent(DBEncoder.decodeGb2312(content));
 
       acc[ins.inLineGid] = 1;
@@ -174,7 +174,23 @@ export const queryRoleInlineService = async (
   }
 ) => {
   const [rows] = await ddb.query<DBData.LoginDataTable[]>(
-    `SELECT * FROM data WHERE path = 'runtime' AND content LIKE '%${param.gid}%'`
+    `SELECT content FROM data WHERE path = 'runtime' AND content LIKE '%${param.gid}%'`
+  );
+
+  return rows.length > 0;
+};
+
+/**
+ * 查询是否有角色在线
+ * @param pool
+ * @param param
+ * @returns
+ */
+export const queryAnyInlineService = async (
+  ddb: Pool,
+) => {
+  const [rows] = await ddb.query<DBData.LoginDataTable[]>(
+    `SELECT path FROM data WHERE path = 'runtime'`
   );
 
   return rows.length > 0;

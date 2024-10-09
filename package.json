@@ -1,6 +1,6 @@
 {
   "name": "wdsy-tools",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -51,10 +51,9 @@
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
     "react-toastify": "^10.0.5",
+    "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",
     "usehooks-ts": "^3.1.0",
-    "winston": "^3.14.2",
-    "winston-daily-rotate-file": "^5.0.0",
     "zod": "^3.23.8",
     "zustand": "^4.5.5"
   },
@@ -70,20 +69,19 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/wicg-file-system-access": "^2023.10.5",
-    "@types/winston": "^2.4.4",
     "@vitejs/plugin-react": "^4.3.1",
     "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "^14.2.11",
     "eslint-config-prettier": "^9.1.0",
+    "jsdom": "^25.0.1",
     "postcss": "^8",
     "prettier": "^3.3.3",
     "prettier-plugin-organize-imports": "^4.0.0",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "remark-gfm": "^4.0.0",
     "tailwindcss": "^3.4.13",
-    "jsdom": "^25.0.1",
-    "vitest": "^2.1.1",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.1"
   }
 }

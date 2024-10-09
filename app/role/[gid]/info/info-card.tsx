@@ -6,7 +6,7 @@ import { CLAZZ, GENDER, RISE_TYPE } from '@/config';
 import { pointsToYearsDaysPoints } from '@/lib/game-data';
 import { EditRoleInfoPayload } from '@/scheme';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 import {
   Button,
   Card,
@@ -30,7 +30,7 @@ type CellValueProps = {
   children?: React.ReactNode;
 };
 
-const CellValue = ({
+export const CellValue = ({
   label,
   value,
   children,

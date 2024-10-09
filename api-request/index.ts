@@ -1,6 +1,7 @@
 import { axiosDelete, axiosGet, axiosPost, axiosPut } from '@/lib/axios';
 import { Encrypt } from '@/lib/crypto';
 import {
+  EditPetInfoApiReq,
   EditRoleInfoApiReq,
   EditRoleInfoPayload,
   SendEquipmentApiReq,
@@ -8,6 +9,7 @@ import {
   SendJewelryApiReq,
   SendMailApiReq,
   SendWuhunReq,
+  UnifiedModifyDaoInfoApiReq,
   WdCommonApiReq,
 } from '@/scheme';
 
@@ -123,6 +125,16 @@ export const editRoleInfoRequest = (data: EditRoleInfoApiReq) => {
 };
 
 /**
+ * 编辑角色信息
+ * @param data
+ * @returns
+ */
+export const editRoleDaoInfoRequest = (data: UnifiedModifyDaoInfoApiReq) => {
+  UnifiedModifyDaoInfoApiReq.parse(data);
+  return axiosPut(`/api/wd/role/${data.gid}/dao`, data);
+};
+
+/**
  * 覆盖角色信息
  * @param data
  * @returns
@@ -174,3 +186,43 @@ export const coverStoreDataContentWhjpRequest = (data: {
 }) => {
   return axiosPost(`/api/wd/role/${data.gid}/wuhun`, data);
 };
+
+/**
+ * 获取宠物信息
+ * @param gid
+ * @returns
+ */
+export const getContainerPetsRequest = (gid: string) => {
+  return axiosGet<API.GetPetListApiRes>(`/api/wd/role/${gid}/container-pet`);
+};
+
+/**
+ * 校验是否有角色在线
+ * @returns 
+ */
+export const verifyNolineRequest = () => {
+  return axiosGet(`/api/wd/online`);
+}
+
+/**
+ * 覆盖
+ * @param data 
+ * @returns 
+ */
+export const coverUserContainerRequest = (data: {
+  gid: string;
+  content: string;
+}) => {
+  return axiosPost(`/api/wd/role/${data.gid}/container-data`, data);
+}
+
+export const putContainerPetInfoRequest = (data: EditPetInfoApiReq) => {
+  return axiosPut(`/api/wd/role/${data.gid}/container-pet`, data);
+}
+
+export const deleteContainerPetInfoRequest = (data: {
+  gid: string;
+  positionId: number;
+}) => {
+  return axiosDelete(`/api/wd/role/${data.gid}/container-pet`, data);
+}

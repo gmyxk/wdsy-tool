@@ -1,7 +1,7 @@
 import { StoreKey, WUHUN_ATTRS } from '@/config';
 import { SendWuhunItem } from '@/scheme';
 import { cn } from '@/utils';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 import { Button, Card, CardBody } from '@nextui-org/react';
 import { useRef } from 'react';
 import { SendTemplateCommonProps } from '../send-common';

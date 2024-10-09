@@ -4,7 +4,7 @@ import { ATTRIBUTE_CONFIG, INITIAL_JEWELRY } from '@/config';
 import { InData } from '@/hook/useTemplates';
 import { SendJewelryItem } from '@/scheme';
 import { cn } from '@/utils';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 import { Card, CardBody, Divider } from '@nextui-org/react';
 import React from 'react';
 import { TemplatePiaker, TemplatePiakerActionRef } from '../template-picker';

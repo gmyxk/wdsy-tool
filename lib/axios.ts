@@ -49,6 +49,10 @@ axiosIns.interceptors.response.use(
     return response;
   },
   (error) => {
+    if (error?.response?.data) {
+      throw new Error(error.response.data.message || '请求出错了');
+    }
+
     // 对响应错误做点什么
     return Promise.reject(error);
   }

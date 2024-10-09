@@ -1,6 +1,6 @@
-import { UserDataContent } from '@/content';
+import { UserContainerDataContent, UserDataContent } from '@/content';
 import { DBEncoder } from '@/lib/encoding';
-import { EditRoleInfoApiReq, EditRoleInfoPayload } from '@/scheme';
+import { EditPetInfoApiReq, EditRoleInfoApiReq, EditRoleInfoPayload, UnifiedModifyDaoInfo } from '@/scheme';
 import { Pool } from 'mysql2/promise';
 import { queryRoleInAccountService, queryRoleInlineService } from '../account';
 
@@ -96,6 +96,77 @@ export const editRoleInfoService = async (
 };
 
 /**
+ * 修改指定角色道行
+ * @param ddb
+ * @param param
+ * @returns
+ */
+export const editRoleDaoInfoService = async (
+  ddb: Pool,
+  param: {
+    gid: string;
+    payload: UnifiedModifyDaoInfo
+  }
+) => {
+  if (!param.gid) {
+    throw new Error('角色ID不能为空');
+  }
+  UnifiedModifyDaoInfo.parse(param.payload);
+
+  const res = await queryRoleInlineService(ddb, param);
+
+  if (res) {
+    throw new Error('当前角色在线, 请下线后再操作');
+  }
+
+  const [datas] = await ddb.execute<DBData.GidInfoTable[]>(
+    `SELECT * FROM user_data WHERE name = ?`,
+    [param.gid]
+  );
+
+  if (!datas || datas.length === 0) {
+    throw new Error('角色信息查询失败');
+  }
+
+  const content = DBEncoder.decodeGb2312(datas[0].content);
+
+  const ins = new UserDataContent(content);
+
+  const roleInfo = ins.roleInfo;
+
+  const tar = param.payload.rangeConfig.find(v => v.start <= roleInfo.level && v.end >= roleInfo.level);
+
+  if (!tar) {
+    return {
+      message: '未匹配到规则'
+    }
+  }
+
+  const targetDao = tar.dao * 360;
+
+  if (targetDao <= roleInfo.ability && !param.payload.force) {
+    return {
+      message: '道行超出，不予更改'
+    }
+  }
+
+  ins.patchRoleInfo({
+    ability: targetDao
+  });
+
+  const resultContent = ins.currentContent;
+
+  const checksum = DBEncoder.genChecksum(`user${param.gid}${resultContent}`);
+
+  const result = await ddb.execute(
+    `UPDATE user_data SET content=?,checksum=? WHERE name=?`,
+    [DBEncoder.encodeToGb2312(resultContent), checksum, param.gid]
+  );
+
+  return result;
+};
+
+/**
  * 修改指定角色信息
  * @param ddb
  * @param param
@@ -140,3 +211,144 @@ export const getGidsService = async (ddb: Pool) => {
 
   return data.map<API.GidItem>(({ name, gid }) => ({ name: DBEncoder.decodeGb2312(name), gid }));
 };
+
+/**
+ * 获取角色下宠物信息
+ * @param ddb 
+ * @param param 
+ * @returns 
+ */
+export const getRoleCarryPats = async (ddb: Pool,
+  param: {
+    gid: string;
+  }): Promise<API.GetPetListApiRes> => {
+
+  if (!param.gid) {
+    throw new Error('参数缺失');
+  }
+
+  const [datas] = await ddb.execute<DBData.GidInfoTable[]>(
+    `SELECT content FROM user_container_data WHERE name = ?`,
+    [param.gid]
+  );
+
+  if (!datas || datas.length === 0) {
+    throw new Error('宠物信息查询失败');
+  }
+
+  const content = DBEncoder.decodeGb2312(datas[0].content);
+
+  const ins = new UserContainerDataContent(content);
+
+  const pets = ins.getPetList();
+
+  return {
+    pets,
+    content
+  }
+}
+
+export const coverUserContainerService = async (
+  ddb: Pool,
+  param: {
+    gid: string;
+    content: string;
+  }
+) => {
+  if (!param.gid || !param.content) {
+    throw new Error('参数缺失');
+  }
+
+  const res = await queryRoleInlineService(ddb, param);
+
+  if (res) {
+    throw new Error('当前角色在线, 请下线后再操作');
+  }
+
+  const checksum = DBEncoder.genChecksum(`user_container${param.gid}${param.content}`);
+
+  const result = await ddb.execute(
+    `UPDATE user_container_data SET content=?,checksum=? WHERE name=?`,
+    [DBEncoder.encodeToGb2312(param.content), checksum, param.gid]
+  );
+
+  return result;
+}
+
+
+export const putPetInfoService = async (
+  ddb: Pool,
+  param: EditPetInfoApiReq
+) => {
+  EditPetInfoApiReq.parse(param);
+  const res = await queryRoleInlineService(ddb, param);
+
+  if (res) {
+    throw new Error('当前角色在线, 请下线后再操作');
+  }
+
+  const [datas] = await ddb.execute<DBData.GidInfoTable[]>(
+    `SELECT content FROM user_container_data WHERE name = ?`,
+    [param.gid]
+  );
+
+  if (!datas || datas.length === 0) {
+    throw new Error('宠物信息查询失败');
+  }
+
+  const content = DBEncoder.decodeGb2312(datas[0].content);
+
+  const ins = new UserContainerDataContent(content);
+
+  ins.putPetInfo(param);
+
+  const resultContent = ins.currentContent;
+
+  const checksum = DBEncoder.genChecksum(`user_container${param.gid}${resultContent}`);
+
+  const result = await ddb.execute(
+    `UPDATE user_container_data SET content=?,checksum=? WHERE name=?`,
+    [DBEncoder.encodeToGb2312(resultContent), checksum, param.gid]
+  );
+
+  return result;
+}
+
+export const deletePetInfoService = async (
+  ddb: Pool,
+  param: {
+    gid: string;
+    positionId: number;
+  }
+) => {
+  const res = await queryRoleInlineService(ddb, param);
+
+  if (res) {
+    throw new Error('当前角色在线, 请下线后再操作');
+  }
+
+  const [datas] = await ddb.execute<DBData.GidInfoTable[]>(
+    `SELECT content FROM user_container_data WHERE name = ?`,
+    [param.gid]
+  );
+
+  if (!datas || datas.length === 0) {
+    throw new Error('宠物信息查询失败');
+  }
+
+  const content = DBEncoder.decodeGb2312(datas[0].content);
+
+  const ins = new UserContainerDataContent(content);
+
+  ins.deletePetInfo(param.positionId);
+  const resultContent = ins.currentContent;
+
+  const checksum = DBEncoder.genChecksum(`user_container${param.gid}${resultContent}`);
+
+  const result = await ddb.execute(
+    `UPDATE user_container_data SET content=?,checksum=? WHERE name=?`,
+    [DBEncoder.encodeToGb2312(resultContent), checksum, param.gid]
+  );
+
+  return result;
+}

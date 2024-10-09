@@ -93,3 +93,4 @@ export const SendJewelryApiReq = z.object({
  * 首饰发送接口参数
  */
 export type SendJewelryApiReq = z.infer<typeof SendJewelryApiReq>;
+

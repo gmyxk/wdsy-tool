@@ -38,3 +38,25 @@ export const EditRoleInfoApiReq = z.object({
 });
 
 export type EditRoleInfoApiReq = z.infer<typeof EditRoleInfoApiReq>;
+
+export const UnifiedModifyDaoInfo = z.object({
+  rangeConfig: z.object({
+    /** 开始等级 */
+    start: z.number().int().min(1).max(9999),
+    /** 结束等级 */
+    end: z.number().int().min(1).max(9999),
+    /** 年 */
+    dao: z.number().int().min(1),
+  }).array().min(1),
+  /** 强制修改道行，当前道行超过目标道行时也会被修改成目标道行 */
+  force: z.boolean().optional(),
+})
+
+export type UnifiedModifyDaoInfo = z.infer<typeof UnifiedModifyDaoInfo>;
+
+export const UnifiedModifyDaoInfoApiReq = z.object({
+  gid: z.string(),
+  payload: UnifiedModifyDaoInfo
+})
+
+export type UnifiedModifyDaoInfoApiReq = z.infer<typeof UnifiedModifyDaoInfoApiReq>

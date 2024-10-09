@@ -2,7 +2,7 @@
 
 import { getRoleInfoRequest } from '@/api-request';
 import { DashbordNav, RoleInfo, RoleInfoSkeleton } from '@/components';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 import { Button, Divider } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -39,7 +39,7 @@ export default function RoleLayout({
         title: '包裹',
       },
       {
-        href: `/role/${params.gid}/pat`,
+        href: `/role/${params.gid}/pet`,
         title: '宠物',
       },
       {

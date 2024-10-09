@@ -25,19 +25,17 @@ const socialItems = [
 ];
 
 const features = [
-  '角色列表查询',
-  '角色属性查看',
-  '角色属性修改',
-  '指定角色邮件发送',
-  '邮件发送历史记录导入',
-  '邮件发送多项组合',
-  '全局邮件发送',
-  '全属性装备定制',
-  '全属性装备定制历史导入',
-  '全属性魂器定制',
-  '全属性魂器定制历史导入',
-  '定制物品多项组合',
   '部分任务一键跳过',
+  '账号信息列表展示',
+  '账号权限修改',
+  '账号密码重置',
+  '账号注册',
+  '注册大飞角色账号',
+  '太阴之气发放',
+  '聊天信息查询',
+  '邮件列表编辑',
+  '宠物发放',
+  '宠物信息修改',
 ];
 
 export default function About() {
@@ -56,7 +54,7 @@ export default function About() {
           </p>
           <NoticeContent />
           <div className="mt-8">
-            <h3>目标实现功能</h3>
+            <h3>计划中开发功能</h3>
 
             <div className="mt-4 flex flex-wrap gap-4">
               {features.map((feature) => (

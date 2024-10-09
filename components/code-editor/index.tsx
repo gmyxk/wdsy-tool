@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/utils';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 import { Editor, EditorProps } from '@monaco-editor/react';
 import {
   Button,

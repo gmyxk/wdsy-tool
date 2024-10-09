@@ -6,7 +6,7 @@ import { GlobalDbConfig } from '@/scheme';
 import { useGloblaConfigStore } from '@/store';
 import { change2NumberFactor, value2String } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 import {
   Button,
   Card,
