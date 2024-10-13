@@ -39,6 +39,10 @@ const navList = [
     href: '/about',
     label: '关于',
   },
+  {
+    href: '/comment',
+    label: '评论区',
+  },
 ];
 
 export default function Component() {

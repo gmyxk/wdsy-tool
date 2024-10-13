@@ -16,9 +16,9 @@ export const NoticeContent = () => {
   return (
     <>
       <p>
-        国内访问地址已上线，访问速度更快哦！
-        <Link href="https://wdt.oneddd.com" showAnchorIcon>
-          https://wdt.oneddd.com
+        本项目作者已不再更新，现项目代码已开源，有需要的自取，公共网站过段时间会关闭，感谢大家的使用，江湖再见~
+        <Link href="https://github.com/liu245933567/wdsy-tool" showAnchorIcon>
+          https://github.com/liu245933567/wdsy-tool
         </Link>
       </p>
       <p>山有扶苏在此声明:</p>
